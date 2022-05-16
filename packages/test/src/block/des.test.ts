@@ -1,4 +1,4 @@
-import { DES, enc } from "../../src";
+import { DES, enc } from "@kaffee/espresso";
 import { TestConfig } from "../config";
 import cryptojs from "crypto-js";
 test("DES encrypt testing", () => {

@@ -1,4 +1,4 @@
-import { TripleDES, enc } from "../../src";
+import { TripleDES, enc } from "@kaffee/espresso";
 import { TestConfig } from "../config";
 import cryptojs from "crypto-js";
 test("DES encrypt testing", () => {
