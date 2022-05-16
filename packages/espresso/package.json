@@ -1,6 +1,6 @@
 {
   "name": "@kaffee/espresso",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/cjs/index.js",
   "types": "dist/typings/index.d.ts",
@@ -8,11 +8,13 @@
   "browser": "dist/umd/index.umd.js",
   "repository":"ice-drip/espresso",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "ipublish": "pnpm publish --no-git-checks --registry https://registry.npmjs.org/ --access public",
+    "prepublish": "pnpm build"
   },
   "author": "Rikka",
   "sideEffects": false,
-  "license": "ISC",
+  "license": "GPLV3",
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
     "@types/node": "14",
