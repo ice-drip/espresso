@@ -1,4 +1,4 @@
-import { Rabbit, enc } from "../../src";
+import { Rabbit, enc } from "@kaffee/espresso";
 import { TestConfig } from "../config";
 import cryptojs from "crypto-js";
 test("Rabbit encrypt testing", () => {

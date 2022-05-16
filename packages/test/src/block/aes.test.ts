@@ -1,4 +1,4 @@
-import { AES, enc } from "../../src";
+import { AES, enc } from "@kaffee/espresso";
 import { TestConfig } from "../config";
 import cryptojs from "crypto-js";
 test("AES encrypt testing", () => {

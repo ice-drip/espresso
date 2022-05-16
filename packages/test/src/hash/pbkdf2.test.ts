@@ -1,5 +1,5 @@
 import cryptojs from "crypto-js";
-import { PBKDF2 } from "../../src";
+import { PBKDF2 } from "@kaffee/espresso";
 import { TestConfig } from "../config";
 test("pbkdf2 testing", () => {
   expect(PBKDF2(TestConfig.word, TestConfig.salt).toString()).toBe(
