@@ -27,7 +27,7 @@ const config = [
       },
       {
         format: "umd",
-        name: "ristretto",
+        name: "espresso",
         sourcemap: true,
         file: "dist/umd/index.umd.js"
       }
