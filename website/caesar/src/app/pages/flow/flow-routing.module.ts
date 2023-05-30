@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FlowComponent } from './flow.component';
 
 const routes: Routes = [{
-  path:"flow",
-  loadChildren:()=>import("./pages/flow/flow.module").then(r=>r.FlowModule)
+  path:"",
+  component:FlowComponent
 }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class FlowRoutingModule { }
