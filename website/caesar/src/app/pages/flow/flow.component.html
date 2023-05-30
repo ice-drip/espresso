@@ -1,0 +1,22 @@
+<div class="w-screen h-screen overflow-hidden">
+  <div class="h-1/4">
+    <textarea class="h-full w-full resize-none border-0 outline-none" placeholder="明文"></textarea>
+  </div>
+  <div class="h-1/4">
+    <textarea class="h-full w-full resize-none border-0 outline-none" placeholder="密文"></textarea>
+  </div>
+  <div class="h-1/2">
+    <div class="w-1/2 h-full overflow-y-auto">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let _group of groupList|keyvalue">
+          <mat-expansion-panel-header>
+            <mat-panel-title> {{_group.key}} </mat-panel-title>
+
+          </mat-expansion-panel-header>
+          <p *ngFor="let _item of _group.value">{{_item.algorithm}}</p>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+    </div>
+  </div>
+</div>
