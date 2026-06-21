@@ -20,7 +20,10 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "@kaffee/espresso": "^1.0.6",
+    "highlight.js": "^11.8.0",
     "lodash-es": "^4.17.21",
+    "ngx-highlightjs": "^9.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
