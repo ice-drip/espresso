@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun install *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "if echo \"$CLAUDE_FILE_PATH\" | grep -q 'packages/espresso/src/.*\\.ts$'; then cd packages/espresso && npx tsc --noEmit --pretty 2>&1 | head -20; fi"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "if echo \"$CLAUDE_FILE_PATH\" | grep -q '/dist/'; then echo 'ERROR: Do not edit dist/ files — they are build output. Edit src/ instead.'; exit 1; fi"
+      }
+    ]
+  }
+}
