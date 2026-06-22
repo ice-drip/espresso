@@ -13,7 +13,7 @@ export abstract class StreamCipher extends Cipher {
   }
   blockSize = 1;
   public _doFinalize(): WordArray {
-    const finalProcessedBlocks = this._process(!!"flush");
+    const finalProcessedBlocks = this._process(true);
     return finalProcessedBlocks;
   }
 }

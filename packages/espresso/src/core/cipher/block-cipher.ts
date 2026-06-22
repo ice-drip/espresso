@@ -83,9 +83,9 @@ export abstract class BlockCipher extends Cipher {
       }
 
       this.cfg.padding.pad(this._data, this.blockSize);
-      finalProcessedBlocks = this._process(!!"flush");
+      finalProcessedBlocks = this._process(true);
     } else {
-      finalProcessedBlocks = this._process(!!"flush");
+      finalProcessedBlocks = this._process(true);
       this.cfg.padding.unpad(finalProcessedBlocks);
     }
     return finalProcessedBlocks;
