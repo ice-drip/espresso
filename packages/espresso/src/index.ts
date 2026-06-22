@@ -1,4 +1,5 @@
 import { PBKDF2 } from "./algo/hash/pbkdf2.algo";
+import { xorBytes, int32ToBytes, bytesToInt32, rotateLeft, rotateRight } from "./core/utils";
 import { MessageBuffer } from "./core/message-buffer";
 import { enc } from "./enc";
 import { AES } from "./lib/block/aes.lib";
@@ -38,13 +39,18 @@ import { mode } from "./mode";
 import { pad } from "./pad";
 import { format } from "./format";
 export {
+  bytesToInt32,
+  int32ToBytes,
   MessageBuffer,
   mode,
   pad,
+  rotateLeft,
+  rotateRight,
   format,
   AES,
   BlowFish,
   DES,
+  xorBytes,
   HmacMD4,
   HmacMD5,
   HmacRIPEMD128,
