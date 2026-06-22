@@ -21,12 +21,13 @@
     "lint": "tsc --noEmit"
   },
   "devDependencies": {
-    "@rslib/core": "^0.x",
+    "@rslib/core": "^0.23.0",
     "typescript": "^5.5",
     "vitest": "^2.x",
     "crypto-js": "^4.2.0",
     "@types/crypto-js": "^4.2.0"
   },
   "keywords": ["crypto", "aes", "des", "sha", "hmac", "web-crypto"],
+  "sideEffects": false,
   "license": "GPL-3.0"
 }
