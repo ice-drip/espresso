@@ -1,4 +1,5 @@
 import { PBKDF2 } from "./algo/hash/pbkdf2.algo";
+import { MessageBuffer } from "./core/message-buffer";
 import { enc } from "./enc";
 import { AES } from "./lib/block/aes.lib";
 import { DES } from "./lib/block/des.lib";
@@ -37,6 +38,7 @@ import { mode } from "./mode";
 import { pad } from "./pad";
 import { format } from "./format";
 export {
+  MessageBuffer,
   mode,
   pad,
   format,
