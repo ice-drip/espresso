@@ -1,8 +1,12 @@
-import cryptojs from "crypto-js";
-import { SHA256 } from "@kaffee/espresso";
-import { TestConfig } from "../config";
-test("sha256 testing", () => {
-  expect(SHA256(TestConfig.word).toString()).toBe(
-    cryptojs.SHA256(TestConfig.word).toString()
-  );
+import { describe, it, expect } from 'vitest';
+import { hash } from '@ice-drip/espresso';
+
+describe('SHA-256', () => {
+  it('hashes empty string', () => {
+    expect(hash('sha256', '')).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+  });
+
+  it('hashes "hello"', () => {
+    expect(hash('sha256', 'hello')).toBe('2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824');
+  });
 });

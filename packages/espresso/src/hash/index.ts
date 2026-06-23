@@ -1,8 +1,18 @@
 import { HashAlgorithm, HashOptions } from '../core/types';
 import { md5 } from './md5';
+import { sha1 } from './sha1';
+import { sha224 } from './sha224';
+import { sha256 } from './sha256';
+import { sha384 } from './sha384';
+import { sha512 } from './sha512';
 
 const hashImpls: Record<string, (data: Uint8Array) => Uint8Array> = {
   md5,
+  sha1,
+  sha224,
+  sha256,
+  sha384,
+  sha512,
 };
 
 export function hash(
