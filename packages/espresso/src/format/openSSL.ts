@@ -3,6 +3,7 @@
 import { CipherParams } from "../core/cipher/cipher-params";
 import { WordArray } from "../core/word-array";
 import { Base64 } from "../enc/base64";
+import { hexDecode, hexEncode } from "../enc/hex";
 
 /**
  * OpenSSL 格式化策略
@@ -43,3 +44,34 @@ export const OpenSSL = {
     return new CipherParams({ ciphertext, salt });
   }
 };
+
+export interface OpenSSLParams {
+  ciphertext: Uint8Array;
+  salt?: Uint8Array;
+}
+
+export function openSSLFormat(data: OpenSSLParams): string {
+  const prefix = "Salted__";
+  const saltHex = data.salt ? hexEncode(data.salt) : "";
+  const ctHex = hexEncode(data.ciphertext);
+  return prefix + saltHex + ctHex;
+}
+
+export function openSSLParse(str: string): OpenSSLParams {
+  const prefix = "Salted__";
+  if (!str.startsWith(prefix)) {
+    throw new Error("Invalid OpenSSL format");
+  }
+
+  const hex = str.slice(prefix.length);
+  const bytes = hexDecode(hex);
+
+  if (bytes.length < 8) {
+    throw new Error("Invalid OpenSSL format: too short");
+  }
+
+  return {
+    salt: bytes.slice(0, 8),
+    ciphertext: bytes.slice(8),
+  };
+}

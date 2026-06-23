@@ -37,7 +37,7 @@ import { SEED } from "./lib/stream/seed.lib";
 import { BlowFish } from "./lib/block/blowfish.lib";
 import { mode } from "./mode";
 import { pad } from "./pad";
-import { format } from "./format";
+import { format, openSSLFormat, openSSLParse, hexFormat, hexParse } from "./format";
 import { hash } from "./hash";
 import { hmac } from "./hmac";
 import { pbkdf2 } from "./kdf/pbkdf2";
@@ -117,3 +117,4 @@ export {
   TripleDES,
   enc
 };
+export { openSSLFormat, openSSLParse, hexFormat, hexParse };
