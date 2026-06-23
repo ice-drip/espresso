@@ -1,10 +1,12 @@
 import { PBKDF2 } from "./algo/hash/pbkdf2.algo";
 import { xorBytes, int32ToBytes, bytesToInt32, rotateLeft, rotateRight } from "./core/utils";
 import { MessageBuffer } from "./core/message-buffer";
-import { enc } from "./enc";
+import { enc, hexEncode, hexDecode, base64Encode, base64Decode, utf8Encode, utf8Decode, latin1Encode, latin1Decode, utf16Encode, utf16Decode } from "./enc";
+import type { Algorithm, HashAlgorithm, BlockMode, Padding, Encoding, CipherOptions, HashOptions, PBKDF2Options, CipherInput } from "./core/types";
 import { AES } from "./lib/block/aes.lib";
 import { DES } from "./lib/block/des.lib";
 import { TripleDES } from "./lib/block/triple-des.lib";
+import { BlowFish } from "./lib/block/blowfish.lib";
 import { MD4 } from "./lib/hash/md4.lib";
 import { MD5 } from "./lib/hash/md5.lib";
 import { RIPEMD128 } from "./lib/hash/ripemd128.lib";
@@ -34,7 +36,6 @@ import { Rabbit } from "./lib/stream/rabbit.lib";
 import { RC4Drop } from "./lib/stream/rc4-drop.lib";
 import { RC4 } from "./lib/stream/rc4.lib";
 import { SEED } from "./lib/stream/seed.lib";
-import { BlowFish } from "./lib/block/blowfish.lib";
 import { mode } from "./mode";
 import { pad } from "./pad";
 import { format, openSSLFormat, openSSLParse, hexFormat, hexParse } from "./format";
@@ -55,6 +56,11 @@ import {
   iso10126Pad,
   iso10126Unpad,
 } from "./cipher/padding";
+
+export function randomBytes(n: number): Uint8Array {
+  return crypto.getRandomValues(new Uint8Array(n));
+}
+
 export {
   bytesToInt32,
   int32ToBytes,
@@ -115,6 +121,20 @@ export {
   SHA384,
   SHA512,
   TripleDES,
-  enc
+  enc,
+  hexEncode,
+  hexDecode,
+  base64Encode,
+  base64Decode,
+  utf8Encode,
+  utf8Decode,
+  latin1Encode,
+  latin1Decode,
+  utf16Encode,
+  utf16Decode,
+  openSSLFormat,
+  openSSLParse,
+  hexFormat,
+  hexParse,
 };
-export { openSSLFormat, openSSLParse, hexFormat, hexParse };
+export type { Algorithm, HashAlgorithm, BlockMode, Padding, Encoding, CipherOptions, HashOptions, PBKDF2Options, CipherInput };

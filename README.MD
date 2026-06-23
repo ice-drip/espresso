@@ -1,123 +1,88 @@
-# @kaffee/espresso
+# @ice-drip/espresso
 
-A based TypeScript crypto library, tree shaking support
+A TypeScript crypto library with Web Crypto + pure JS dual runtime support.
 
 ## Installation
 
-Install with npm
-
 ```bash
-  npm install --dev @kaffee/espresso
+npm install @ice-drip/espresso
+# or
+pnpm add @ice-drip/espresso
 ```
 
-Install with yarn
-
-```bash
-  yarn add --dev @kaffee/espresso
-```
-
-Install with pnpm
-
-```bash
-  pnpm add -D @kaffee/espresso
-```
-
-## Support List
-
-### Hash
-
-- md4
-- md5
-- pbkdf2
-- ripemd128
-- ripemd160
-- ripemd256
-- ripemd320
-- sha1
-- sha3
-- sha224
-- sha256
-- sha384
-- sha512
-
-### Hmac Hash
-
-- md4
-- md5
-- pbkdf2
-- ripemd128
-- ripemd160
-- ripemd256
-- ripemd320
-- sha1
-- sha3
-- sha224
-- sha256
-- sha384
-- sha512
-
-### Block Cipher
-
-- AES
-- DES
-- Triple DES
-
-### Stream Cipher
-
-`but is not support`
-
-- SEED
-- Rabbit
-- Rabbit Legacy
-- RC4
-
-## Example
-
-### Hash Example
-
-```javascript
-import { MD5 } from "@kaffee/espresso";
-
-const hash = MD5("LIBAOBAO").toString();
-```
-
-### Block Cipher Example
+## Quick Start
 
 ```typescript
+import { encrypt, decrypt, hash, hmac } from '@ice-drip/espresso';
 
-import { AES, enc, RIPEMD160, mode, pad } from "@kaffee/espresso";
+// Encrypt with AES-CBC
+const ciphertext = encrypt('aes', 'Hello, World!', 'secret-key', {
+  mode: 'cbc',
+  iv: crypto.getRandomValues(new Uint8Array(16)),
+});
 
-function AESEncrypt(text: string, keyStr: string, ivStr: string): string {
-  const key = RIPEMD160(keyStr).toString().slice(0, 16);
-  const iv = enc.Utf8.parse(ivStr);
-  return AES.encrypt(text, Utf8.parse(key), {
-    iv,
-    mode: mode.CBC,
-    padding: pad.PKCS7
-  }).toString();
-}
+// Decrypt
+const plaintext = decrypt('aes', ciphertext, 'secret-key', {
+  mode: 'cbc',
+  iv: /* same iv */,
+});
 
-function AESDecrypt(text: string, key: string, ivStr: string): string {
-  const iv = enc.Utf8.parse(ivStr);
-  return AES.decrypt(text, key, {
-    iv,
-    mode: mode.CBC,
-    padding: pad.PKCS7
-  }).toString(enc.Utf8);
-}
+// Hash
+const digest = hash('sha256', 'Hello, World!');
 
+// HMAC
+const mac = hmac('sha256', 'Hello, World!', 'secret-key');
 ```
 
-## Other
+## Supported Algorithms
 
-![tree shaking](https://i.imgur.com/vqZrctP.png)
+### Block Ciphers
+- AES (128, 192, 256-bit)
+- DES
+- Triple DES (3-key EDE)
+- BlowFish
+- SEED
+
+### Stream Ciphers
+- RC4 / RC4Drop
+- Rabbit / RabbitLegacy
+
+### Hash Functions
+- MD4, MD5
+- SHA-1, SHA-224, SHA-256, SHA-384, SHA-512
+- SHA3
+- RIPEMD-128, RIPEMD-160, RIPEMD-256, RIPEMD-320
+
+### MAC
+- HMAC (with any supported hash)
+
+### KDF
+- PBKDF2
+
+### Block Modes
+- CBC, ECB, CTR, CFB, OFB
+
+### Padding
+- PKCS7, Zero, ANSI X.923, ISO 9797-1, ISO 10126, No Padding
+
+## API Reference
+
+### `encrypt(algorithm, message, key, options?)`
+
+Encrypts a message using the specified algorithm.
+
+### `decrypt(algorithm, ciphertext, key, options?)`
+
+Decrypts ciphertext using the specified algorithm.
+
+### `hash(algorithm, data, options?)`
+
+Computes a hash of the data.
+
+### `hmac(algorithm, data, key, options?)`
+
+Computes HMAC of the data.
 
 ## License
 
-[GPL](https://choosealicense.com/licenses/gpl-3.0/)
-
-## Contributors
-
-<a href="https://github.com/Muromi-Rikka" >
-  <img style="border-radius:200px;" src="https://github.com/Muromi-Rikka.png?size=50">
-</a>
+GPL-3.0
