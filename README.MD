@@ -1,19 +1,19 @@
-# @ice-drip/espresso
+# @kaffee/espresso
 
 A TypeScript crypto library with Web Crypto + pure JS dual runtime support.
 
 ## Installation
 
 ```bash
-npm install @ice-drip/espresso
+npm install @kaffee/espresso
 # or
-pnpm add @ice-drip/espresso
+pnpm add @kaffee/espresso
 ```
 
 ## Quick Start
 
 ```typescript
-import { encrypt, decrypt, hash, hmac } from '@ice-drip/espresso';
+import { encrypt, decrypt, hash, hmac } from '@kaffee/espresso';
 
 // Encrypt with AES-CBC
 const ciphertext = encrypt('aes', 'Hello, World!', 'secret-key', {

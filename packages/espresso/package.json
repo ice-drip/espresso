@@ -1,5 +1,5 @@
 {
-  "name": "@ice-drip/espresso",
+  "name": "@kaffee/espresso",
   "version": "2.0.0",
   "description": "TypeScript crypto library with Web Crypto + pure JS dual runtime",
   "type": "module",

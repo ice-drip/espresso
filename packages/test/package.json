@@ -1,5 +1,5 @@
 {
-  "name": "@kaffee/espresso-test",
+  "name": "@ice-drip/espresso-test",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@ice-drip/espresso": "workspace:^",
+    "@kaffee/espresso": "workspace:^",
     "@rstest/core": "^0.10.6",
     "@types/crypto-js": "^4.2.0",
     "crypto-js": "^4.2.0",
