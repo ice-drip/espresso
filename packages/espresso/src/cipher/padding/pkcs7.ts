@@ -8,9 +8,9 @@ export function pkcs7Pad(data: Uint8Array, blockSize: number): Uint8Array {
   return padded;
 }
 
-export function pkcs7Unpad(data: Uint8Array): Uint8Array {
+export function pkcs7Unpad(data: Uint8Array, blockSize = 16): Uint8Array {
   const padLen = data[data.length - 1];
-  if (padLen < 1 || padLen > 16) throw new Error('Invalid PKCS7 padding');
+  if (padLen < 1 || padLen > blockSize) throw new Error('Invalid PKCS7 padding');
   for (let i = data.length - padLen; i < data.length; i++) {
     if (data[i] !== padLen) throw new Error('Invalid PKCS7 padding');
   }
