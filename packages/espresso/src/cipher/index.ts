@@ -4,6 +4,10 @@ import { hexEncode, hexDecode } from '../enc/hex';
 import { aesEncrypt, aesDecrypt } from './aes';
 import { desEncrypt, desDecrypt } from './des';
 import { tripleDesEncrypt, tripleDesDecrypt } from './triple-des';
+import { blowfishEncrypt, blowfishDecrypt } from './blowfish';
+import { rc4Encrypt, rc4Decrypt } from './rc4';
+import { rabbitEncrypt, rabbitDecrypt } from './rabbit';
+import { seedEncrypt, seedDecrypt } from './seed';
 
 export function encrypt(
   algorithm: Algorithm,
@@ -25,6 +29,18 @@ export function encrypt(
       break;
     case 'triple-des':
       result = tripleDesEncrypt(msgBytes, keyBytes, opts);
+      break;
+    case 'blowfish':
+      result = blowfishEncrypt(msgBytes, keyBytes, opts);
+      break;
+    case 'rc4':
+      result = rc4Encrypt(msgBytes, keyBytes);
+      break;
+    case 'rabbit':
+      result = rabbitEncrypt(msgBytes, keyBytes);
+      break;
+    case 'seed':
+      result = seedEncrypt(msgBytes, keyBytes, opts);
       break;
     default:
       throw new Error(`Unsupported algorithm: ${algorithm}`);
@@ -56,6 +72,18 @@ export function decrypt(
       break;
     case 'triple-des':
       result = tripleDesDecrypt(ctBytes, keyBytes, opts);
+      break;
+    case 'blowfish':
+      result = blowfishDecrypt(ctBytes, keyBytes, opts);
+      break;
+    case 'rc4':
+      result = rc4Decrypt(ctBytes, keyBytes);
+      break;
+    case 'rabbit':
+      result = rabbitDecrypt(ctBytes, keyBytes);
+      break;
+    case 'seed':
+      result = seedDecrypt(ctBytes, keyBytes, opts);
       break;
     default:
       throw new Error(`Unsupported algorithm: ${algorithm}`);
