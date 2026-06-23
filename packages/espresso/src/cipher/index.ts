@@ -2,6 +2,8 @@ import { Algorithm, CipherOptions, CipherInput } from '../core/types';
 import { utf8Encode, utf8Decode } from '../enc/utf8';
 import { hexEncode, hexDecode } from '../enc/hex';
 import { aesEncrypt, aesDecrypt } from './aes';
+import { desEncrypt, desDecrypt } from './des';
+import { tripleDesEncrypt, tripleDesDecrypt } from './triple-des';
 
 export function encrypt(
   algorithm: Algorithm,
@@ -17,6 +19,12 @@ export function encrypt(
   switch (algorithm) {
     case 'aes':
       result = aesEncrypt(msgBytes, keyBytes, opts);
+      break;
+    case 'des':
+      result = desEncrypt(msgBytes, keyBytes, opts);
+      break;
+    case 'triple-des':
+      result = tripleDesEncrypt(msgBytes, keyBytes, opts);
       break;
     default:
       throw new Error(`Unsupported algorithm: ${algorithm}`);
@@ -42,6 +50,12 @@ export function decrypt(
   switch (algorithm) {
     case 'aes':
       result = aesDecrypt(ctBytes, keyBytes, opts);
+      break;
+    case 'des':
+      result = desDecrypt(ctBytes, keyBytes, opts);
+      break;
+    case 'triple-des':
+      result = tripleDesDecrypt(ctBytes, keyBytes, opts);
       break;
     default:
       throw new Error(`Unsupported algorithm: ${algorithm}`);
