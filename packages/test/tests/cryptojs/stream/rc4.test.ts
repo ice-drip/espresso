@@ -1,4 +1,5 @@
 import { encrypt, decrypt } from "@kaffee/espresso";
+import cryptojs from "crypto-js";
 import { TestConfig } from "../../../src/config";
 
 test("rc4 consistency", () => {
@@ -45,4 +46,24 @@ test("rc4 performance", () => {
   }
   const elapsed = Date.now() - start;
   expect(elapsed).toBeLessThan(10000);
+});
+
+test("rc4 decrypt cross-library", () => {
+  const key = cryptojs.enc.Utf8.parse(TestConfig.key);
+  const encrypted = cryptojs.RC4.encrypt(TestConfig.word, key);
+  const ciphertext = encrypted.ciphertext.toString();
+  const decrypted = decrypt('rc4', ciphertext, TestConfig.key, {
+    outputEncoding: 'utf8',
+  });
+  expect(decrypted).toBe(TestConfig.word);
+});
+
+test("rc4 encrypt cross-library", () => {
+  const encrypted = encrypt('rc4', TestConfig.word, TestConfig.key, {
+    outputEncoding: 'hex',
+  }) as string;
+  const key = cryptojs.enc.Utf8.parse(TestConfig.key);
+  const ciphertext = cryptojs.enc.Hex.parse(encrypted);
+  const decrypted = cryptojs.RC4.decrypt({ ciphertext } as any, key);
+  expect(decrypted.toString(cryptojs.enc.Utf8)).toBe(TestConfig.word);
 });

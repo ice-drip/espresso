@@ -1,4 +1,5 @@
 import { encrypt, decrypt } from "@kaffee/espresso";
+import cryptojs from "crypto-js";
 import { TestConfig } from "../../../src/config";
 
 const iv = "1234567890abcdef";
@@ -55,4 +56,28 @@ test("rabbit performance", () => {
   }
   const elapsed = Date.now() - start;
   expect(elapsed).toBeLessThan(10000);
+});
+
+test("rabbit decrypt cross-library", () => {
+  const key = cryptojs.enc.Utf8.parse(TestConfig.key);
+  const ivWordArray = cryptojs.enc.Hex.parse(iv);
+  const encrypted = cryptojs.Rabbit.encrypt(TestConfig.word, key, { iv: ivWordArray });
+  const ciphertext = encrypted.ciphertext.toString();
+  const decrypted = decrypt('rabbit', ciphertext, TestConfig.key, {
+    iv,
+    outputEncoding: 'utf8',
+  });
+  expect(decrypted).toBe(TestConfig.word);
+});
+
+test("rabbit encrypt cross-library", () => {
+  const encrypted = encrypt('rabbit', TestConfig.word, TestConfig.key, {
+    iv,
+    outputEncoding: 'hex',
+  }) as string;
+  const key = cryptojs.enc.Utf8.parse(TestConfig.key);
+  const ivWordArray = cryptojs.enc.Hex.parse(iv);
+  const ciphertext = cryptojs.enc.Hex.parse(encrypted);
+  const decrypted = cryptojs.Rabbit.decrypt({ ciphertext } as any, key, { iv: ivWordArray });
+  expect(decrypted.toString(cryptojs.enc.Utf8)).toBe(TestConfig.word);
 });
