@@ -16,14 +16,11 @@
   "files": ["dist"],
   "scripts": {
     "build": "rslib build",
-    "test": "vitest run",
-    "test:watch": "vitest",
     "lint": "tsc --noEmit"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.0",
     "typescript": "^5.5",
-    "vitest": "^2.x",
     "crypto-js": "^4.2.0",
     "@types/crypto-js": "^4.2.0"
   },
