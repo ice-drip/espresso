@@ -39,12 +39,36 @@ import { mode } from "./mode";
 import { pad } from "./pad";
 import { format } from "./format";
 import { hash } from "./hash";
+import {
+  pkcs7Pad,
+  pkcs7Unpad,
+  zeroPad,
+  zeroUnpad,
+  noPad,
+  ansiX923Pad,
+  ansiX923Unpad,
+  iso97971Pad,
+  iso97971Unpad,
+  iso10126Pad,
+  iso10126Unpad,
+} from "./cipher/padding";
 export {
   bytesToInt32,
   int32ToBytes,
   MessageBuffer,
   mode,
   pad,
+  pkcs7Pad,
+  pkcs7Unpad,
+  zeroPad,
+  zeroUnpad,
+  noPad,
+  ansiX923Pad,
+  ansiX923Unpad,
+  iso97971Pad,
+  iso97971Unpad,
+  iso10126Pad,
+  iso10126Unpad,
   rotateLeft,
   rotateRight,
   format,
