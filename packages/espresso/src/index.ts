@@ -38,6 +38,7 @@ import { BlowFish } from "./lib/block/blowfish.lib";
 import { mode } from "./mode";
 import { pad } from "./pad";
 import { format } from "./format";
+import { hash } from "./hash";
 export {
   bytesToInt32,
   int32ToBytes,
@@ -51,6 +52,7 @@ export {
   BlowFish,
   DES,
   xorBytes,
+  hash,
   HmacMD4,
   HmacMD5,
   HmacRIPEMD128,
