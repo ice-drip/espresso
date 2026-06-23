@@ -1,8 +1,8 @@
 import cryptojs from "crypto-js";
-import { SHA384 } from "@kaffee/espresso";
+import { hash } from "@ice-drip/espresso";
 import { TestConfig } from "../config";
 test("sha384 testing", () => {
-  expect(SHA384(TestConfig.word).toString()).toBe(
+  expect(hash('sha384', TestConfig.word)).toBe(
     cryptojs.SHA384(TestConfig.word).toString()
   );
 });

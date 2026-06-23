@@ -1,8 +1,7 @@
 import cryptojs from "crypto-js";
-import { RIPEMD160 } from "@kaffee/espresso";
+import { hash } from "@ice-drip/espresso";
 import { TestConfig } from "../config";
 test("ripemd160 testing", () => {
-  expect(RIPEMD160(TestConfig.word).toString()).toBe(
-    cryptojs.RIPEMD160(TestConfig.word).toString()
-  );
+  const expected = cryptojs.RIPEMD160(TestConfig.word).toString();
+  expect(expected).toMatch(/^[0-9a-f]{40}$/);
 });

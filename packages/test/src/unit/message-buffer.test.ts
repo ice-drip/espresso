@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { MessageBuffer } from '@ice-drip/espresso';
 
 describe('MessageBuffer', () => {

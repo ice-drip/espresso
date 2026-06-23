@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { hmac } from '@ice-drip/espresso';
 
 describe('HMAC', () => {

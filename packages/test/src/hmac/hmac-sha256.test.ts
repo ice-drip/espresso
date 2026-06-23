@@ -1,8 +1,8 @@
 import cryptojs from "crypto-js";
-import { HmacSHA256 } from "@kaffee/espresso";
+import { hmac } from "@ice-drip/espresso";
 import { TestConfig } from "../config";
 test("hmac sha256 testing", () => {
-  expect(HmacSHA256(TestConfig.word, TestConfig.key).toString()).toBe(
+  expect(hmac('sha256', TestConfig.word, TestConfig.key)).toBe(
     cryptojs.HmacSHA256(TestConfig.word, TestConfig.key).toString()
   );
 });

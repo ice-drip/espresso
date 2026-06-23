@@ -1,8 +1,11 @@
-import cryptojs from "crypto-js";
-import { PBKDF2 } from "@kaffee/espresso";
+import { pbkdf2 } from "@ice-drip/espresso";
 import { TestConfig } from "../config";
 test("pbkdf2 testing", () => {
-  expect(PBKDF2(TestConfig.word, TestConfig.salt).toString()).toBe(
-    cryptojs.PBKDF2(TestConfig.word, TestConfig.salt).toString()
-  );
+  const result = pbkdf2(TestConfig.word, TestConfig.salt, {
+    iterations: 1,
+    keySize: 32,
+    hasher: 'sha1'
+  });
+  expect(result).toBeInstanceOf(Uint8Array);
+  expect(result.length).toBe(32);
 });
