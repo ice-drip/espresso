@@ -46,7 +46,7 @@ const W: number[] = [];
  * @augments {Hasher}
  */
 export class SHA256Algo extends Hasher {
-  public _hash!: WordArray;
+  declare public _hash: WordArray;
 
   reset(): void {
     super.reset();

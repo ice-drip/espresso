@@ -15,7 +15,7 @@ const W: Array<number> = [];
  * @augments {Hasher}
  */
 export class SHA1Algo extends Hasher {
-  private _hash!: WordArray;
+  declare private _hash: WordArray;
 
   reset(): void {
     super.reset();

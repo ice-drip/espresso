@@ -51,7 +51,7 @@ function rotl(x: number, n: number): number {
   return (x << n) | (x >>> (32 - n));
 }
 export class RIPEMD128Algo extends Hasher {
-  private _hash!: WordArray;
+  declare private _hash: WordArray;
 
   reset(): void {
     super.reset();

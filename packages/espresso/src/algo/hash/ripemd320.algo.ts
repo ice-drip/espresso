@@ -62,7 +62,7 @@ function rotl(x: number, n: number): number {
 }
 
 export class RIPEMD320Algo extends Hasher {
-  private _hash!: WordArray;
+  declare private _hash: WordArray;
 
   reset(): void {
     super.reset();

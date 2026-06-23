@@ -53,7 +53,7 @@ function rotl(x: number, n: number): number {
 }
 
 export class RIPEMD256Algo extends Hasher {
-  private _hash!: WordArray;
+  declare private _hash: WordArray;
   reset(): void {
     super.reset();
     this._hash = new WordArray([

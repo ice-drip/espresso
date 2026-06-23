@@ -68,7 +68,7 @@ function rotl(x: number, n: number): number {
  * @augments {Hasher}
  */
 export class RIPEMD160Algo extends Hasher {
-  public _hash!: WordArray;
+  declare public _hash: WordArray;
   reset(): void {
     super.reset();
     this._hash = new WordArray([

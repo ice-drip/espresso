@@ -70,7 +70,7 @@ function II(
  * @augments {Hasher}
  */
 export class MD5Algo extends Hasher {
-  private _hash!: WordArray;
+  declare private _hash: WordArray;
 
   public reset(): void {
     super.reset();

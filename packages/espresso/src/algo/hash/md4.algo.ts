@@ -43,7 +43,7 @@ function HHH(x: number, y: number, z: number): number {
 }
 
 export class MD4Algo extends Hasher {
-  private _hash!: WordArray;
+  declare private _hash: WordArray;
   reset(): void {
     super.reset();
     this._hash = new WordArray([
