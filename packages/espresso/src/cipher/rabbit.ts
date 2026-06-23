@@ -30,13 +30,17 @@ function nextCounter(c: Uint32Array): void {
   }
 }
 
-function keySetup(key: Uint8Array, iv?: Uint8Array): { x: Uint32Array; c: Uint32Array } {
+function keySetup(key: Uint8Array, iv?: Uint8Array, legacy = false): { x: Uint32Array; c: Uint32Array } {
   const s = new Uint32Array(BOX_SIZE);
   const k = new Uint32Array(BOX_SIZE);
 
   for (let i = 0; i < BOX_SIZE; i++) {
     const offset = i * 4;
-    k[i] = ((key[offset] << 24) | (key[offset + 1] << 16) | (key[offset + 2] << 8) | key[offset + 3]) >>> 0;
+    if (legacy) {
+      k[i] = ((key[offset + 3] << 24) | (key[offset + 2] << 16) | (key[offset + 1] << 8) | key[offset]) >>> 0;
+    } else {
+      k[i] = ((key[offset] << 24) | (key[offset + 1] << 16) | (key[offset + 2] << 8) | key[offset + 3]) >>> 0;
+    }
   }
 
   const x = new Uint32Array(BOX_SIZE);
@@ -103,9 +107,9 @@ function process(x: Uint32Array, c: Uint32Array, data: Uint8Array): Uint8Array {
   return result;
 }
 
-function rabbitProcess(key: Uint8Array, data: Uint8Array, iv?: Uint8Array): Uint8Array {
+function rabbitProcess(key: Uint8Array, data: Uint8Array, iv?: Uint8Array, legacy = false): Uint8Array {
   if (data.length === 0) return new Uint8Array(0);
-  const { x, c } = keySetup(key, iv);
+  const { x, c } = keySetup(key, iv, legacy);
   return process(x, c, data);
 }
 
@@ -115,4 +119,12 @@ export function rabbitEncrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array
 
 export function rabbitDecrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
   return rabbitProcess(key, data, iv);
+}
+
+export function rabbitLegacyEncrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
+  return rabbitProcess(key, data, iv, true);
+}
+
+export function rabbitLegacyDecrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
+  return rabbitProcess(key, data, iv, true);
 }
