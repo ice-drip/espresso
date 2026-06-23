@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "test:unit": "vitest run src/unit"
+    "test:unit": "vitest run src/unit",
+    "test:compat": "vitest run src/compat",
+    "test:nist": "vitest run src/compat/aes.compat.test.ts",
+    "test:vitest": "vitest run"
   },
   "keywords": [],
   "author": "",
