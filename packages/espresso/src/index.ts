@@ -39,6 +39,8 @@ import { mode } from "./mode";
 import { pad } from "./pad";
 import { format } from "./format";
 import { hash } from "./hash";
+import { hmac } from "./hmac";
+import { pbkdf2 } from "./kdf/pbkdf2";
 import { encrypt, decrypt } from "./cipher";
 import {
   pkcs7Pad,
@@ -78,6 +80,8 @@ export {
   DES,
   xorBytes,
   hash,
+  hmac,
+  pbkdf2,
   encrypt,
   decrypt,
   HmacMD4,
