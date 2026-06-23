@@ -62,6 +62,38 @@ test("seed long input", () => {
   expect(decrypted).toBe(longInput);
 });
 
+test("seed ecb roundtrip", () => {
+  const plaintext = "Hello, SEED!";
+  const encrypted = encrypt('seed', plaintext, TestConfig.key, {
+    mode: 'ecb',
+    padding: 'pkcs7',
+    outputEncoding: 'hex',
+  }) as string;
+  const decrypted = decrypt('seed', encrypted, TestConfig.key, {
+    mode: 'ecb',
+    padding: 'pkcs7',
+    outputEncoding: 'utf8',
+  });
+  expect(decrypted).toBe(plaintext);
+});
+
+test("seed cbc roundtrip", () => {
+  const plaintext = "Hello, SEED CBC!";
+  const encrypted = encrypt('seed', plaintext, TestConfig.key, {
+    mode: 'cbc',
+    padding: 'pkcs7',
+    iv,
+    outputEncoding: 'hex',
+  }) as string;
+  const decrypted = decrypt('seed', encrypted, TestConfig.key, {
+    mode: 'cbc',
+    padding: 'pkcs7',
+    iv,
+    outputEncoding: 'utf8',
+  });
+  expect(decrypted).toBe(plaintext);
+});
+
 test("seed performance", () => {
   const iterations = 1000;
   const start = Date.now();
