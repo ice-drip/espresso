@@ -1,4 +1,4 @@
-import { MessageBuffer } from '@ice-drip/espresso';
+import { MessageBuffer } from '@kaffee/espresso';
 
 describe('MessageBuffer', () => {
   it('creates from string with utf8 encoding', () => {

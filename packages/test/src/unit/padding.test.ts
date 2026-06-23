@@ -1,6 +1,6 @@
-import { pkcs7Pad, pkcs7Unpad } from '@ice-drip/espresso';
-import { zeroPad } from '@ice-drip/espresso';
-import { noPad } from '@ice-drip/espresso';
+import { pkcs7Pad, pkcs7Unpad } from '@kaffee/espresso';
+import { zeroPad } from '@kaffee/espresso';
+import { noPad } from '@kaffee/espresso';
 
 describe('Padding', () => {
   describe('PKCS7', () => {

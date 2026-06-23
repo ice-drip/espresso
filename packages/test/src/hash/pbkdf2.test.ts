@@ -1,4 +1,4 @@
-import { pbkdf2 } from "@ice-drip/espresso";
+import { pbkdf2 } from "@kaffee/espresso";
 import { TestConfig } from "../config";
 test("pbkdf2 testing", () => {
   const result = pbkdf2(TestConfig.word, TestConfig.salt, {

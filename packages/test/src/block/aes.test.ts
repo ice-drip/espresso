@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from '@ice-drip/espresso';
+import { encrypt, decrypt } from '@kaffee/espresso';
 
 describe('AES', () => {
   const key = new Uint8Array(16).fill(0x01);

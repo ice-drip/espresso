@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from "@ice-drip/espresso";
+import { encrypt, decrypt } from "@kaffee/espresso";
 import { TestConfig } from "../config";
 test("Rabbit encrypt testing", () => {
   const result = encrypt('rabbit', TestConfig.word, TestConfig.key, { outputEncoding: 'hex' });

@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from "@ice-drip/espresso";
+import { encrypt, decrypt } from "@kaffee/espresso";
 import { TestConfig } from "../config";
 test("TripleDES encrypt/decrypt round-trip", () => {
   const key = new Uint8Array(24).fill(0x01);

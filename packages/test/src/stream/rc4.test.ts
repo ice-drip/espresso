@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from '@ice-drip/espresso';
+import { encrypt, decrypt } from '@kaffee/espresso';
 
 describe('RC4', () => {
   it('encrypts and decrypts', () => {

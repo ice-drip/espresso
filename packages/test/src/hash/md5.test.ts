@@ -1,4 +1,4 @@
-import { hash } from '@ice-drip/espresso';
+import { hash } from '@kaffee/espresso';
 
 describe('MD5', () => {
   it('hashes empty string', () => {

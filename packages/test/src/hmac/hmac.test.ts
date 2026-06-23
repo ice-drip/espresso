@@ -1,4 +1,4 @@
-import { hmac } from '@ice-drip/espresso';
+import { hmac } from '@kaffee/espresso';
 
 describe('HMAC', () => {
   it('computes HMAC-SHA256', () => {

@@ -1,4 +1,4 @@
-import { xorBytes, int32ToBytes, bytesToInt32, rotateLeft } from '@ice-drip/espresso';
+import { xorBytes, int32ToBytes, bytesToInt32, rotateLeft } from '@kaffee/espresso';
 
 describe('utils', () => {
   it('xorBytes XORs two byte arrays', () => {
