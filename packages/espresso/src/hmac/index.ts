@@ -6,7 +6,7 @@ export function hmac(
   algorithm: HashAlgorithm,
   data: string | Uint8Array,
   key: string | Uint8Array,
-  options?: HashOptions,
+  _options?: HashOptions,
 ): string | Uint8Array {
   const keyBytes = typeof key === "string" ? new TextEncoder().encode(key) : key;
   const dataBytes = typeof data === "string" ? new TextEncoder().encode(data) : data;

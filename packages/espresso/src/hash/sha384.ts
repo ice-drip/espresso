@@ -1,4 +1,4 @@
-import { rotateRight } from "../core/utils";
+
 
 const MASK64 = 0xffffffffffffffffn;
 

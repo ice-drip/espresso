@@ -1,4 +1,4 @@
-import { HashAlgorithm, PBKDF2Options } from "../core/types";
+import { PBKDF2Options } from "../core/types";
 import { hmac } from "../hmac";
 import { hexDecode } from "../enc/hex";
 import { xorBytes } from "../core/utils";

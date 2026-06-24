@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from "@kaffee/espresso";
+import { encrypt } from "@kaffee/espresso";
 import { aesCbcVectors, aesEcbVectors } from "../vectors/aes";
 
 describe("AES NIST Vectors", () => {

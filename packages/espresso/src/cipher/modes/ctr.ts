@@ -7,14 +7,6 @@ function incrementCounter(counter: Uint8Array): void {
   }
 }
 
-function xorBlocks(a: Uint8Array, b: Uint8Array): Uint8Array {
-  const result = new Uint8Array(a.length);
-  for (let i = 0; i < a.length; i++) {
-    result[i] = a[i] ^ b[i];
-  }
-  return result;
-}
-
 export const CTR: BlockMode = {
   encrypt(
     data: Uint8Array,

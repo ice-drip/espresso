@@ -267,14 +267,6 @@ function decryptBlock(block: Uint8Array, invKeySchedule: number[], nRounds: numb
   block[15] = state[3] & 0xff;
 }
 
-function xorBlocks(a: Uint8Array, b: Uint8Array): Uint8Array {
-  const result = new Uint8Array(16);
-  for (let i = 0; i < 16; i++) {
-    result[i] = a[i] ^ b[i];
-  }
-  return result;
-}
-
 export function aesEncrypt(data: Uint8Array, key: Uint8Array, opts: CipherOptions): Uint8Array {
   const { keySchedule, nRounds } = expandKey(key);
   const mode = opts.mode ?? "cbc";

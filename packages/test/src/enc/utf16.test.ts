@@ -1,4 +1,4 @@
-import { utf16Encode, utf16Decode } from "@kaffee/espresso";
+import { utf16Decode } from "@kaffee/espresso";
 
 describe("UTF-16 encoding", () => {
   it("decodes UTF-16BE bytes", () => {

@@ -1,4 +1,4 @@
-import { rotateLeft } from "../core/utils";
+
 
 const T: number[] = [];
 for (let i = 0; i < 64; i++) {
@@ -23,16 +23,6 @@ function HH(a: number, b: number, c: number, d: number, x: number, s: number, t:
 function II(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   const n = a + (c ^ (b | ~d)) + x + t;
   return ((n << s) | (n >>> (32 - s))) + b;
-}
-
-function bytesToWords(bytes: Uint8Array): number[] {
-  const words: number[] = [];
-  for (let i = 0; i < bytes.length; i += 4) {
-    words.push(
-      ((bytes[i] << 24) | (bytes[i + 1] << 16) | (bytes[i + 2] << 8) | bytes[i + 3]) >>> 0,
-    );
-  }
-  return words;
 }
 
 function wordsToBytes(words: number[]): Uint8Array {
