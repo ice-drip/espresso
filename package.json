@@ -2,14 +2,14 @@
   "name": "@kaffee/espresso-monorepo",
   "private": true,
   "description": "TypeScript cryptography library — AES, DES, SHA, HMAC, and more with Web Crypto + pure JS dual runtime",
+  "homepage": "https://github.com/ice-drip/espresso#readme",
+  "bugs": {
+    "url": "https://github.com/ice-drip/espresso/issues"
+  },
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/ice-drip/espresso.git"
-  },
-  "homepage": "https://github.com/ice-drip/espresso#readme",
-  "bugs": {
-    "url": "https://github.com/ice-drip/espresso/issues"
   },
   "scripts": {
     "build": "cd packages/espresso && pnpm build",

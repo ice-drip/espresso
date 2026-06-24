@@ -11,23 +11,23 @@
     "hmac",
     "pbkdf2",
     "ripemd",
+    "seed",
     "sha",
     "sha256",
     "sha3",
-    "seed",
     "triple-des",
     "typescript",
     "web-crypto"
   ],
+  "homepage": "https://github.com/ice-drip/espresso#readme",
+  "bugs": {
+    "url": "https://github.com/ice-drip/espresso/issues"
+  },
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/ice-drip/espresso.git",
     "directory": "packages/espresso"
-  },
-  "homepage": "https://github.com/ice-drip/espresso#readme",
-  "bugs": {
-    "url": "https://github.com/ice-drip/espresso/issues"
   },
   "files": [
     "dist"

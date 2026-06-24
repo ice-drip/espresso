@@ -1,6 +1,6 @@
 # @ice-drip/espresso
 
-TypeScript cryptography library implementing AES, DES, TripleDES, BlowFish, SHA*, MD5, HMAC, stream ciphers, and PBKDF2.
+TypeScript cryptography library implementing AES, DES, TripleDES, BlowFish, SHA\*, MD5, HMAC, stream ciphers, and PBKDF2.
 
 ## Structure
 
