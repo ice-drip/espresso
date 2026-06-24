@@ -1,8 +1,8 @@
 export class MessageBuffer {
-  private _bytes: Uint8Array;
+  private bytes: Uint8Array;
 
   private constructor(bytes: Uint8Array) {
-    this._bytes = bytes;
+    this.bytes = bytes;
   }
 
   static fromString(str: string): MessageBuffer {
@@ -35,43 +35,43 @@ export class MessageBuffer {
   }
 
   toBytes(): Uint8Array {
-    return new Uint8Array(this._bytes);
+    return new Uint8Array(this.bytes);
   }
 
   toHexString(): string {
-    return Array.from(this._bytes)
+    return Array.from(this.bytes)
       .map((b) => b.toString(16).padStart(2, "0"))
       .join("");
   }
 
   toBase64(): string {
     let binary = "";
-    for (let i = 0; i < this._bytes.length; i++) {
-      binary += String.fromCharCode(this._bytes[i]);
+    for (let i = 0; i < this.bytes.length; i++) {
+      binary += String.fromCharCode(this.bytes[i]);
     }
     return btoa(binary);
   }
 
   toString(): string {
-    return new TextDecoder().decode(this._bytes);
+    return new TextDecoder().decode(this.bytes);
   }
 
   get length(): number {
-    return this._bytes.length;
+    return this.bytes.length;
   }
 
   concat(other: MessageBuffer): MessageBuffer {
-    const result = new Uint8Array(this._bytes.length + other._bytes.length);
-    result.set(this._bytes);
-    result.set(other._bytes, this._bytes.length);
+    const result = new Uint8Array(this.bytes.length + other.bytes.length);
+    result.set(this.bytes);
+    result.set(other.bytes, this.bytes.length);
     return new MessageBuffer(result);
   }
 
   clone(): MessageBuffer {
-    return new MessageBuffer(new Uint8Array(this._bytes));
+    return new MessageBuffer(new Uint8Array(this.bytes));
   }
 
   slice(start: number, end?: number): MessageBuffer {
-    return new MessageBuffer(this._bytes.slice(start, end));
+    return new MessageBuffer(this.bytes.slice(start, end));
   }
 }

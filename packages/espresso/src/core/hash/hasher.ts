@@ -8,8 +8,7 @@ import { WordArray } from "../word-array";
 import { HmacHasher } from "./hmac-hasher";
 
 /**
- * Hasher模板抽象类
- *
+ * Hasher模板抽象�? *
  * @author rikka
  * @exports
  * @abstract
@@ -23,22 +22,22 @@ export abstract class Hasher extends BufferedBlockAlgorithm {
     this.reset();
   }
   reset(): void {
-    this._data = new WordArray();
-    this._nDataBytes = 0;
+    this.data = new WordArray();
+    this.nDataBytes = 0;
   }
   update(messageUpdate: string | WordArray): Hasher {
-    this._append(messageUpdate);
-    this._process();
+    this.append(messageUpdate);
+    this.processBlocks();
     return this;
   }
   finalize(messageUpdate?: string | WordArray): WordArray {
     if (messageUpdate) {
-      this._append(messageUpdate);
+      this.append(messageUpdate);
     }
-    const hash = this._doFinalize();
+    const hash = this.doFinalize();
     return hash;
   }
-  public static _createHelper(hasher: Type<Hasher>): CreateHelperType {
+  public static createHelper(hasher: Type<Hasher>): CreateHelperType {
     return function (message: WordArray | string, cfg?: BufferedBlockAlgorithmConfig): WordArray {
       const hasherClass: Type<Hasher> = hasher;
       const hasherInstance: Hasher = new hasherClass(cfg);
@@ -46,14 +45,14 @@ export abstract class Hasher extends BufferedBlockAlgorithm {
     };
   }
 
-  public static _createHmacHelper(hasher: Type<Hasher>) {
+  public static createHmacHelper(hasher: Type<Hasher>) {
     return function (message: WordArray | string, key: string): WordArray {
       const hmacInstance = new HmacHasher(hasher, key);
       return hmacInstance.finalize(message);
     };
   }
 
-  public abstract _doFinalize(): WordArray;
+  public abstract doFinalize(): WordArray;
 }
 
 export type CreateHelperType = (

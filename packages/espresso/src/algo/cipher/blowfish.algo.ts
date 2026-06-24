@@ -275,7 +275,7 @@ export class BlowfishAlgo extends BlockCipher {
   public static keySize = 128 / 32;
   public static ivSize = 64 / 32;
   blockSize: number = 64 / 32;
-  _keyPriorReset!: WordArray;
+  private keyPriorReset!: WordArray;
   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(xformMode, key, cfg);
     this.cfg.keySize = BlowfishAlgo.keySize;
@@ -293,12 +293,12 @@ export class BlowfishAlgo extends BlockCipher {
   }
   public reset(): void {
     super.reset();
-    if (this._keyPriorReset === this._key) {
+    if (this.keyPriorReset === this.key) {
       return;
     }
 
     // Shortcuts
-    const key = (this._keyPriorReset = this._key);
+    const key = (this.keyPriorReset = this.key);
     const keyWords = key.words;
     const keySize = key.sigBytes / 4;
 

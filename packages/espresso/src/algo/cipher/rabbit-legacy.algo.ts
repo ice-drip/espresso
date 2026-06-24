@@ -4,15 +4,15 @@ import { StreamCipher } from "../../core/cipher/stream-cipher";
 import { WordArray } from "../../core/word-array";
 import { BufferedBlockAlgorithmConfig } from "../../typings/core/buffered-block-algorithm.typing";
 const S: number[] = [];
-const C_: number[] = [];
+const CPre: number[] = [];
 const G: number[] = [];
 
 export class RabbitLegacyAlgo extends StreamCipher {
   public static ivSize = 64 / 32;
   blockSize = 128 / 32;
-  private _X!: number[];
-  private _C!: number[];
-  private _b!: number;
+  private X!: number[];
+  private C!: number[];
+  private b!: number;
   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(xformMode, key, cfg);
     this.reset();
@@ -20,10 +20,10 @@ export class RabbitLegacyAlgo extends StreamCipher {
 
   reset(): void {
     super.reset();
-    const K = this._key.words.slice();
+    const K = this.key.words.slice();
     const iv = this.cfg.iv;
 
-    const X = (this._X = [
+    const X = (this.X = [
       K[0],
       (K[3] << 16) | (K[2] >>> 16),
       K[1],
@@ -33,7 +33,7 @@ export class RabbitLegacyAlgo extends StreamCipher {
       K[3],
       (K[2] << 16) | (K[1] >>> 16),
     ]);
-    const C = (this._C = [
+    const C = (this.C = [
       (K[2] << 16) | (K[2] >>> 16),
       (K[0] & 0xff_ff_00_00) | (K[1] & 0x00_00_ff_ff),
       (K[3] << 16) | (K[3] >>> 16),
@@ -44,7 +44,7 @@ export class RabbitLegacyAlgo extends StreamCipher {
       (K[3] & 0xff_ff_00_00) | (K[0] & 0x00_00_ff_ff),
     ]);
 
-    this._b = 0;
+    this.b = 0;
 
     // Iterate the system four times
     for (let i = 0; i < 4; i++) {
@@ -91,24 +91,24 @@ export class RabbitLegacyAlgo extends StreamCipher {
   }
   private nextState() {
     // Shortcuts
-    const X = this._X;
-    const C = this._C;
+    const X = this.X;
+    const C = this.C;
 
     // Save old counter values
     for (let i = 0; i < 8; i++) {
-      C_[i] = C[i];
+      CPre[i] = C[i];
     }
 
     // Calculate new counter values
-    C[0] = (C[0] + 0x4d_34_d3_4d + this._b) | 0;
-    C[1] = (C[1] + 0xd3_4d_34_d3 + (C[0] >>> 0 < C_[0] >>> 0 ? 1 : 0)) | 0;
-    C[2] = (C[2] + 0x34_d3_4d_34 + (C[1] >>> 0 < C_[1] >>> 0 ? 1 : 0)) | 0;
-    C[3] = (C[3] + 0x4d_34_d3_4d + (C[2] >>> 0 < C_[2] >>> 0 ? 1 : 0)) | 0;
-    C[4] = (C[4] + 0xd3_4d_34_d3 + (C[3] >>> 0 < C_[3] >>> 0 ? 1 : 0)) | 0;
-    C[5] = (C[5] + 0x34_d3_4d_34 + (C[4] >>> 0 < C_[4] >>> 0 ? 1 : 0)) | 0;
-    C[6] = (C[6] + 0x4d_34_d3_4d + (C[5] >>> 0 < C_[5] >>> 0 ? 1 : 0)) | 0;
-    C[7] = (C[7] + 0xd3_4d_34_d3 + (C[6] >>> 0 < C_[6] >>> 0 ? 1 : 0)) | 0;
-    this._b = C[7] >>> 0 < C_[7] >>> 0 ? 1 : 0;
+    C[0] = (C[0] + 0x4d_34_d3_4d + this.b) | 0;
+    C[1] = (C[1] + 0xd3_4d_34_d3 + (C[0] >>> 0 < CPre[0] >>> 0 ? 1 : 0)) | 0;
+    C[2] = (C[2] + 0x34_d3_4d_34 + (C[1] >>> 0 < CPre[1] >>> 0 ? 1 : 0)) | 0;
+    C[3] = (C[3] + 0x4d_34_d3_4d + (C[2] >>> 0 < CPre[2] >>> 0 ? 1 : 0)) | 0;
+    C[4] = (C[4] + 0xd3_4d_34_d3 + (C[3] >>> 0 < CPre[3] >>> 0 ? 1 : 0)) | 0;
+    C[5] = (C[5] + 0x34_d3_4d_34 + (C[4] >>> 0 < CPre[4] >>> 0 ? 1 : 0)) | 0;
+    C[6] = (C[6] + 0x4d_34_d3_4d + (C[5] >>> 0 < CPre[5] >>> 0 ? 1 : 0)) | 0;
+    C[7] = (C[7] + 0xd3_4d_34_d3 + (C[6] >>> 0 < CPre[6] >>> 0 ? 1 : 0)) | 0;
+    this.b = C[7] >>> 0 < CPre[7] >>> 0 ? 1 : 0;
 
     // Calculate the g-values
     for (let i = 0; i < 8; i++) {
@@ -136,8 +136,8 @@ export class RabbitLegacyAlgo extends StreamCipher {
     X[6] = (G[6] + ((G[5] << 16) | (G[5] >>> 16)) + ((G[4] << 16) | (G[4] >>> 16))) | 0;
     X[7] = (G[7] + ((G[6] << 8) | (G[6] >>> 24)) + G[5]) | 0;
   }
-  _doProcessBlock(M: number[], offset: number): void {
-    const X = this._X;
+  doProcessBlock(M: number[], offset: number): void {
+    const X = this.X;
     this.nextState();
 
     // Generate four keystream words

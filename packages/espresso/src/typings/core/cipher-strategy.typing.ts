@@ -22,5 +22,5 @@ export interface CipherStrategy {
     _optionalCfg?: BufferedBlockAlgorithmConfig,
   ): WordArray;
 
-  _parse(_ciphertext: CipherParams | string, _format: Formatter): CipherParams;
+  parse(_ciphertext: CipherParams | string, _format: Formatter): CipherParams;
 }

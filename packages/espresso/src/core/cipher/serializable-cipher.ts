@@ -49,7 +49,7 @@ export class SerializableCipher {
     }
 
     // Convert string to CipherParams
-    ciphertext = this._parse(ciphertext, cfg.format);
+    ciphertext = this.parse(ciphertext, cfg.format);
 
     if (!ciphertext.ciphertext) {
       throw new Error("could not determine ciphertext");
@@ -61,7 +61,7 @@ export class SerializableCipher {
     return plaintext;
   }
 
-  static _parse(ciphertext: CipherParams | string, format: Formatter): CipherParams {
+  static parse(ciphertext: CipherParams | string, format: Formatter): CipherParams {
     return typeof ciphertext === "string" ? format.parse(ciphertext) : ciphertext;
   }
 }

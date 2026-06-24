@@ -1,12 +1,12 @@
 import { CipherOptions } from "../core/types";
 import { pkcs7Pad, pkcs7Unpad } from "./padding/pkcs7";
 
-const _SBOX: number[] = [];
+const SBOX: number[] = [];
 const INV_SBOX: number[] = [];
-const _SUB_MIX_0: number[] = [];
-const _SUB_MIX_1: number[] = [];
-const _SUB_MIX_2: number[] = [];
-const _SUB_MIX_3: number[] = [];
+const SUB_MIX_0: number[] = [];
+const SUB_MIX_1: number[] = [];
+const SUB_MIX_2: number[] = [];
+const SUB_MIX_3: number[] = [];
 const INV_SUB_MIX_0: number[] = [];
 const INV_SUB_MIX_1: number[] = [];
 const INV_SUB_MIX_2: number[] = [];
@@ -26,7 +26,7 @@ let xi = 0;
 for (let i = 0; i < 256; i++) {
   let sx = xi ^ (xi << 1) ^ (xi << 2) ^ (xi << 3) ^ (xi << 4);
   sx = (sx >>> 8) ^ (sx & 0xff) ^ 0x63;
-  _SBOX[x] = sx;
+  SBOX[x] = sx;
   INV_SBOX[sx] = x;
 
   const x2 = d[x];
@@ -34,10 +34,10 @@ for (let i = 0; i < 256; i++) {
   const x8 = d[x4];
 
   let t = (d[sx] * 0x101) ^ (sx * 0x1010100);
-  _SUB_MIX_0[x] = (t << 24) | (t >>> 8);
-  _SUB_MIX_1[x] = (t << 16) | (t >>> 16);
-  _SUB_MIX_2[x] = (t << 8) | (t >>> 24);
-  _SUB_MIX_3[x] = t;
+  SUB_MIX_0[x] = (t << 24) | (t >>> 8);
+  SUB_MIX_1[x] = (t << 16) | (t >>> 16);
+  SUB_MIX_2[x] = (t << 8) | (t >>> 24);
+  SUB_MIX_3[x] = t;
 
   t = (x8 * 0x1010101) ^ (x4 * 0x10001) ^ (x2 * 0x101) ^ (x * 0x1010100);
   INV_SUB_MIX_0[sx] = (t << 24) | (t >>> 8);
@@ -82,17 +82,17 @@ function expandKey(key: Uint8Array): {
       if (!(ksRow % nk)) {
         t = (t << 8) | (t >>> 24);
         t =
-          (_SBOX[t >>> 24] << 24) |
-          (_SBOX[(t >>> 16) & 0xff] << 16) |
-          (_SBOX[(t >>> 8) & 0xff] << 8) |
-          _SBOX[t & 0xff];
+          (SBOX[t >>> 24] << 24) |
+          (SBOX[(t >>> 16) & 0xff] << 16) |
+          (SBOX[(t >>> 8) & 0xff] << 8) |
+          SBOX[t & 0xff];
         t ^= RCON[(ksRow / nk) | 0] << 24;
       } else if (nk > 6 && ksRow % nk === 4) {
         t =
-          (_SBOX[t >>> 24] << 24) |
-          (_SBOX[(t >>> 16) & 0xff] << 16) |
-          (_SBOX[(t >>> 8) & 0xff] << 8) |
-          _SBOX[t & 0xff];
+          (SBOX[t >>> 24] << 24) |
+          (SBOX[(t >>> 16) & 0xff] << 16) |
+          (SBOX[(t >>> 8) & 0xff] << 8) |
+          SBOX[t & 0xff];
       }
       keySchedule[ksRow] = keySchedule[ksRow - nk] ^ t;
     }
@@ -106,10 +106,10 @@ function expandKey(key: Uint8Array): {
       invKeySchedule[invKsRow] = t;
     } else {
       invKeySchedule[invKsRow] =
-        INV_SUB_MIX_0[_SBOX[t >>> 24]] ^
-        INV_SUB_MIX_1[_SBOX[(t >>> 16) & 0xff]] ^
-        INV_SUB_MIX_2[_SBOX[(t >>> 8) & 0xff]] ^
-        INV_SUB_MIX_3[_SBOX[t & 0xff]];
+        INV_SUB_MIX_0[SBOX[t >>> 24]] ^
+        INV_SUB_MIX_1[SBOX[(t >>> 16) & 0xff]] ^
+        INV_SUB_MIX_2[SBOX[(t >>> 8) & 0xff]] ^
+        INV_SUB_MIX_3[SBOX[t & 0xff]];
     }
   }
 
@@ -202,7 +202,7 @@ function encryptBlock(block: Uint8Array, keySchedule: number[], nRounds: number)
     (block[12] << 24) | (block[13] << 16) | (block[14] << 8) | block[15],
   ];
 
-  doCryptBlock(state, keySchedule, _SUB_MIX_0, _SUB_MIX_1, _SUB_MIX_2, _SUB_MIX_3, _SBOX, nRounds);
+  doCryptBlock(state, keySchedule, SUB_MIX_0, SUB_MIX_1, SUB_MIX_2, SUB_MIX_3, SBOX, nRounds);
 
   block[0] = (state[0] >>> 24) & 0xff;
   block[1] = (state[0] >>> 16) & 0xff;

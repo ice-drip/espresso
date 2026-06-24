@@ -227,13 +227,13 @@ export class SEEDAlgo extends BlockCipher {
   public static keySize = 128 / 32;
   public static ivSize = 128 / 32;
 
-  private _roundKeys!: number[][];
-  private _invRoundKeys!: number[][];
+  private roundKeys!: number[][];
+  private invRoundKeys!: number[][];
 
   reset(): void {
     super.reset();
     // Shortcuts
-    const key = this._key;
+    const key = this.key;
     let A = key.words[0];
     let B = key.words[1];
     let C = key.words[2];
@@ -258,18 +258,18 @@ export class SEEDAlgo extends BlockCipher {
     }
 
     // Compute inverse round keys as well
-    this._roundKeys = K;
-    this._invRoundKeys = [...K].reverse();
+    this.roundKeys = K;
+    this.invRoundKeys = [...K].reverse();
   }
 
   public encryptBlock(M: number[], offset: number): void {
-    this._doCryptBlock(M, offset, this._roundKeys);
+    this.doCryptBlock(M, offset, this.roundKeys);
   }
   public decryptBlock(M: number[], offset: number): void {
-    this._doCryptBlock(M, offset, this._invRoundKeys);
+    this.doCryptBlock(M, offset, this.invRoundKeys);
   }
 
-  private _doCryptBlock(M: number[], offset: number, roundKeys: number[][]): void {
+  private doCryptBlock(M: number[], offset: number, roundKeys: number[][]): void {
     // Get input
     const L = M.slice(offset, offset + 2);
     const R = M.slice(offset + 2, offset + 4);

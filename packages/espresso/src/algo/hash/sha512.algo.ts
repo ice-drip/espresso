@@ -100,7 +100,7 @@ for (let i = 0; i < 80; i += 1) {
  * @augments {Hasher}
  */
 export class SHA512Algo extends Hasher {
-  declare public _hash: X64WordArray;
+  declare protected hash: X64WordArray;
   blockSize = 1024 / 32;
   constructor() {
     super();
@@ -108,7 +108,7 @@ export class SHA512Algo extends Hasher {
 
   reset(): void {
     super.reset();
-    this._hash = new X64WordArray([
+    this.hash = new X64WordArray([
       new X64Word(0x6a_09_e6_67, 0xf3_bc_c9_08),
       new X64Word(0xbb_67_ae_85, 0x84_ca_a7_3b),
       new X64Word(0x3c_6e_f3_72, 0xfe_94_f8_2b),
@@ -120,12 +120,12 @@ export class SHA512Algo extends Hasher {
     ]);
   }
 
-  public _doFinalize(): WordArray {
+  public doFinalize(): WordArray {
     // Shortcuts
-    const data = this._data;
+    const data = this.data;
     const dataWords = data.words;
 
-    const nBitsTotal = this._nDataBytes * 8;
+    const nBitsTotal = this.nDataBytes * 8;
     const nBitsLeft = data.sigBytes * 8;
 
     // Add padding
@@ -135,16 +135,16 @@ export class SHA512Algo extends Hasher {
     data.sigBytes = dataWords.length * 4;
 
     // Hash final blocks
-    this._process();
+    this.processBlocks();
 
     // Convert hash to 32-bit word array before returning
-    const hash = this._hash.toX32();
+    const hash = this.hash.toX32();
 
     // Return final computed hash
     return hash;
   }
-  _doProcessBlock(M: number[], offset: number): void {
-    const H = this._hash.words;
+  doProcessBlock(M: number[], offset: number): void {
+    const H = this.hash.words;
 
     const H0 = H[0];
     const H1 = H[1];

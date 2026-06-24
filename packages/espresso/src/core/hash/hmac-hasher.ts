@@ -12,13 +12,13 @@ import { Hasher } from "./hasher";
  * @class HmacHasher
  */
 export class HmacHasher {
-  private _hasher: Hasher;
+  private hasher: Hasher;
 
-  private _oKey: WordArray;
-  private _iKey: WordArray;
+  private oKey: WordArray;
+  private iKey: WordArray;
 
   constructor(hasher: Type<Hasher>, key: string | WordArray) {
-    const hasher_t = (this._hasher = new hasher());
+    const hasher_t = (this.hasher = new hasher());
     if (typeof key === "string") {
       key = Utf8.parse(key);
     }
@@ -32,8 +32,8 @@ export class HmacHasher {
 
     (key as WordArray).clamp();
 
-    const oKey = (this._oKey = (key as WordArray).clone());
-    const iKey = (this._iKey = (key as WordArray).clone());
+    const oKey = (this.oKey = (key as WordArray).clone());
+    const iKey = (this.iKey = (key as WordArray).clone());
 
     const oKeyWords = oKey.words;
     const iKeyWords = iKey.words;
@@ -49,24 +49,24 @@ export class HmacHasher {
   }
 
   public reset(): void {
-    const hasher = this._hasher;
+    const hasher = this.hasher;
     hasher.reset();
-    hasher.update(this._iKey);
+    hasher.update(this.iKey);
   }
 
   update(messageUpdate: string | WordArray): HmacHasher {
-    this._hasher.update(messageUpdate);
+    this.hasher.update(messageUpdate);
     return this;
   }
 
   finalize(messageUpdate: string | WordArray): WordArray {
-    const hasher = this._hasher;
+    const hasher = this.hasher;
     const innerHash = hasher.finalize(messageUpdate);
 
     hasher.reset();
 
     // eslint-disable-next-line unicorn/prefer-spread
-    const hmac = hasher.finalize(this._oKey.clone().concat(innerHash));
+    const hmac = hasher.finalize(this.oKey.clone().concat(innerHash));
     return hmac;
   }
 }

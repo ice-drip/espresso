@@ -8,8 +8,7 @@ import { PasswordBasedCipher } from "./password-based-cipher";
 import { SerializableCipher } from "./serializable-cipher";
 
 /**
- * 基础密码模板抽象类
- *
+ * 基础密码模板抽象�? *
  * @author rikka
  * @exports
  * @abstract
@@ -22,41 +21,41 @@ export abstract class Cipher extends BufferedBlockAlgorithm {
   public static createEncryptor(key: WordArray, cfg: BufferedBlockAlgorithmConfig): Cipher {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any,unicorn/no-this-assignment,@typescript-eslint/no-this-alias
     const thisClass: any = this;
-    return new thisClass(this._ENC_XFORM_MODE, key, cfg);
+    return new thisClass(this.ENC_XFORM_MODE, key, cfg);
   }
 
   public static createDecryptor(key: WordArray, cfg: BufferedBlockAlgorithmConfig): Cipher {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any,unicorn/no-this-assignment,@typescript-eslint/no-this-alias
     const thisClass: any = this;
-    return new thisClass(this._DEC_XFORM_MODE, key, cfg);
+    return new thisClass(this.DEC_XFORM_MODE, key, cfg);
   }
 
-  public _xformMode: number;
-  public _key: WordArray;
-  public static _ENC_XFORM_MODE = 1;
-  public static _DEC_XFORM_MODE = 2;
+  protected xformMode: number;
+  protected key: WordArray;
+  public static ENC_XFORM_MODE = 1;
+  public static DEC_XFORM_MODE = 2;
   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(cfg);
 
-    this._xformMode = xformMode;
-    this._key = key;
+    this.xformMode = xformMode;
+    this.key = key;
 
     this.reset();
   }
 
   public process(dataUpdate: WordArray | string): WordArray {
-    this._append(dataUpdate);
-    return this._process();
+    this.append(dataUpdate);
+    return this.processBlocks();
   }
   public finalize(dataUpdate?: WordArray | string): WordArray {
     if (dataUpdate) {
-      this._append(dataUpdate);
+      this.append(dataUpdate);
     }
-    const finalProcessedData = this._doFinalize();
+    const finalProcessedData = this.doFinalize();
     return finalProcessedData;
   }
 
-  public static _createHelper(cipher: typeof Cipher): CipherHelper {
+  public static createHelper(cipher: typeof Cipher): CipherHelper {
     /**
      * encrypt
      *
@@ -101,5 +100,5 @@ export abstract class Cipher extends BufferedBlockAlgorithm {
     };
   }
 
-  public abstract _doFinalize(): WordArray;
+  public abstract doFinalize(): WordArray;
 }

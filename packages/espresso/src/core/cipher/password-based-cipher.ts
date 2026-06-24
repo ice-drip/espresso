@@ -68,7 +68,7 @@ export class PasswordBasedCipher {
     }
 
     // Convert string to CipherParams
-    ciphertext = this._parse(ciphertext, config.format);
+    ciphertext = this.parse(ciphertext, config.format);
 
     // Check if we have a kdf
     if (config.kdf === undefined) {
@@ -101,7 +101,7 @@ export class PasswordBasedCipher {
     return plaintext;
   }
 
-  public static _parse(ciphertext: CipherParams | string, format: Formatter): CipherParams {
+  public static parse(ciphertext: CipherParams | string, format: Formatter): CipherParams {
     return typeof ciphertext === "string" ? format.parse(ciphertext) : ciphertext;
   }
 }

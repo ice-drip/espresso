@@ -29,11 +29,11 @@ export class WordArray {
     };
 
     for (let i = 0, rcache; i < nBytes; i += 4) {
-      const _r = r((rcache || Math.random()) * 0x1_00_00_00_00);
+      const rInner = r((rcache || Math.random()) * 0x1_00_00_00_00);
 
-      rcache = _r() * 0x3a_de_67_b7;
+      rcache = rInner() * 0x3a_de_67_b7;
       // eslint-disable-next-line unicorn/prefer-math-trunc
-      words.push((_r() * 0x1_00_00_00_00) | 0);
+      words.push((rInner() * 0x1_00_00_00_00) | 0);
     }
 
     return new WordArray(words, nBytes);

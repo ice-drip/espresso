@@ -8,8 +8,8 @@ export abstract class StreamCipher extends Cipher {
     super(xformMode, key, cfg);
   }
   blockSize = 1;
-  public _doFinalize(): WordArray {
-    const finalProcessedBlocks = this._process(true);
+  public doFinalize(): WordArray {
+    const finalProcessedBlocks = this.processBlocks(true);
     return finalProcessedBlocks;
   }
 }

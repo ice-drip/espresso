@@ -14,7 +14,7 @@ import { SHA512Algo } from "./sha512.algo";
 export class SHA384Algo extends SHA512Algo {
   reset(): void {
     super.reset();
-    this._hash = new X64WordArray([
+    this.hash = new X64WordArray([
       new X64Word(0xcb_bb_9d_5d, 0xc1_05_9e_d8),
       new X64Word(0x62_9a_29_2a, 0x36_7c_d5_07),
       new X64Word(0x91_59_01_5a, 0x30_70_dd_17),
@@ -26,8 +26,8 @@ export class SHA384Algo extends SHA512Algo {
     ]);
   }
 
-  _doFinalize(): WordArray {
-    const hash = super._doFinalize.call(this);
+  doFinalize(): WordArray {
+    const hash = super.doFinalize.call(this);
     hash.sigBytes -= 16;
     return hash;
   }

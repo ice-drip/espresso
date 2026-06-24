@@ -15,31 +15,31 @@ const W: Array<number> = [];
  * @augments {Hasher}
  */
 export class SHA1Algo extends Hasher {
-  declare private _hash: WordArray;
+  declare private hash: WordArray;
 
   reset(): void {
     super.reset();
-    this._hash = new WordArray([
+    this.hash = new WordArray([
       0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76, 0xc3_d2_e1_f0,
     ]);
   }
-  public _doFinalize(): WordArray {
-    const data = this._data;
+  public doFinalize(): WordArray {
+    const data = this.data;
     const dataWords = data.words;
 
-    const nBitsTotal = this._nDataBytes * 8;
+    const nBitsTotal = this.nDataBytes * 8;
     const nBitsLeft = data.sigBytes * 8;
 
     dataWords[nBitsLeft >>> 5] |= 0x80 << (24 - (nBitsLeft % 32));
     dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = Math.floor(nBitsTotal / 0x1_00_00_00_00);
     dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 15] = nBitsTotal;
     data.sigBytes = dataWords.length * 4;
-    this._process();
-    return this._hash;
+    this.processBlocks();
+    return this.hash;
   }
 
-  _doProcessBlock(M: number[], offset: number): void {
-    const H = this._hash.words;
+  doProcessBlock(M: number[], offset: number): void {
+    const H = this.hash.words;
 
     let a = H[0];
     let b = H[1];

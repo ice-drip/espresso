@@ -23,14 +23,14 @@ function parseLoop(
 /**
  * Base64编码策略
  */
-export const Base64: Encoding & { _reverseMap?: number[]; _map: string } = {
-  _reverseMap: undefined,
-  _map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+export const Base64: Encoding & { reverseMap?: number[]; map: string } = {
+  reverseMap: undefined,
+  map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
   parse(base64Str: string): WordArray {
     // Shortcuts
     let base64StrLength = base64Str.length;
-    const map = this._map;
-    let reverseMap = this._reverseMap;
+    const map = this.map;
+    let reverseMap = this.reverseMap;
     if (reverseMap === undefined) {
       reverseMap = [];
       for (let j = 0; j < map.length; j++) {
@@ -60,10 +60,10 @@ export const Base64: Encoding & { _reverseMap?: number[]; _map: string } = {
       const triplet = (byte1 << 16) | (byte2 << 8) | byte3;
 
       for (let j = 0; j < 4 && i + j * 0.75 < wordArray.sigBytes; j++) {
-        base64Chars.push(this._map.charAt((triplet >>> (6 * (3 - j))) & 0x3f));
+        base64Chars.push(this.map.charAt((triplet >>> (6 * (3 - j))) & 0x3f));
       }
     }
-    const paddingChar = this._map.charAt(64);
+    const paddingChar = this.map.charAt(64);
     if (paddingChar) {
       while (base64Chars.length % 4) {
         base64Chars.push(paddingChar);

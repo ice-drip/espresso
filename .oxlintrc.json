@@ -13,18 +13,7 @@
     "eqeqeq": "error",
     "no-var": "error",
     "prefer-const": "error",
-    "no-underscore-dangle": ["warn", {
-      "allow": [
-        "_data", "_nDataBytes", "_hash", "_process", "_append", "_doFinalize",
-        "_doProcessBlock", "_cipher", "_iv", "_counter", "_mode", "__creator",
-        "_xformMode", "_key", "_minBufferSize", "_ENC_XFORM_MODE", "_DEC_XFORM_MODE",
-        "_hasher", "_oKey", "_iKey", "_state", "_SBOX", "_SUB_MIX_0", "_SUB_MIX_1",
-        "_SUB_MIX_2", "_SUB_MIX_3", "_keySchedule", "_invKeySchedule", "_nRounds",
-        "_keyPriorReset", "_M", "_roundKeys", "_invRoundKeys", "_doCryptBlock",
-        "_createHelper", "_createHmacHelper", "_bytes", "_r", "_zl", "_zr", "_sl",
-        "_sr", "_hl", "_hr", "_parse"
-      ]
-    }],
+    "no-underscore-dangle": "warn",
     "typescript/no-extraneous-class": "off"
   },
   "ignorePatterns": ["node_modules", "dist"]

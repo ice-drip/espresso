@@ -46,29 +46,29 @@ const W: number[] = [];
  * @augments {Hasher}
  */
 export class SHA256Algo extends Hasher {
-  declare public _hash: WordArray;
+  declare protected hash: WordArray;
 
   reset(): void {
     super.reset();
     // eslint-disable-next-line unicorn/prefer-spread
-    this._hash = new WordArray(H.slice(0));
+    this.hash = new WordArray(H.slice(0));
   }
 
-  public _doFinalize(): WordArray {
-    const data = this._data;
+  public doFinalize(): WordArray {
+    const data = this.data;
     const dataWords = data.words;
-    const nBitsTotal = this._nDataBytes * 8;
+    const nBitsTotal = this.nDataBytes * 8;
     const nBitsLeft = data.sigBytes * 8;
 
     dataWords[nBitsLeft >>> 5] |= 0x80 << (24 - (nBitsLeft % 32));
     dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = Math.floor(nBitsTotal / 0x1_00_00_00_00);
     dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 15] = nBitsTotal;
     data.sigBytes = dataWords.length * 4;
-    this._process();
-    return this._hash;
+    this.processBlocks();
+    return this.hash;
   }
-  _doProcessBlock(M: number[], offset: number): void {
-    const Hm = this._hash.words;
+  doProcessBlock(M: number[], offset: number): void {
+    const Hm = this.hash.words;
 
     let a = Hm[0];
     let b = Hm[1];

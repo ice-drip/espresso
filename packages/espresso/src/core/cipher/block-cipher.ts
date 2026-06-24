@@ -7,8 +7,7 @@ import { WordArray } from "../word-array";
 import { Cipher } from "./cipher";
 
 /**
- * 基本块密码模板 抽象类
- *
+ * 基本块密码模�?抽象�? *
  * @author rikka
  * @exports
  * @abstract
@@ -16,7 +15,7 @@ import { Cipher } from "./cipher";
  * @augments {Cipher}
  */
 export abstract class BlockCipher extends Cipher {
-  public _mode!: BlockCipherModeAlgorithm;
+  private mode!: BlockCipherModeAlgorithm;
   blockSize = 128 / 32;
 
   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
@@ -39,42 +38,42 @@ export abstract class BlockCipher extends Cipher {
       throw new Error("missing mode in config");
     }
     let modeCreator: (_cipher: BlockCipher, _iv: number[]) => BlockCipherModeAlgorithm;
-    if (this._xformMode === (<typeof BlockCipher>this.constructor)._ENC_XFORM_MODE) {
+    if (this.xformMode === (<typeof BlockCipher>this.constructor).ENC_XFORM_MODE) {
       modeCreator = this.cfg.mode.createEncryptor;
     } else {
       modeCreator = this.cfg.mode.createDecryptor;
-      this._minBufferSize = 1;
+      this.minBufferSize = 1;
     }
     const words: number[] = (this.cfg.iv && this.cfg.iv.words) as number[];
-    if (this._mode && this._mode.__creator === modeCreator) {
-      this._mode.init(this, words);
+    if (this.mode && this.mode.creator === modeCreator) {
+      this.mode.init(this, words);
     } else {
-      this._mode = modeCreator.call(this.cfg.mode, this, words);
-      this._mode.__creator = modeCreator;
+      this.mode = modeCreator.call(this.cfg.mode, this, words);
+      this.mode.creator = modeCreator;
     }
   }
 
   public abstract encryptBlock(_M: number[], _offset: number): void;
   public abstract decryptBlock(_M: number[], _offset: number): void;
-  public _doProcessBlock(words: number[], offset: number): void {
-    this._mode.processBlock(words, offset);
+  public doProcessBlock(words: number[], offset: number): void {
+    this.mode.processBlock(words, offset);
   }
 
-  public _doFinalize(): WordArray {
+  public doFinalize(): WordArray {
     if (this.cfg.padding === undefined) {
       throw new Error("missing padding in config");
     }
 
     let finalProcessedBlocks: WordArray;
-    if (this._xformMode === (<typeof BlockCipher>this.constructor)._ENC_XFORM_MODE) {
+    if (this.xformMode === (<typeof BlockCipher>this.constructor).ENC_XFORM_MODE) {
       if (this.blockSize === undefined) {
         throw new Error("missing blockSize in config");
       }
 
-      this.cfg.padding.pad(this._data, this.blockSize);
-      finalProcessedBlocks = this._process(true);
+      this.cfg.padding.pad(this.data, this.blockSize);
+      finalProcessedBlocks = this.processBlocks(true);
     } else {
-      finalProcessedBlocks = this._process(true);
+      finalProcessedBlocks = this.processBlocks(true);
       this.cfg.padding.unpad(finalProcessedBlocks);
     }
     return finalProcessedBlocks;
