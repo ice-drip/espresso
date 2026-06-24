@@ -50,7 +50,8 @@
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "lint:oxlint": "oxlint .",
-    "lint:fix": "oxlint --fix ."
+    "lint:fix": "oxlint --fix .",
+    "release": "bumpp"
   },
   "devDependencies": {
     "@rslib/core": "^0.23.0",
