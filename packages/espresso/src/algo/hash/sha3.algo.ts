@@ -18,9 +18,9 @@ for (let t = 0; t < 24; t++) {
 }
 
 // Compute pi index constants
-for (let x = 0; x < 5; x++) {
-  for (let y = 0; y < 5; y++) {
-    PI_INDEXES[x + 5 * y] = y + ((2 * x + 3 * y) % 5) * 5;
+for (let ix = 0; ix < 5; ix++) {
+  for (let iy = 0; iy < 5; iy++) {
+    PI_INDEXES[ix + 5 * iy] = iy + ((2 * ix + 3 * iy) % 5) * 5;
   }
 }
 
@@ -66,7 +66,7 @@ for (let i = 0; i < 25; i += 1) {
  * @augments {Hasher}
  */
 export class SHA3Algo extends Hasher {
-  private _state!: X64Word[];
+  private state!: X64Word[];
   blockSize = 512 / 32;
 
   constructor(cfg?: BufferedBlockAlgorithmConfig) {
@@ -77,27 +77,25 @@ export class SHA3Algo extends Hasher {
   reset(): void {
     super.reset();
     // eslint-disable-next-line prettier/prettier
-    const state: X64Word[] = (this._state = []);
+    const state: X64Word[] = (this.state = []);
     for (let i = 0; i < 25; i++) {
       state[i] = {} as X64Word;
     }
     this.blockSize = (1600 - 2 * (this.cfg.outputLength as number)) / 32;
   }
-  public _doFinalize(): WordArray {
-    const data = this._data;
+  public doFinalize(): WordArray {
+    const data = this.data;
     const dataWords = data.words;
     const nBitsLeft = data.sigBytes * 8;
     const blockSizeBits = (this.blockSize as number) * 32;
 
     dataWords[nBitsLeft >>> 5] |= 0x1 << (24 - (nBitsLeft % 32));
-    dataWords[
-      ((Math.ceil((nBitsLeft + 1) / blockSizeBits) * blockSizeBits) >>> 5) - 1
-    ] |= 0x80;
+    dataWords[((Math.ceil((nBitsLeft + 1) / blockSizeBits) * blockSizeBits) >>> 5) - 1] |= 0x80;
     data.sigBytes = dataWords.length * 4;
 
-    this._process();
+    this.processBlocks();
 
-    const state = this._state;
+    const state = this.state;
     const outputLengthBytes = (this.cfg.outputLength as number) / 8;
     const outputLengthLanes = outputLengthBytes / 8;
 
@@ -122,8 +120,8 @@ export class SHA3Algo extends Hasher {
     }
     return new WordArray(hashWords, outputLengthBytes);
   }
-  _doProcessBlock(M: number[], offset: number): void {
-    const state: X64Word[] = this._state;
+  doProcessBlock(M: number[], offset: number): void {
+    const state: X64Word[] = this.state;
     const nBlockSizeLanes = (this.blockSize as number) / 2;
     for (let i = 0; i < nBlockSizeLanes; i++) {
       // Shortcuts
@@ -147,33 +145,33 @@ export class SHA3Algo extends Hasher {
     // Rounds
     for (let round = 0; round < 24; round++) {
       // Theta
-      for (let _x = 0; _x < 5; _x++) {
+      for (let xi = 0; xi < 5; xi++) {
         // Mix column lanes
         let tMsw = 0,
           tLsw = 0;
-        for (let _y = 0; _y < 5; _y++) {
-          const lane = state[_x + 5 * _y];
+        for (let yi = 0; yi < 5; yi++) {
+          const lane = state[xi + 5 * yi];
           tMsw ^= lane.high;
           tLsw ^= lane.low;
         }
 
         // Temporary values
-        const Tx = T[_x];
+        const Tx = T[xi];
         Tx.high = tMsw;
         Tx.low = tLsw;
       }
-      for (let _x = 0; _x < 5; _x++) {
+      for (let xi = 0; xi < 5; xi++) {
         // Shortcuts
-        const Tx4 = T[(_x + 4) % 5];
-        const Tx1 = T[(_x + 1) % 5];
+        const Tx4 = T[(xi + 4) % 5];
+        const Tx1 = T[(xi + 1) % 5];
         const Tx1Msw = Tx1.high;
         const Tx1Lsw = Tx1.low;
 
         // Mix surrounding columns
         const tMsw = Tx4.high ^ ((Tx1Msw << 1) | (Tx1Lsw >>> 31));
         const tLsw = Tx4.low ^ ((Tx1Lsw << 1) | (Tx1Msw >>> 31));
-        for (let _y = 0; _y < 5; _y++) {
-          const lane = state[_x + 5 * _y];
+        for (let yi = 0; yi < 5; yi++) {
+          const lane = state[xi + 5 * yi];
           lane.high ^= tMsw;
           lane.low ^= tLsw;
         }
@@ -212,14 +210,14 @@ export class SHA3Algo extends Hasher {
       T0.low = state0.low;
 
       // Chi
-      for (let _x = 0; _x < 5; _x++) {
-        for (let _y = 0; _y < 5; _y++) {
+      for (let xi = 0; xi < 5; xi++) {
+        for (let yi = 0; yi < 5; yi++) {
           // Shortcuts
-          const laneIndex = _x + 5 * _y;
+          const laneIndex = xi + 5 * yi;
           const lane = state[laneIndex];
           const TLane = T[laneIndex];
-          const Tx1Lane = T[((_x + 1) % 5) + 5 * _y];
-          const Tx2Lane = T[((_x + 2) % 5) + 5 * _y];
+          const Tx1Lane = T[((xi + 1) % 5) + 5 * yi];
+          const Tx2Lane = T[((xi + 2) % 5) + 5 * yi];
 
           // Mix rows
           lane.high = TLane.high ^ (~Tx1Lane.high & Tx2Lane.high);

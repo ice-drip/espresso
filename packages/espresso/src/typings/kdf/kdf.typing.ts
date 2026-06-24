@@ -6,6 +6,6 @@ export interface KDF {
     _password: string,
     _keySize: number,
     _ivSize: number,
-    _salt?: WordArray | string
+    _salt?: WordArray | string,
   ) => CipherParams;
 }

@@ -1,20 +1,35 @@
 {
-  "name": "@ice-drip/espresso",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "@kaffee/espresso-monorepo",
+  "private": true,
+  "description": "TypeScript cryptography library — AES, DES, SHA, HMAC, and more with Web Crypto + pure JS dual runtime",
+  "homepage": "https://github.com/ice-drip/espresso#readme",
+  "bugs": {
+    "url": "https://github.com/ice-drip/espresso/issues"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ice-drip/espresso.git"
+  },
+  "scripts": {
+    "build": "cd packages/espresso && pnpm build",
+    "test": "cd packages/test && pnpm test",
+    "lint": "cd packages/espresso && pnpm lint",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "lint:oxlint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "typecheck": "tsc -p packages/espresso/tsconfig.json --noEmit",
+    "release": "bumpp",
+    "release:check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
+    "release:changelog": "cd packages/espresso && conventional-changelog -p angular -i CHANGELOG.md -s"
+  },
   "devDependencies": {
-    "@types/jest": "^27.5.1",
-    "@types/node": "14",
-    "jest": "^28.1.0",
-    "ts-jest": "^28.0.2",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
+    "@types/node": "^26.0.0",
+    "bumpp": "^11.1.0",
+    "conventional-changelog-cli": "^5.0.0",
+    "oxfmt": "^0.56.0",
+    "oxlint": "^1.71.0",
+    "typescript": "^6.0.3"
   }
 }

@@ -1,23 +1,19 @@
-import { TripleDES, enc } from "@kaffee/espresso";
+import { encrypt, decrypt } from "@kaffee/espresso";
 import { TestConfig } from "../config";
-import cryptojs from "crypto-js";
-test("DES encrypt testing", () => {
-  const result = TripleDES.encrypt(TestConfig.word, TestConfig.key).toString();
-  const originWord = cryptojs.TripleDES.decrypt(
-    result,
-    TestConfig.key
-  ).toString(cryptojs.enc.Utf8);
-
-  expect(TestConfig.word).toBe(originWord);
+test("TripleDES encrypt/decrypt round-trip", () => {
+  const key = new Uint8Array(24).fill(0x01);
+  const plaintext = TestConfig.word;
+  const ciphertext = encrypt("triple-des", plaintext, key, { outputEncoding: "hex" });
+  const decrypted = decrypt("triple-des", ciphertext as string, key, { outputEncoding: "utf8" });
+  expect(decrypted).toBe(plaintext);
 });
-test("DES decrypt testing", () => {
-  const result = cryptojs.TripleDES.encrypt(
-    TestConfig.word,
-    TestConfig.key
-  ).toString();
-  const originWord = TripleDES.decrypt(result, TestConfig.key).toString(
-    enc.Utf8
-  );
-
-  expect(TestConfig.word).toBe(originWord);
+test("TripleDES encrypt/decrypt with ECB", () => {
+  const key = new Uint8Array(24).fill(0x01);
+  const plaintext = TestConfig.word;
+  const ciphertext = encrypt("triple-des", plaintext, key, { mode: "ecb", outputEncoding: "hex" });
+  const decrypted = decrypt("triple-des", ciphertext as string, key, {
+    mode: "ecb",
+    outputEncoding: "utf8",
+  });
+  expect(decrypted).toBe(plaintext);
 });

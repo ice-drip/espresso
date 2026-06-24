@@ -15,5 +15,5 @@ export const ISO97971: Padding = {
     ZeroPadding.unpad(data);
     // Unpad
     data.sigBytes--;
-  }
+  },
 };

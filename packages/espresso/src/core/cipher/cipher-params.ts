@@ -85,9 +85,7 @@ export class CipherParams implements CipherParamsInterface {
     } else if (this.formatter) {
       return this.formatter.stringify(this);
     } else {
-      throw new Error(
-        "cipher needs a formatter to be able to convert the result into a string"
-      );
+      throw new Error("cipher needs a formatter to be able to convert the result into a string");
     }
   }
 }

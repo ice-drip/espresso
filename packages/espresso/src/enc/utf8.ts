@@ -16,5 +16,16 @@ export const Utf8: Encoding = {
   },
   parse(utf8Str: string) {
     return Latin1.parse(unescape(encodeURIComponent(utf8Str)));
-  }
+  },
 };
+
+const encoder = new TextEncoder();
+const decoder = new TextDecoder();
+
+export function utf8Encode(str: string): Uint8Array {
+  return encoder.encode(str);
+}
+
+export function utf8Decode(bytes: Uint8Array): string {
+  return decoder.decode(bytes);
+}

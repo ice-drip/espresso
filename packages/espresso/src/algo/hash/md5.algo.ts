@@ -9,54 +9,22 @@ const T: number[] = [];
 for (let i = 0; i < 64; i++) {
   T[i] = (Math.abs(Math.sin(i + 1)) * 0x1_00_00_00_00) | 0;
 }
-function FF(
-  a: number,
-  b: number,
-  c: number,
-  d: number,
-  x: number,
-  s: number,
-  t: number
-): number {
+function FF(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   const n = a + ((b & c) | (~b & d)) + x + t;
   return ((n << s) | (n >>> (32 - s))) + b;
 }
 
-function GG(
-  a: number,
-  b: number,
-  c: number,
-  d: number,
-  x: number,
-  s: number,
-  t: number
-): number {
+function GG(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   const n = a + ((b & d) | (c & ~d)) + x + t;
   return ((n << s) | (n >>> (32 - s))) + b;
 }
 
-function HH(
-  a: number,
-  b: number,
-  c: number,
-  d: number,
-  x: number,
-  s: number,
-  t: number
-): number {
+function HH(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   const n = a + (b ^ c ^ d) + x + t;
   return ((n << s) | (n >>> (32 - s))) + b;
 }
 
-function II(
-  a: number,
-  b: number,
-  c: number,
-  d: number,
-  x: number,
-  s: number,
-  t: number
-): number {
+function II(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   const n = a + (c ^ (b | ~d)) + x + t;
   return ((n << s) | (n >>> (32 - s))) + b;
 }
@@ -70,16 +38,14 @@ function II(
  * @augments {Hasher}
  */
 export class MD5Algo extends Hasher {
-  private _hash!: WordArray;
+  declare private hash: WordArray;
 
   public reset(): void {
     super.reset();
-    this._hash = new WordArray([
-      0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76
-    ]);
+    this.hash = new WordArray([0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76]);
   }
 
-  _doProcessBlock(M: number[], offset: number): void {
+  doProcessBlock(M: number[], offset: number): void {
     for (let i = 0; i < 16; i++) {
       const offset_i = offset + i;
       const M_offset_i = M[offset_i];
@@ -87,7 +53,7 @@ export class MD5Algo extends Hasher {
         (((M_offset_i << 8) | (M_offset_i >>> 24)) & 0x00_ff_00_ff) |
         (((M_offset_i << 24) | (M_offset_i >>> 8)) & 0xff_00_ff_00);
     }
-    const H = this._hash.words;
+    const H = this.hash.words;
 
     const M_offset_0 = M[offset + 0];
     const M_offset_1 = M[offset + 1];
@@ -186,11 +152,11 @@ export class MD5Algo extends Hasher {
     H[3] = (H[3] + d) | 0;
   }
 
-  _doFinalize(): WordArray {
-    const data = this._data;
+  doFinalize(): WordArray {
+    const data = this.data;
     const dataWords = data.words;
 
-    const nBitsTotal = this._nDataBytes * 8;
+    const nBitsTotal = this.nDataBytes * 8;
     const nBitsLeft = data.sigBytes * 8;
 
     dataWords[nBitsLeft >>> 5] |= 0x80 << (24 - (nBitsLeft % 32));
@@ -208,9 +174,9 @@ export class MD5Algo extends Hasher {
 
     data.sigBytes = (dataWords.length + 1) * 4;
 
-    this._process();
+    this.processBlocks();
 
-    const hash = this._hash;
+    const hash = this.hash;
     const H = hash.words;
 
     for (let i = 0; i < 4; i++) {

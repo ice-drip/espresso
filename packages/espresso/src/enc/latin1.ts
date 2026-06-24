@@ -21,5 +21,21 @@ export const Latin1: Encoding = {
       words[i >>> 2] |= (latin1Str.charCodeAt(i) & 0xff) << (24 - (i % 4) * 8);
     }
     return new WordArray(words, latin1StrLength);
-  }
+  },
 };
+
+export function latin1Encode(data: Uint8Array): string {
+  let str = "";
+  for (let i = 0; i < data.length; i++) {
+    str += String.fromCharCode(data[i]);
+  }
+  return str;
+}
+
+export function latin1Decode(str: string): Uint8Array {
+  const bytes = new Uint8Array(str.length);
+  for (let i = 0; i < str.length; i++) {
+    bytes[i] = str.charCodeAt(i) & 0xff;
+  }
+  return bytes;
+}

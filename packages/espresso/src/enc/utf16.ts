@@ -27,7 +27,7 @@ export const Utf16: Encoding = {
     }
 
     return new WordArray(words, utf16StrLength * 2);
-  }
+  },
 };
 
 export const Utf16LE: Encoding = {
@@ -39,9 +39,7 @@ export const Utf16LE: Encoding = {
     // Convert
     const utf16Chars = [];
     for (let i = 0; i < sigBytes; i += 2) {
-      const codePoint = swapEndian(
-        (words[i >>> 2] >>> (16 - (i % 4) * 8)) & 0xff_ff
-      );
+      const codePoint = swapEndian((words[i >>> 2] >>> (16 - (i % 4) * 8)) & 0xff_ff);
       utf16Chars.push(String.fromCharCode(codePoint));
     }
 
@@ -54,13 +52,11 @@ export const Utf16LE: Encoding = {
     // Convert
     const words: number[] = [];
     for (let i = 0; i < utf16StrLength; i++) {
-      words[i >>> 1] |= swapEndian(
-        utf16Str.charCodeAt(i) << (16 - (i % 2) * 16)
-      );
+      words[i >>> 1] |= swapEndian(utf16Str.charCodeAt(i) << (16 - (i % 2) * 16));
     }
 
     return new WordArray(words, utf16StrLength * 2);
-  }
+  },
 };
 /**
  * swapEndian
@@ -71,4 +67,24 @@ export const Utf16LE: Encoding = {
  */
 function swapEndian(word: number): number {
   return ((word << 8) & 0xff_00_ff_00) | ((word >>> 8) & 0x00_ff_00_ff);
+}
+
+export function utf16Encode(data: Uint8Array, le = false): string {
+  const decoder = new TextDecoder(le ? "utf-16le" : "utf-16be");
+  return decoder.decode(data);
+}
+
+export function utf16Decode(str: string, le = false): Uint8Array {
+  const bytes = new Uint8Array(str.length * 2);
+  for (let i = 0; i < str.length; i++) {
+    const code = str.charCodeAt(i);
+    if (le) {
+      bytes[i * 2] = code & 0xff;
+      bytes[i * 2 + 1] = (code >> 8) & 0xff;
+    } else {
+      bytes[i * 2] = (code >> 8) & 0xff;
+      bytes[i * 2 + 1] = code & 0xff;
+    }
+  }
+  return bytes;
 }

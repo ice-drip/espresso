@@ -1,24 +1,24 @@
 import { BlockCipherModeAlgorithm } from "./block-cipher-mode-algorithm";
 
 export class CBCEncryptor extends BlockCipherModeAlgorithm {
-  public _prevBlock?: number[];
+  private prevBlock?: number[];
   public processBlock(_words: number[], _offset: number): void {
-    if (this._cipher.blockSize === undefined) {
+    if (this.cipher.blockSize === undefined) {
       throw new Error("missing blockSize in cipher config");
     }
-    this.xorBlock(_words, _offset, this._cipher.blockSize);
-    this._cipher.encryptBlock(_words, _offset);
+    this.xorBlock(_words, _offset, this.cipher.blockSize);
+    this.cipher.encryptBlock(_words, _offset);
 
-    this._prevBlock = _words.slice(_offset, _offset + this._cipher.blockSize);
+    this.prevBlock = _words.slice(_offset, _offset + this.cipher.blockSize);
   }
 
   public xorBlock(words: number[], offset: number, blockSize: number): void {
     let block: number[] | undefined;
-    if (this._iv) {
-      block = this._iv;
-      this._iv = undefined;
+    if (this.iv) {
+      block = this.iv;
+      this.iv = undefined;
     } else {
-      block = this._prevBlock;
+      block = this.prevBlock;
     }
     if (block !== undefined) {
       for (let i = 0; i < blockSize; i++) {

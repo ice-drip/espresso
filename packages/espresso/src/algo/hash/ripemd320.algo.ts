@@ -5,36 +5,32 @@ import { Hasher } from "../../core/hash/hasher";
 import { WordArray } from "../../core/word-array";
 
 // Constants table
-const _zl = new WordArray([
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 7, 4, 13, 1, 10, 6, 15,
-  3, 12, 0, 9, 5, 2, 14, 11, 8, 3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11,
-  5, 12, 1, 9, 11, 10, 0, 8, 12, 4, 13, 3, 7, 15, 14, 5, 6, 2, 4, 0, 5, 9, 7,
-  12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13
+const ZL = new WordArray([
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 7, 4, 13, 1, 10, 6, 15, 3, 12, 0, 9, 5, 2,
+  14, 11, 8, 3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11, 5, 12, 1, 9, 11, 10, 0, 8, 12, 4, 13, 3,
+  7, 15, 14, 5, 6, 2, 4, 0, 5, 9, 7, 12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13,
 ]);
-const _zr = new WordArray([
-  5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12, 6, 11, 3, 7, 0, 13, 5,
-  10, 14, 15, 8, 12, 4, 9, 1, 2, 15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0,
-  4, 13, 8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2, 13, 9, 7, 10, 14, 12, 15, 10, 4, 1,
-  5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11
+const ZR = new WordArray([
+  5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12, 6, 11, 3, 7, 0, 13, 5, 10, 14, 15, 8, 12, 4,
+  9, 1, 2, 15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0, 4, 13, 8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2,
+  13, 9, 7, 10, 14, 12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11,
 ]);
-const _sl = new WordArray([
-  11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8, 7, 6, 8, 13, 11, 9, 7,
-  15, 7, 12, 15, 9, 11, 7, 13, 12, 11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5,
-  12, 7, 5, 11, 12, 14, 15, 14, 15, 9, 8, 9, 14, 5, 6, 8, 6, 5, 12, 9, 15, 5,
-  11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6
+const SL = new WordArray([
+  11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8, 7, 6, 8, 13, 11, 9, 7, 15, 7, 12, 15, 9,
+  11, 7, 13, 12, 11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5, 12, 7, 5, 11, 12, 14, 15, 14, 15, 9,
+  8, 9, 14, 5, 6, 8, 6, 5, 12, 9, 15, 5, 11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6,
 ]);
-const _sr = new WordArray([
-  8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6, 9, 13, 15, 7, 12, 8,
-  9, 11, 7, 7, 12, 7, 6, 15, 13, 11, 9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14,
-  13, 13, 7, 5, 15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8, 8, 5,
-  12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
+const SR = new WordArray([
+  8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6, 9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7,
+  6, 15, 13, 11, 9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5, 15, 5, 8, 11, 14, 14, 6,
+  14, 6, 9, 12, 9, 12, 5, 15, 8, 8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11,
 ]);
 
-const _hl = new WordArray([
-  0x00_00_00_00, 0x5a_82_79_99, 0x6e_d9_eb_a1, 0x8f_1b_bc_dc, 0xa9_53_fd_4e
+const HL = new WordArray([
+  0x00_00_00_00, 0x5a_82_79_99, 0x6e_d9_eb_a1, 0x8f_1b_bc_dc, 0xa9_53_fd_4e,
 ]);
-const _hr = new WordArray([
-  0x50_a2_8b_e6, 0x5c_4d_d1_24, 0x6d_70_3e_f3, 0x7a_6d_76_e9, 0x00_00_00_00
+const HR = new WordArray([
+  0x50_a2_8b_e6, 0x5c_4d_d1_24, 0x6d_70_3e_f3, 0x7a_6d_76_e9, 0x00_00_00_00,
 ]);
 
 function f1(x: number, y: number, z: number): number {
@@ -62,22 +58,22 @@ function rotl(x: number, n: number): number {
 }
 
 export class RIPEMD320Algo extends Hasher {
-  private _hash!: WordArray;
+  declare private hash: WordArray;
 
   reset(): void {
     super.reset();
-    this._hash = new WordArray([
-      0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76, 0xc3_d2_e1_f0,
-      0x76_54_32_10, 0xfe_dc_ba_98, 0x89_ab_cd_ef, 0x01_23_45_67, 0x3c_2d_1e_0f
+    this.hash = new WordArray([
+      0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76, 0xc3_d2_e1_f0, 0x76_54_32_10,
+      0xfe_dc_ba_98, 0x89_ab_cd_ef, 0x01_23_45_67, 0x3c_2d_1e_0f,
     ]);
   }
 
-  public _doFinalize(): WordArray {
+  public doFinalize(): WordArray {
     // Shortcuts
-    const data = this._data;
+    const data = this.data;
     const dataWords = data.words;
 
-    const nBitsTotal = this._nDataBytes * 8;
+    const nBitsTotal = this.nDataBytes * 8;
     const nBitsLeft = data.sigBytes * 8;
 
     // Add padding
@@ -88,10 +84,10 @@ export class RIPEMD320Algo extends Hasher {
     data.sigBytes = (dataWords.length + 1) * 4;
 
     // Hash final blocks
-    this._process();
+    this.processBlocks();
 
     // Shortcuts
-    const hash = this._hash;
+    const hash = this.hash;
     const H = hash.words;
 
     // Swap endian
@@ -108,7 +104,7 @@ export class RIPEMD320Algo extends Hasher {
     // Return final computed hash
     return hash;
   }
-  _doProcessBlock(M: number[], offset: number): void {
+  doProcessBlock(M: number[], offset: number): void {
     // Swap endian
     for (let i = 0; i < 16; i++) {
       // Shortcuts
@@ -121,13 +117,13 @@ export class RIPEMD320Algo extends Hasher {
         (((M_offset_i << 24) | (M_offset_i >>> 8)) & 0xff_00_ff_00);
     }
     // Shortcut
-    const H = this._hash.words;
-    const hl = _hl.words;
-    const hr = _hr.words;
-    const zl = _zl.words;
-    const zr = _zr.words;
-    const sl = _sl.words;
-    const sr = _sr.words;
+    const H = this.hash.words;
+    const hl = HL.words;
+    const hr = HR.words;
+    const zl = ZL.words;
+    const zr = ZR.words;
+    const sl = SL.words;
+    const sr = SR.words;
 
     // Working variables
     let al, bl, cl, dl, el;
@@ -189,23 +185,23 @@ export class RIPEMD320Algo extends Hasher {
       cr = br;
       br = t;
 
-      if (i == 15) {
+      if (i === 15) {
         t = bl;
         bl = br;
         br = t;
-      } else if (i == 31) {
+      } else if (i === 31) {
         t = dl;
         dl = dr;
         dr = t;
-      } else if (i == 47) {
+      } else if (i === 47) {
         t = al;
         al = ar;
         ar = t;
-      } else if (i == 63) {
+      } else if (i === 63) {
         t = cl;
         cl = cr;
         cr = t;
-      } else if (i == 79) {
+      } else if (i === 79) {
         t = el;
         el = er;
         er = t;

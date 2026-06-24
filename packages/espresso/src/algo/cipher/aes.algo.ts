@@ -1,14 +1,13 @@
 import { BlockCipher } from "../../core/cipher/block-cipher";
 import { WordArray } from "../../core/word-array";
-import { BufferedBlockAlgorithmConfig } from "../../typings/core/buffered-block-algorithm.typing";
 
 // Lookup tables
-const _SBOX: number[] = [];
+const SBOX: number[] = [];
 const INV_SBOX: number[] = [];
-const _SUB_MIX_0: number[] = [];
-const _SUB_MIX_1: number[] = [];
-const _SUB_MIX_2: number[] = [];
-const _SUB_MIX_3: number[] = [];
+const SUB_MIX_0: number[] = [];
+const SUB_MIX_1: number[] = [];
+const SUB_MIX_2: number[] = [];
+const SUB_MIX_3: number[] = [];
 const INV_SUB_MIX_0: number[] = [];
 const INV_SUB_MIX_1: number[] = [];
 const INV_SUB_MIX_2: number[] = [];
@@ -33,7 +32,7 @@ for (let i = 0; i < 256; i++) {
   // Compute sbox
   let sx = xi ^ (xi << 1) ^ (xi << 2) ^ (xi << 3) ^ (xi << 4);
   sx = (sx >>> 8) ^ (sx & 0xff) ^ 0x63;
-  _SBOX[x] = sx;
+  SBOX[x] = sx;
   INV_SBOX[sx] = x;
 
   // Compute multiplication
@@ -43,14 +42,13 @@ for (let i = 0; i < 256; i++) {
 
   // Compute sub bytes, mix columns tables
   let t = (d[sx] * 0x1_01) ^ (sx * 0x1_01_01_00);
-  _SUB_MIX_0[x] = (t << 24) | (t >>> 8);
-  _SUB_MIX_1[x] = (t << 16) | (t >>> 16);
-  _SUB_MIX_2[x] = (t << 8) | (t >>> 24);
-  _SUB_MIX_3[x] = t;
+  SUB_MIX_0[x] = (t << 24) | (t >>> 8);
+  SUB_MIX_1[x] = (t << 16) | (t >>> 16);
+  SUB_MIX_2[x] = (t << 8) | (t >>> 24);
+  SUB_MIX_3[x] = t;
 
   // Compute inv sub bytes, inv mix columns tables
-  t =
-    (x8 * 0x1_01_01_01) ^ (x4 * 0x1_00_01) ^ (x2 * 0x1_01) ^ (x * 0x1_01_01_00);
+  t = (x8 * 0x1_01_01_01) ^ (x4 * 0x1_00_01) ^ (x2 * 0x1_01) ^ (x * 0x1_01_01_00);
   INV_SUB_MIX_0[sx] = (t << 24) | (t >>> 8);
   INV_SUB_MIX_1[sx] = (t << 16) | (t >>> 16);
   INV_SUB_MIX_2[sx] = (t << 8) | (t >>> 24);
@@ -71,72 +69,63 @@ const RCON = [0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36];
 export class AESAlgo extends BlockCipher {
   public static keySize = 256 / 32;
 
-  _nRounds!: number;
+  private nRounds!: number;
 
-  _keyPriorReset!: WordArray;
+  private keyPriorReset!: WordArray;
 
-  _keySchedule!: Array<number>;
+  private keySchedule!: Array<number>;
 
-  _invKeySchedule!: Array<number>;
-
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
-    super(xformMode, key, cfg);
-  }
+  private invKeySchedule!: Array<number>;
 
   public encryptBlock(M: number[], offset: number): void {
-    this._doCryptBlock(
+    this.doCryptBlock(
       M,
       offset,
-      this._keySchedule,
-      _SUB_MIX_0,
-      _SUB_MIX_1,
-      _SUB_MIX_2,
-      _SUB_MIX_3,
-      _SBOX
+      this.keySchedule,
+      SUB_MIX_0,
+      SUB_MIX_1,
+      SUB_MIX_2,
+      SUB_MIX_3,
+      SBOX,
     );
   }
   public decryptBlock(M: number[], offset: number): void {
-    const _M = M;
-    let t = _M[offset + 1];
-    _M[offset + 1] = _M[offset + 3];
-    _M[offset + 3] = t;
-    this._doCryptBlock(
-      _M,
+    let t = M[offset + 1];
+    M[offset + 1] = M[offset + 3];
+    M[offset + 3] = t;
+    this.doCryptBlock(
+      M,
       offset,
-      this._invKeySchedule,
+      this.invKeySchedule,
       INV_SUB_MIX_0,
       INV_SUB_MIX_1,
       INV_SUB_MIX_2,
       INV_SUB_MIX_3,
-      INV_SBOX
+      INV_SBOX,
     );
-    t = _M[offset + 1];
-    _M[offset + 1] = _M[offset + 3];
-    _M[offset + 3] = t;
+    t = M[offset + 1];
+    M[offset + 1] = M[offset + 3];
+    M[offset + 3] = t;
   }
 
   public reset(): void {
     super.reset();
     let t: number;
-    if (this._nRounds && this._keyPriorReset === this._key) {
+    if (this.nRounds && this.keyPriorReset === this.key) {
       return;
     }
-    this._keyPriorReset = this._key;
-    const key = this._keyPriorReset;
+    this.keyPriorReset = this.key;
+    const key = this.keyPriorReset;
     const keyWords = key.words;
     const keySize = key.sigBytes / 4;
 
-    this._nRounds = keySize + 6;
-    const nRounds = this._nRounds;
+    this.nRounds = keySize + 6;
+    const nRounds = this.nRounds;
 
     const ksRows = (nRounds + 1) * 4;
 
-    this._keySchedule = [];
-    const keySchedule = this._keySchedule;
+    this.keySchedule = [];
+    const keySchedule = this.keySchedule;
     for (let ksRow = 0; ksRow < ksRows; ksRow++) {
       if (ksRow < keySize) {
         keySchedule[ksRow] = keyWords[ksRow];
@@ -148,28 +137,28 @@ export class AESAlgo extends BlockCipher {
 
           // Sub word
           t =
-            (_SBOX[t >>> 24] << 24) |
-            (_SBOX[(t >>> 16) & 0xff] << 16) |
-            (_SBOX[(t >>> 8) & 0xff] << 8) |
-            _SBOX[t & 0xff];
+            (SBOX[t >>> 24] << 24) |
+            (SBOX[(t >>> 16) & 0xff] << 16) |
+            (SBOX[(t >>> 8) & 0xff] << 8) |
+            SBOX[t & 0xff];
 
           // Mix Rcon
           // eslint-disable-next-line unicorn/prefer-math-trunc
           t ^= RCON[(ksRow / keySize) | 0] << 24;
-        } else if (keySize > 6 && ksRow % keySize == 4) {
+        } else if (keySize > 6 && ksRow % keySize === 4) {
           // Sub word
           t =
-            (_SBOX[t >>> 24] << 24) |
-            (_SBOX[(t >>> 16) & 0xff] << 16) |
-            (_SBOX[(t >>> 8) & 0xff] << 8) |
-            _SBOX[t & 0xff];
+            (SBOX[t >>> 24] << 24) |
+            (SBOX[(t >>> 16) & 0xff] << 16) |
+            (SBOX[(t >>> 8) & 0xff] << 8) |
+            SBOX[t & 0xff];
         }
         keySchedule[ksRow] = keySchedule[ksRow - keySize] ^ t;
       }
     }
 
-    this._invKeySchedule = [];
-    const invKeySchedule = this._invKeySchedule;
+    this.invKeySchedule = [];
+    const invKeySchedule = this.invKeySchedule;
     for (let invKsRow = 0; invKsRow < ksRows; invKsRow++) {
       const ksRow = ksRows - invKsRow;
 
@@ -178,34 +167,32 @@ export class AESAlgo extends BlockCipher {
         invKeySchedule[invKsRow] = t;
       } else {
         invKeySchedule[invKsRow] =
-          INV_SUB_MIX_0[_SBOX[t >>> 24]] ^
-          INV_SUB_MIX_1[_SBOX[(t >>> 16) & 0xff]] ^
-          INV_SUB_MIX_2[_SBOX[(t >>> 8) & 0xff]] ^
-          INV_SUB_MIX_3[_SBOX[t & 0xff]];
+          INV_SUB_MIX_0[SBOX[t >>> 24]] ^
+          INV_SUB_MIX_1[SBOX[(t >>> 16) & 0xff]] ^
+          INV_SUB_MIX_2[SBOX[(t >>> 8) & 0xff]] ^
+          INV_SUB_MIX_3[SBOX[t & 0xff]];
       }
     }
   }
 
-  _doCryptBlock(
+  doCryptBlock(
     M: number[],
     offset: number,
     keySchedule: number[],
-    SUB_MIX_0: number[],
-    SUB_MIX_1: number[],
-    SUB_MIX_2: number[],
-    SUB_MIX_3: number[],
-    SBOX: number[]
+    subMix0: number[],
+    subMix1: number[],
+    subMix2: number[],
+    subMix3: number[],
+    sbox: number[],
   ): void {
-    const _M = M;
-
     // Shortcut
-    const nRounds = this._nRounds;
+    const nRounds = this.nRounds;
 
     // Get input, add round key
-    let s0 = _M[offset] ^ keySchedule[0];
-    let s1 = _M[offset + 1] ^ keySchedule[1];
-    let s2 = _M[offset + 2] ^ keySchedule[2];
-    let s3 = _M[offset + 3] ^ keySchedule[3];
+    let s0 = M[offset] ^ keySchedule[0];
+    let s1 = M[offset + 1] ^ keySchedule[1];
+    let s2 = M[offset + 2] ^ keySchedule[2];
+    let s3 = M[offset + 3] ^ keySchedule[3];
 
     // Key schedule row counter
     let ksRow = 4;
@@ -215,28 +202,28 @@ export class AESAlgo extends BlockCipher {
       // Shift rows, sub bytes, mix columns, add round key
 
       const t0 =
-        SUB_MIX_0[s0 >>> 24] ^
-        SUB_MIX_1[(s1 >>> 16) & 0xff] ^
-        SUB_MIX_2[(s2 >>> 8) & 0xff] ^
-        SUB_MIX_3[s3 & 0xff] ^
+        subMix0[s0 >>> 24] ^
+        subMix1[(s1 >>> 16) & 0xff] ^
+        subMix2[(s2 >>> 8) & 0xff] ^
+        subMix3[s3 & 0xff] ^
         keySchedule[ksRow++];
       const t1 =
-        SUB_MIX_0[s1 >>> 24] ^
-        SUB_MIX_1[(s2 >>> 16) & 0xff] ^
-        SUB_MIX_2[(s3 >>> 8) & 0xff] ^
-        SUB_MIX_3[s0 & 0xff] ^
+        subMix0[s1 >>> 24] ^
+        subMix1[(s2 >>> 16) & 0xff] ^
+        subMix2[(s3 >>> 8) & 0xff] ^
+        subMix3[s0 & 0xff] ^
         keySchedule[ksRow++];
       const t2 =
-        SUB_MIX_0[s2 >>> 24] ^
-        SUB_MIX_1[(s3 >>> 16) & 0xff] ^
-        SUB_MIX_2[(s0 >>> 8) & 0xff] ^
-        SUB_MIX_3[s1 & 0xff] ^
+        subMix0[s2 >>> 24] ^
+        subMix1[(s3 >>> 16) & 0xff] ^
+        subMix2[(s0 >>> 8) & 0xff] ^
+        subMix3[s1 & 0xff] ^
         keySchedule[ksRow++];
       const t3 =
-        SUB_MIX_0[s3 >>> 24] ^
-        SUB_MIX_1[(s0 >>> 16) & 0xff] ^
-        SUB_MIX_2[(s1 >>> 8) & 0xff] ^
-        SUB_MIX_3[s2 & 0xff] ^
+        subMix0[s3 >>> 24] ^
+        subMix1[(s0 >>> 16) & 0xff] ^
+        subMix2[(s1 >>> 8) & 0xff] ^
+        subMix3[s2 & 0xff] ^
         keySchedule[ksRow++];
 
       // Update state
@@ -248,34 +235,34 @@ export class AESAlgo extends BlockCipher {
 
     // Shift rows, sub bytes, add round key
     const t0 =
-      ((SBOX[s0 >>> 24] << 24) |
-        (SBOX[(s1 >>> 16) & 0xff] << 16) |
-        (SBOX[(s2 >>> 8) & 0xff] << 8) |
-        SBOX[s3 & 0xff]) ^
+      ((sbox[s0 >>> 24] << 24) |
+        (sbox[(s1 >>> 16) & 0xff] << 16) |
+        (sbox[(s2 >>> 8) & 0xff] << 8) |
+        sbox[s3 & 0xff]) ^
       keySchedule[ksRow++];
     const t1 =
-      ((SBOX[s1 >>> 24] << 24) |
-        (SBOX[(s2 >>> 16) & 0xff] << 16) |
-        (SBOX[(s3 >>> 8) & 0xff] << 8) |
-        SBOX[s0 & 0xff]) ^
+      ((sbox[s1 >>> 24] << 24) |
+        (sbox[(s2 >>> 16) & 0xff] << 16) |
+        (sbox[(s3 >>> 8) & 0xff] << 8) |
+        sbox[s0 & 0xff]) ^
       keySchedule[ksRow++];
     const t2 =
-      ((SBOX[s2 >>> 24] << 24) |
-        (SBOX[(s3 >>> 16) & 0xff] << 16) |
-        (SBOX[(s0 >>> 8) & 0xff] << 8) |
-        SBOX[s1 & 0xff]) ^
+      ((sbox[s2 >>> 24] << 24) |
+        (sbox[(s3 >>> 16) & 0xff] << 16) |
+        (sbox[(s0 >>> 8) & 0xff] << 8) |
+        sbox[s1 & 0xff]) ^
       keySchedule[ksRow++];
     const t3 =
-      ((SBOX[s3 >>> 24] << 24) |
-        (SBOX[(s0 >>> 16) & 0xff] << 16) |
-        (SBOX[(s1 >>> 8) & 0xff] << 8) |
-        SBOX[s2 & 0xff]) ^
+      ((sbox[s3 >>> 24] << 24) |
+        (sbox[(s0 >>> 16) & 0xff] << 16) |
+        (sbox[(s1 >>> 8) & 0xff] << 8) |
+        sbox[s2 & 0xff]) ^
       keySchedule[ksRow++];
 
     // Set output
-    _M[offset] = t0;
-    _M[offset + 1] = t1;
-    _M[offset + 2] = t2;
-    _M[offset + 3] = t3;
+    M[offset] = t0;
+    M[offset + 1] = t1;
+    M[offset + 2] = t2;
+    M[offset + 3] = t3;
   }
 }

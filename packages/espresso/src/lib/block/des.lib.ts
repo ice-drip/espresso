@@ -1,6 +1,6 @@
 import { DESAlgo } from "../../algo/cipher/tripledes.algo";
 import { BlockCipher } from "../../core/cipher/block-cipher";
 
-const DES = BlockCipher._createHelper(DESAlgo);
+const DES = BlockCipher.createHelper(DESAlgo);
 
 export { DES };

@@ -5,7 +5,7 @@ import { Encoding } from "../typings/core/encoding.typing";
 function parseLoop(
   base64Str: string,
   base64StrLength: number,
-  reverseMap: Array<number>
+  reverseMap: Array<number>,
 ): WordArray {
   const words: number[] = [];
   let nBytes = 0;
@@ -23,14 +23,14 @@ function parseLoop(
 /**
  * Base64编码策略
  */
-export const Base64: Encoding & { _reverseMap?: number[]; _map: string } = {
-  _reverseMap: undefined,
-  _map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+export const Base64: Encoding & { reverseMap?: number[]; map: string } = {
+  reverseMap: undefined,
+  map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
   parse(base64Str: string): WordArray {
     // Shortcuts
     let base64StrLength = base64Str.length;
-    const map = this._map;
-    let reverseMap = this._reverseMap;
+    const map = this.map;
+    let reverseMap = this.reverseMap;
     if (reverseMap === undefined) {
       reverseMap = [];
       for (let j = 0; j < map.length; j++) {
@@ -55,17 +55,15 @@ export const Base64: Encoding & { _reverseMap?: number[]; _map: string } = {
     const base64Chars = [];
     for (let i = 0; i < wordArray.sigBytes; i += 3) {
       const byte1 = (wordArray.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
-      const byte2 =
-        (wordArray.words[(i + 1) >>> 2] >>> (24 - ((i + 1) % 4) * 8)) & 0xff;
-      const byte3 =
-        (wordArray.words[(i + 2) >>> 2] >>> (24 - ((i + 2) % 4) * 8)) & 0xff;
+      const byte2 = (wordArray.words[(i + 1) >>> 2] >>> (24 - ((i + 1) % 4) * 8)) & 0xff;
+      const byte3 = (wordArray.words[(i + 2) >>> 2] >>> (24 - ((i + 2) % 4) * 8)) & 0xff;
       const triplet = (byte1 << 16) | (byte2 << 8) | byte3;
 
       for (let j = 0; j < 4 && i + j * 0.75 < wordArray.sigBytes; j++) {
-        base64Chars.push(this._map.charAt((triplet >>> (6 * (3 - j))) & 0x3f));
+        base64Chars.push(this.map.charAt((triplet >>> (6 * (3 - j))) & 0x3f));
       }
     }
-    const paddingChar = this._map.charAt(64);
+    const paddingChar = this.map.charAt(64);
     if (paddingChar) {
       while (base64Chars.length % 4) {
         base64Chars.push(paddingChar);
@@ -73,5 +71,22 @@ export const Base64: Encoding & { _reverseMap?: number[]; _map: string } = {
     }
 
     return base64Chars.join("");
-  }
+  },
 };
+
+export function base64Encode(data: Uint8Array): string {
+  let binary = "";
+  for (let i = 0; i < data.length; i++) {
+    binary += String.fromCharCode(data[i]);
+  }
+  return btoa(binary);
+}
+
+export function base64Decode(b64: string): Uint8Array {
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}

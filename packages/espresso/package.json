@@ -1,28 +1,61 @@
 {
   "name": "@kaffee/espresso",
-  "version": "1.0.6",
-  "description": "",
-  "main": "dist/cjs/index.js",
-  "types": "dist/typings/index.d.ts",
-  "module": "dist/esm/index.js",
-  "browser": "dist/umd/index.umd.js",
-  "repository":"ice-drip/espresso",
-  "scripts": {
-    "build": "rollup -c",
-    "ipublish": "pnpm publish --no-git-checks --registry https://registry.npmjs.org/ --access public",
-    "prepublish": "pnpm build"
+  "version": "2.0.0",
+  "description": "TypeScript crypto library — AES, DES, TripleDES, BlowFish, SHA*, MD5, HMAC, PBKDF2, and stream ciphers",
+  "keywords": [
+    "aes",
+    "blowfish",
+    "crypto",
+    "cryptography",
+    "des",
+    "hmac",
+    "pbkdf2",
+    "ripemd",
+    "seed",
+    "sha",
+    "sha256",
+    "sha3",
+    "triple-des",
+    "typescript",
+    "web-crypto"
+  ],
+  "homepage": "https://github.com/ice-drip/espresso#readme",
+  "bugs": {
+    "url": "https://github.com/ice-drip/espresso/issues"
   },
-  "author": "Rikka",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ice-drip/espresso.git",
+    "directory": "packages/espresso"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
   "sideEffects": false,
-  "license": "GPLV3",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/typings/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./dist/typings/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "rslib build",
+    "lint": "tsc --noEmit",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "lint:oxlint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "release": "bumpp"
+  },
   "devDependencies": {
-    "@types/crypto-js": "^4.1.1",
-    "@types/node": "14",
-    "crypto-js": "^4.1.1",
-    "rollup": "^2.70.2",
-    "rollup-plugin-dts": "^4.2.1",
-    "rollup-plugin-typescript2": "^0.31.2",
-    "tslib": "^2.3.1",
-    "typescript": "^4.6.3"
+    "@rslib/core": "^0.23.0",
+    "@typescript/native-preview": "7.0.0-dev.20260623.1",
+    "typescript": "^6.0.3"
   }
 }

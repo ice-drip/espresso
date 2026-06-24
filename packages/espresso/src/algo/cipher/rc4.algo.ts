@@ -6,25 +6,18 @@ export class RC4Algo extends StreamCipher {
   public static keySize = 256 / 32;
   public static ivSize = 0;
   blockSize = 1;
-  private _S: number[] = [];
-  private _i!: number;
-  private _j!: number;
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
-    super(xformMode, key, cfg);
-  }
+  private S: number[] = [];
+  private i!: number;
+  private j!: number;
   reset(): void {
     super.reset();
-    const key = this._key;
+    const key = this.key;
     const keyWords = key.words;
     const keySigBytes = key.sigBytes;
 
     // Init sbox
-    this._S = [];
-    const S: number[] = this._S;
+    this.S = [];
+    const S: number[] = this.S;
     for (let i = 0; i < 256; i++) {
       S[i] = i;
     }
@@ -32,8 +25,7 @@ export class RC4Algo extends StreamCipher {
     // Key setup
     for (let i = 0, j = 0; i < 256; i++) {
       const keyByteIndex = i % keySigBytes;
-      const keyByte =
-        (keyWords[keyByteIndex >>> 2] >>> (24 - (keyByteIndex % 4) * 8)) & 0xff;
+      const keyByte = (keyWords[keyByteIndex >>> 2] >>> (24 - (keyByteIndex % 4) * 8)) & 0xff;
 
       j = (j + S[i] + keyByte) % 256;
 
@@ -44,20 +36,20 @@ export class RC4Algo extends StreamCipher {
     }
 
     // Counters
-    this._j = 0;
-    this._i = this._j;
+    this.j = 0;
+    this.i = this.j;
   }
 
   public generateKeystreamWord(): number {
     // Shortcuts
-    const S = this._S;
-    const i = this._i;
-    let j = this._j;
+    const S = this.S;
+    const i = this.i;
+    let j = this.j;
 
     // Generate keystream word
     let keystreamWord = 0;
     for (let n = 0; n < 4; n++) {
-      this._i = (i + 1) % 256;
+      this.i = (i + 1) % 256;
       j = (j + S[i]) % 256;
 
       // Swap
@@ -69,23 +61,19 @@ export class RC4Algo extends StreamCipher {
     }
 
     // Update counters
-    this._i = i;
-    this._j = j;
+    this.i = i;
+    this.j = j;
 
     return keystreamWord;
   }
 
-  _doProcessBlock(M: number[], offset: number): void {
+  doProcessBlock(M: number[], offset: number): void {
     M[offset] ^= this.generateKeystreamWord();
   }
 }
 
 export class RC4DropAlgo extends RC4Algo {
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
+  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(xformMode, key, Object.assign({ drop: 192 }, cfg));
   }
 

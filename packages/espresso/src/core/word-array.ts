@@ -29,11 +29,11 @@ export class WordArray {
     };
 
     for (let i = 0, rcache; i < nBytes; i += 4) {
-      const _r = r((rcache || Math.random()) * 0x1_00_00_00_00);
+      const rInner = r((rcache || Math.random()) * 0x1_00_00_00_00);
 
-      rcache = _r() * 0x3a_de_67_b7;
+      rcache = rInner() * 0x3a_de_67_b7;
       // eslint-disable-next-line unicorn/prefer-math-trunc
-      words.push((_r() * 0x1_00_00_00_00) | 0);
+      words.push((rInner() * 0x1_00_00_00_00) | 0);
     }
 
     return new WordArray(words, nBytes);
@@ -59,10 +59,8 @@ export class WordArray {
     if (this.sigBytes % 4) {
       // Copy one byte at a time
       for (let i = 0; i < wordArray.sigBytes; i++) {
-        const thatByte =
-          (wordArray.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
-        this.words[(this.sigBytes + i) >>> 2] |=
-          thatByte << (24 - ((this.sigBytes + i) % 4) * 8);
+        const thatByte = (wordArray.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+        this.words[(this.sigBytes + i) >>> 2] |= thatByte << (24 - ((this.sigBytes + i) % 4) * 8);
       }
     } else {
       // Copy one word at a time
@@ -78,8 +76,7 @@ export class WordArray {
 
   clamp(): void {
     // Clamp
-    this.words[this.sigBytes >>> 2] &=
-      0xff_ff_ff_ff << (32 - (this.sigBytes % 4) * 8);
+    this.words[this.sigBytes >>> 2] &= 0xff_ff_ff_ff << (32 - (this.sigBytes % 4) * 8);
     this.words.length = Math.ceil(this.sigBytes / 4);
   }
 

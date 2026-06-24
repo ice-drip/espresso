@@ -2,20 +2,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { BlockCipher } from "../../core/cipher/block-cipher";
 import { WordArray } from "../../core/word-array";
-import { BufferedBlockAlgorithmConfig } from "../../typings/core/buffered-block-algorithm.typing";
 
 // Permuted Choice 1 constants
 const PC1 = [
-  57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35,
-  27, 19, 11, 3, 60, 52, 44, 36, 63, 55, 47, 39, 31, 23, 15, 7, 62, 54, 46, 38,
-  30, 22, 14, 6, 61, 53, 45, 37, 29, 21, 13, 5, 28, 20, 12, 4
+  57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35, 27, 19, 11, 3, 60,
+  52, 44, 36, 63, 55, 47, 39, 31, 23, 15, 7, 62, 54, 46, 38, 30, 22, 14, 6, 61, 53, 45, 37, 29, 21,
+  13, 5, 28, 20, 12, 4,
 ];
 
 // Permuted Choice 2 constants
 const PC2 = [
-  14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4, 26, 8, 16, 7, 27,
-  20, 13, 2, 41, 52, 31, 37, 47, 55, 30, 40, 51, 45, 33, 48, 44, 49, 39, 56, 34,
-  53, 46, 42, 50, 36, 29, 32
+  14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2, 41, 52,
+  31, 37, 47, 55, 30, 40, 51, 45, 33, 48, 44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32,
 ];
 
 // Cumulative bit shift constants
@@ -87,7 +85,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0xc8_00_00_01: 0x80_02_00,
     0xd8_00_00_01: 0x0,
     0xe8_00_00_01: 0x82_00,
-    0xf8_00_00_01: 0x80_80_02
+    0xf8_00_00_01: 0x80_80_02,
   },
   {
     0x0: 0x40_08_40_10,
@@ -153,7 +151,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1c_80_00_00: 0x0,
     0x1d_80_00_00: 0x40_10,
     0x1e_80_00_00: 0x40_08_00_10,
-    0x1f_80_00_00: 0x8_40_00
+    0x1f_80_00_00: 0x8_40_00,
   },
   {
     0x0: 0x1_04,
@@ -219,7 +217,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1_c8_00_00: 0x4_00_01_04,
     0x1_d8_00_00: 0x4_01_00_00,
     0x1_e8_00_00: 0x4,
-    0x1_f8_00_00: 0x1_01_00
+    0x1_f8_00_00: 0x1_01_00,
   },
   {
     0x0: 0x80_40_10_00,
@@ -285,7 +283,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1c_80_00: 0x10_40,
     0x1d_80_00: 0x80_40_10_00,
     0x1e_80_00: 0x40_00_00,
-    0x1f_80_00: 0x40_10_40
+    0x1f_80_00: 0x40_10_40,
   },
   {
     0x0: 0x80,
@@ -351,7 +349,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1_c8_00: 0x1_00_00_80,
     0x1_d8_00: 0x4_00_00,
     0x1_e8_00: 0x20_04_00_00,
-    0x1_f8_00: 0x20_00_00_80
+    0x1_f8_00: 0x20_00_00_80,
   },
   {
     0x0: 0x10_00_00_08,
@@ -417,7 +415,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1c_80: 0x20_00_08,
     0x1d_80: 0x0,
     0x1e_80: 0x10_00_00_00,
-    0x1f_80: 0x10_00_20_08
+    0x1f_80: 0x10_00_20_08,
   },
   {
     0x0: 0x10_00_00,
@@ -483,7 +481,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1_c8: 0x10_04_01,
     0x1_d8: 0x4_00,
     0x1_e8: 0x2_00_04_00,
-    0x1_f8: 0x10_00_01
+    0x1_f8: 0x10_00_01,
   },
   {
     0x0: 0x8_00_08_20,
@@ -549,48 +547,41 @@ const SBOX_P: { [key: number]: number }[] = [
     0x80_00_00_1c: 0x2_08_00,
     0x80_00_00_1d: 0x8_20,
     0x80_00_00_1e: 0x2_00_20,
-    0x80_00_00_1f: 0x8_02_08_00
-  }
+    0x80_00_00_1f: 0x8_02_08_00,
+  },
 ];
 
 // Masks that select the SBOX input
 const SBOX_MASK = [
-  0xf8_00_00_01, 0x1f_80_00_00, 0x01_f8_00_00, 0x00_1f_80_00, 0x00_01_f8_00,
-  0x00_00_1f_80, 0x00_00_01_f8, 0x80_00_00_1f
+  0xf8_00_00_01, 0x1f_80_00_00, 0x01_f8_00_00, 0x00_1f_80_00, 0x00_01_f8_00, 0x00_00_1f_80,
+  0x00_00_01_f8, 0x80_00_00_1f,
 ];
 
 export class DESAlgo extends BlockCipher {
   public static keySize = 64 / 32;
   public static ivSize = 64 / 32;
   blockSize = 64 / 32;
-  private _subKeys!: number[][];
-  private _invSubKeys!: number[][];
-  public _lBlock!: number;
-  public _rBlock!: number;
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
-    super(xformMode, key, cfg);
-  }
+  private subKeys!: number[][];
+  private invSubKeys!: number[][];
+  private lBlock!: number;
+  private rBlock!: number;
   private exchangeRL(offset: number, mask: number): void {
-    const t = ((this._rBlock >>> offset) ^ this._lBlock) & mask;
-    this._lBlock ^= t;
-    this._rBlock ^= t << offset;
+    const t = ((this.rBlock >>> offset) ^ this.lBlock) & mask;
+    this.lBlock ^= t;
+    this.rBlock ^= t << offset;
   }
 
   public encryptBlock(M: number[], offset: number): void {
-    this._doCryptBlock(M, offset, this._subKeys);
+    this.doCryptBlock(M, offset, this.subKeys);
   }
 
   public decryptBlock(M: number[], offset: number): void {
-    this._doCryptBlock(M, offset, this._invSubKeys);
+    this.doCryptBlock(M, offset, this.invSubKeys);
   }
 
   reset(): void {
     super.reset();
-    const key = this._key;
+    const key = this.key;
     const keyWords = key.words;
 
     // Select 56 bits according to PC1
@@ -601,7 +592,7 @@ export class DESAlgo extends BlockCipher {
     }
 
     // Assemble 16 subkeys
-    const subKeys: number[][] = (this._subKeys = []);
+    const subKeys: number[][] = (this.subKeys = []);
     for (let nSubKey = 0; nSubKey < 16; nSubKey++) {
       // Create subkey
       const subKey: number[] = (subKeys[nSubKey] = []);
@@ -613,8 +604,7 @@ export class DESAlgo extends BlockCipher {
       for (let i = 0; i < 24; i++) {
         // Select from the left 28 key bits
         // eslint-disable-next-line unicorn/prefer-math-trunc
-        subKey[(i / 6) | 0] |=
-          keyBits[(PC2[i] - 1 + bitShift) % 28] << (31 - (i % 6));
+        subKey[(i / 6) | 0] |= keyBits[(PC2[i] - 1 + bitShift) % 28] << (31 - (i % 6));
 
         // Select from the right 28 key bits
         // eslint-disable-next-line unicorn/prefer-math-trunc
@@ -633,21 +623,21 @@ export class DESAlgo extends BlockCipher {
     }
 
     // Compute inverse subkeys
-    const invSubKeys: number[][] = (this._invSubKeys = []);
+    const invSubKeys: number[][] = (this.invSubKeys = []);
     for (let i = 0; i < 16; i++) {
       invSubKeys[i] = subKeys[15 - i];
     }
   }
   private exchangeLR(offset: number, mask: number): void {
-    const t = ((this._lBlock >>> offset) ^ this._rBlock) & mask;
-    this._rBlock ^= t;
-    this._lBlock ^= t << offset;
+    const t = ((this.lBlock >>> offset) ^ this.rBlock) & mask;
+    this.rBlock ^= t;
+    this.lBlock ^= t << offset;
   }
 
-  _doCryptBlock(M: number[], offset: number, subKeys: number[][]): void {
+  doCryptBlock(M: number[], offset: number, subKeys: number[][]): void {
     // Get input
-    this._lBlock = M[offset];
-    this._rBlock = M[offset + 1];
+    this.lBlock = M[offset];
+    this.rBlock = M[offset + 1];
 
     // Initial permutation
     this.exchangeLR(4, 0x0f_0f_0f_0f);
@@ -660,22 +650,22 @@ export class DESAlgo extends BlockCipher {
     for (let round = 0; round < 16; round++) {
       // Shortcuts
       const subKey = subKeys[round];
-      const lBlock = this._lBlock;
-      const rBlock = this._rBlock;
+      const lBlock = this.lBlock;
+      const rBlock = this.rBlock;
 
       // Feistel function
       let f = 0;
       for (let i = 0; i < 8; i++) {
         f |= SBOX_P[i][((rBlock ^ subKey[i]) & SBOX_MASK[i]) >>> 0];
       }
-      this._lBlock = rBlock;
-      this._rBlock = lBlock ^ f;
+      this.lBlock = rBlock;
+      this.rBlock = lBlock ^ f;
     }
 
     // Undo swap from last round
-    const t = this._lBlock;
-    this._lBlock = this._rBlock;
-    this._rBlock = t;
+    const t = this.lBlock;
+    this.lBlock = this.rBlock;
+    this.rBlock = t;
 
     // Final permutation
     this.exchangeLR(1, 0x55_55_55_55);
@@ -685,8 +675,8 @@ export class DESAlgo extends BlockCipher {
     this.exchangeLR(4, 0x0f_0f_0f_0f);
 
     // Set output
-    M[offset] = this._lBlock;
-    M[offset + 1] = this._rBlock;
+    M[offset] = this.lBlock;
+    M[offset + 1] = this.rBlock;
   }
 }
 
@@ -694,59 +684,41 @@ export class TripleDESAlgo extends BlockCipher {
   public static keySize = 192 / 32;
   public static ivSize = 64 / 32;
   blockSize = 64 / 32;
-  private _des1!: BlockCipher;
-  private _des2!: BlockCipher;
-  private _des3!: BlockCipher;
+  private des1!: BlockCipher;
+  private des2!: BlockCipher;
+  private des3!: BlockCipher;
 
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
-    super(xformMode, key, cfg);
-  }
   public encryptBlock(M: number[], offset: number): void {
-    this._des1.encryptBlock(M, offset);
-    this._des2.decryptBlock(M, offset);
-    this._des3.encryptBlock(M, offset);
+    this.des1.encryptBlock(M, offset);
+    this.des2.decryptBlock(M, offset);
+    this.des3.encryptBlock(M, offset);
   }
   public decryptBlock(M: number[], offset: number): void {
-    this._des3.decryptBlock(M, offset);
-    this._des2.encryptBlock(M, offset);
-    this._des1.decryptBlock(M, offset);
+    this.des3.decryptBlock(M, offset);
+    this.des2.encryptBlock(M, offset);
+    this.des1.decryptBlock(M, offset);
   }
 
   reset(): void {
     super.reset();
 
-    const key = this._key;
+    const key = this.key;
     const keyWords = key.words;
     // Make sure the key length is valid (64, 128 or >= 192 bit)
     if (keyWords.length !== 2 && keyWords.length !== 4 && keyWords.length < 6) {
       throw new Error(
-        "Invalid key length - 3DES requires the key length to be 64, 128, 192 or >192."
+        "Invalid key length - 3DES requires the key length to be 64, 128, 192 or >192.",
       );
     }
 
     // Extend the key according to the keying options defined in 3DES standard
     const key1 = keyWords.slice(0, 2);
-    const key2 =
-      keyWords.length < 4 ? keyWords.slice(0, 2) : keyWords.slice(2, 4);
-    const key3 =
-      keyWords.length < 6 ? keyWords.slice(0, 2) : keyWords.slice(4, 6);
+    const key2 = keyWords.length < 4 ? keyWords.slice(0, 2) : keyWords.slice(2, 4);
+    const key3 = keyWords.length < 6 ? keyWords.slice(0, 2) : keyWords.slice(4, 6);
 
     // Create DES instances
-    this._des1 = DESAlgo.createEncryptor(
-      new WordArray(key1),
-      {}
-    ) as BlockCipher;
-    this._des2 = DESAlgo.createEncryptor(
-      new WordArray(key2),
-      {}
-    ) as BlockCipher;
-    this._des3 = DESAlgo.createEncryptor(
-      new WordArray(key3),
-      {}
-    ) as BlockCipher;
+    this.des1 = DESAlgo.createEncryptor(new WordArray(key1), {}) as BlockCipher;
+    this.des2 = DESAlgo.createEncryptor(new WordArray(key2), {}) as BlockCipher;
+    this.des3 = DESAlgo.createEncryptor(new WordArray(key3), {}) as BlockCipher;
   }
 }

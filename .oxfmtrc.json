@@ -1,0 +1,12 @@
+{
+  "indentStyle": "space",
+  "indentWidth": 2,
+  "lineWidth": 100,
+  "quoteStyle": "double",
+  "semicolons": "always",
+  "arrowParens": "always",
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "singleQuote": false
+}

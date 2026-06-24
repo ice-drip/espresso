@@ -3,6 +3,7 @@
 import { CipherParams } from "../core/cipher/cipher-params";
 import { WordArray } from "../core/word-array";
 import { Base64 } from "../enc/base64";
+import { hexDecode, hexEncode } from "../enc/hex";
 
 /**
  * OpenSSL 格式化策略
@@ -19,9 +20,7 @@ export const OpenSSL = {
         throw new TypeError("salt is expected to be a WordArray");
       }
 
-      wordArray = new WordArray([0x53_61_6c_74, 0x65_64_5f_5f])
-        .concat(salt)
-        .concat(ciphertext);
+      wordArray = new WordArray([0x53_61_6c_74, 0x65_64_5f_5f]).concat(salt).concat(ciphertext);
     } else {
       wordArray = ciphertext;
     }
@@ -32,14 +31,42 @@ export const OpenSSL = {
     const ciphertext = Base64.parse(openSSlStr);
 
     let salt: WordArray | undefined;
-    if (
-      ciphertext.words[0] === 0x53_61_6c_74 &&
-      ciphertext.words[1] === 0x65_64_5f_5f
-    ) {
+    if (ciphertext.words[0] === 0x53_61_6c_74 && ciphertext.words[1] === 0x65_64_5f_5f) {
       salt = new WordArray(ciphertext.words.slice(2, 4));
       ciphertext.words.splice(0, 4);
       ciphertext.sigBytes -= 16;
     }
     return new CipherParams({ ciphertext, salt });
-  }
+  },
 };
+
+export interface OpenSSLParams {
+  ciphertext: Uint8Array;
+  salt?: Uint8Array;
+}
+
+export function openSSLFormat(data: OpenSSLParams): string {
+  const prefix = "Salted__";
+  const saltHex = data.salt ? hexEncode(data.salt) : "";
+  const ctHex = hexEncode(data.ciphertext);
+  return prefix + saltHex + ctHex;
+}
+
+export function openSSLParse(str: string): OpenSSLParams {
+  const prefix = "Salted__";
+  if (!str.startsWith(prefix)) {
+    throw new Error("Invalid OpenSSL format");
+  }
+
+  const hex = str.slice(prefix.length);
+  const bytes = hexDecode(hex);
+
+  if (bytes.length < 8) {
+    throw new Error("Invalid OpenSSL format: too short");
+  }
+
+  return {
+    salt: bytes.slice(0, 8),
+    ciphertext: bytes.slice(8),
+  };
+}

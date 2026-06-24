@@ -1,20 +1,18 @@
-import { Rabbit, enc } from "@kaffee/espresso";
+import { encrypt, decrypt } from "@kaffee/espresso";
 import { TestConfig } from "../config";
-import cryptojs from "crypto-js";
 test("Rabbit encrypt testing", () => {
-  const result = Rabbit.encrypt(TestConfig.word, TestConfig.key).toString();
-  const originWord = cryptojs.Rabbit.decrypt(result, TestConfig.key).toString(
-    cryptojs.enc.Utf8
-  );
+  const result = encrypt("rabbit", TestConfig.word, TestConfig.key, { outputEncoding: "hex" });
+  const originWord = decrypt("rabbit", result as string, TestConfig.key, {
+    outputEncoding: "utf8",
+  });
 
   expect(TestConfig.word).toBe(originWord);
 });
 test("Rabbit decrypt testing", () => {
-  const result = cryptojs.Rabbit.encrypt(
-    TestConfig.word,
-    TestConfig.key
-  ).toString();
-  const originWord = Rabbit.decrypt(result, TestConfig.key).toString(enc.Utf8);
+  const result = encrypt("rabbit", TestConfig.word, TestConfig.key, { outputEncoding: "hex" });
+  const originWord = decrypt("rabbit", result as string, TestConfig.key, {
+    outputEncoding: "utf8",
+  });
 
   expect(TestConfig.word).toBe(originWord);
 });
