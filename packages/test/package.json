@@ -1,7 +1,7 @@
 {
   "name": "@ice-drip/espresso-test",
   "version": "1.0.0",
-  "description": "",
+  "description": "Compatibility and unit tests for @kaffee/espresso",
   "keywords": [],
   "license": "ISC",
   "author": "",

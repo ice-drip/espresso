@@ -1,16 +1,34 @@
 {
   "name": "@kaffee/espresso",
   "version": "2.0.0",
-  "description": "TypeScript crypto library with Web Crypto + pure JS dual runtime",
+  "description": "TypeScript crypto library — AES, DES, TripleDES, BlowFish, SHA*, MD5, HMAC, PBKDF2, and stream ciphers",
   "keywords": [
     "aes",
+    "blowfish",
     "crypto",
+    "cryptography",
     "des",
     "hmac",
+    "pbkdf2",
+    "ripemd",
     "sha",
+    "sha256",
+    "sha3",
+    "seed",
+    "triple-des",
+    "typescript",
     "web-crypto"
   ],
   "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ice-drip/espresso.git",
+    "directory": "packages/espresso"
+  },
+  "homepage": "https://github.com/ice-drip/espresso#readme",
+  "bugs": {
+    "url": "https://github.com/ice-drip/espresso/issues"
+  },
   "files": [
     "dist"
   ],
