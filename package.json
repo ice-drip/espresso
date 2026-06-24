@@ -20,9 +20,10 @@
     "lint:oxlint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "typecheck": "tsc -p packages/espresso/tsconfig.json --noEmit",
-    "release": "bumpp",
+    "release": "bumpp --tag \"@kaffee/espresso@%s\" --commit \"chore(release): @kaffee/espresso@%s\" --execute \"pnpm run release:execute\" packages/espresso/package.json",
     "release:check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
-    "release:changelog": "cd packages/espresso && conventional-changelog -p angular -i CHANGELOG.md -s"
+    "release:changelog": "cd packages/espresso && conventional-changelog -p angular -i CHANGELOG.md -s",
+    "release:execute": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && cd packages/espresso && conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "devDependencies": {
     "@types/node": "^26.0.0",
