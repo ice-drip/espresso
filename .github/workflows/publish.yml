@@ -19,9 +19,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          registry-url: https://registry.npmjs.org
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
         working-directory: packages/espresso
-      - run: npm publish --provenance --access public
+      - run: |
+          rm -f ~/.npmrc
+          npm publish --provenance --access public
         working-directory: packages/espresso
