@@ -8,6 +8,7 @@
     "lint": "cd packages/espresso && pnpm lint"
   },
   "devDependencies": {
+    "@types/node": "^26.0.0",
     "typescript": "^5.5"
   },
   "license": "GPL-3.0"
