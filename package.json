@@ -11,7 +11,7 @@
     "format:check": "oxfmt --check .",
     "lint:oxlint": "oxlint .",
     "lint:fix": "oxlint --fix .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p packages/espresso/tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@types/node": "^26.0.0",
