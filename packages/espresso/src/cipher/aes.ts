@@ -1,5 +1,5 @@
-import { CipherOptions } from '../core/types';
-import { pkcs7Pad, pkcs7Unpad } from './padding/pkcs7';
+import { CipherOptions } from "../core/types";
+import { pkcs7Pad, pkcs7Unpad } from "./padding/pkcs7";
 
 const _SBOX: number[] = [];
 const INV_SBOX: number[] = [];
@@ -39,8 +39,7 @@ for (let i = 0; i < 256; i++) {
   _SUB_MIX_2[x] = (t << 8) | (t >>> 24);
   _SUB_MIX_3[x] = t;
 
-  t =
-    (x8 * 0x1010101) ^ (x4 * 0x10001) ^ (x2 * 0x101) ^ (x * 0x1010100);
+  t = (x8 * 0x1010101) ^ (x4 * 0x10001) ^ (x2 * 0x101) ^ (x * 0x1010100);
   INV_SUB_MIX_0[sx] = (t << 24) | (t >>> 8);
   INV_SUB_MIX_1[sx] = (t << 16) | (t >>> 16);
   INV_SUB_MIX_2[sx] = (t << 8) | (t >>> 24);
@@ -56,14 +55,19 @@ for (let i = 0; i < 256; i++) {
 
 const RCON = [0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36];
 
-function expandKey(key: Uint8Array): { keySchedule: number[]; invKeySchedule: number[]; nRounds: number } {
+function expandKey(key: Uint8Array): {
+  keySchedule: number[];
+  invKeySchedule: number[];
+  nRounds: number;
+} {
   const keyWords: number[] = [];
   const keyLen = key.length;
   const nk = keyLen / 4;
   const nRounds = nk + 6;
 
   for (let i = 0; i < nk; i++) {
-    keyWords[i] = (key[i * 4] << 24) | (key[i * 4 + 1] << 16) | (key[i * 4 + 2] << 8) | key[i * 4 + 3];
+    keyWords[i] =
+      (key[i * 4] << 24) | (key[i * 4 + 1] << 16) | (key[i * 4 + 2] << 8) | key[i * 4 + 3];
   }
 
   const ksRows = (nRounds + 1) * 4;
@@ -120,7 +124,7 @@ function doCryptBlock(
   SUB_MIX_2: number[],
   SUB_MIX_3: number[],
   SBOX: number[],
-  nRounds: number
+  nRounds: number,
 ): void {
   let s0 = state[0] ^ keySchedule[0];
   let s1 = state[1] ^ keySchedule[1];
@@ -230,7 +234,16 @@ function decryptBlock(block: Uint8Array, invKeySchedule: number[], nRounds: numb
   state[1] = state[3];
   state[3] = t;
 
-  doCryptBlock(state, invKeySchedule, INV_SUB_MIX_0, INV_SUB_MIX_1, INV_SUB_MIX_2, INV_SUB_MIX_3, INV_SBOX, nRounds);
+  doCryptBlock(
+    state,
+    invKeySchedule,
+    INV_SUB_MIX_0,
+    INV_SUB_MIX_1,
+    INV_SUB_MIX_2,
+    INV_SUB_MIX_3,
+    INV_SBOX,
+    nRounds,
+  );
 
   t = state[1];
   state[1] = state[3];
@@ -264,12 +277,12 @@ function xorBlocks(a: Uint8Array, b: Uint8Array): Uint8Array {
 
 export function aesEncrypt(data: Uint8Array, key: Uint8Array, opts: CipherOptions): Uint8Array {
   const { keySchedule, nRounds } = expandKey(key);
-  const mode = opts.mode ?? 'cbc';
-  const iv = typeof opts.iv === 'string' ? hexToBytes(opts.iv) : opts.iv;
-  const padding = opts.padding ?? 'pkcs7';
+  const mode = opts.mode ?? "cbc";
+  const iv = typeof opts.iv === "string" ? hexToBytes(opts.iv) : opts.iv;
+  const padding = opts.padding ?? "pkcs7";
 
   let padded = data;
-  if (padding === 'pkcs7') {
+  if (padding === "pkcs7") {
     padded = pkcs7Pad(data, 16);
   }
 
@@ -280,14 +293,14 @@ export function aesEncrypt(data: Uint8Array, key: Uint8Array, opts: CipherOption
   for (let i = 0; i < padded.length; i += 16) {
     const currentBlock = padded.slice(i, i + 16);
 
-    if (mode === 'cbc') {
+    if (mode === "cbc") {
       for (let j = 0; j < 16; j++) {
         block[j] = currentBlock[j] ^ prevBlock[j];
       }
       encryptBlock(block, keySchedule, nRounds);
       result.set(block, i);
       prevBlock = block.slice();
-    } else if (mode === 'ecb') {
+    } else if (mode === "ecb") {
       block.set(currentBlock);
       encryptBlock(block, keySchedule, nRounds);
       result.set(block, i);
@@ -299,9 +312,9 @@ export function aesEncrypt(data: Uint8Array, key: Uint8Array, opts: CipherOption
 
 export function aesDecrypt(data: Uint8Array, key: Uint8Array, opts: CipherOptions): Uint8Array {
   const { invKeySchedule, nRounds } = expandKey(key);
-  const mode = opts.mode ?? 'cbc';
-  const iv = typeof opts.iv === 'string' ? hexToBytes(opts.iv) : opts.iv;
-  const padding = opts.padding ?? 'pkcs7';
+  const mode = opts.mode ?? "cbc";
+  const iv = typeof opts.iv === "string" ? hexToBytes(opts.iv) : opts.iv;
+  const padding = opts.padding ?? "pkcs7";
 
   const result = new Uint8Array(data.length);
   const block = new Uint8Array(16);
@@ -310,28 +323,28 @@ export function aesDecrypt(data: Uint8Array, key: Uint8Array, opts: CipherOption
   for (let i = 0; i < data.length; i += 16) {
     const currentBlock = data.slice(i, i + 16);
 
-    if (mode === 'cbc') {
+    if (mode === "cbc") {
       block.set(currentBlock);
       decryptBlock(block, invKeySchedule, nRounds);
       for (let j = 0; j < 16; j++) {
         result[i + j] = block[j] ^ prevBlock[j];
       }
       prevBlock = currentBlock.slice();
-    } else if (mode === 'ecb') {
+    } else if (mode === "ecb") {
       block.set(currentBlock);
       decryptBlock(block, invKeySchedule, nRounds);
       result.set(block, i);
     }
   }
 
-  if (padding === 'pkcs7') {
+  if (padding === "pkcs7") {
     return pkcs7Unpad(result);
   }
   return result;
 }
 
 function hexToBytes(hex: string): Uint8Array {
-  if (hex.length % 2 !== 0) throw new Error('Invalid hex string');
+  if (hex.length % 2 !== 0) throw new Error("Invalid hex string");
   const bytes = new Uint8Array(hex.length / 2);
   for (let i = 0; i < hex.length; i += 2) {
     bytes[i / 2] = Number.parseInt(hex.substring(i, i + 2), 16);

@@ -1,4 +1,4 @@
-import { rotateLeft } from '../core/utils';
+import { rotateLeft } from "../core/utils";
 
 const T: number[] = [];
 for (let i = 0; i < 64; i++) {
@@ -29,7 +29,7 @@ function bytesToWords(bytes: Uint8Array): number[] {
   const words: number[] = [];
   for (let i = 0; i < bytes.length; i += 4) {
     words.push(
-      ((bytes[i] << 24) | (bytes[i + 1] << 16) | (bytes[i + 2] << 8) | bytes[i + 3]) >>> 0
+      ((bytes[i] << 24) | (bytes[i + 1] << 16) | (bytes[i + 2] << 8) | bytes[i + 3]) >>> 0,
     );
   }
   return words;
@@ -73,10 +73,18 @@ export function md5(data: Uint8Array): Uint8Array {
     const M: number[] = [];
     for (let i = 0; i < 16; i++) {
       const idx = offset + i * 4;
-      M[i] = (padded[idx] | (padded[idx + 1] << 8) | (padded[idx + 2] << 16) | (padded[idx + 3] << 24)) >>> 0;
+      M[i] =
+        (padded[idx] |
+          (padded[idx + 1] << 8) |
+          (padded[idx + 2] << 16) |
+          (padded[idx + 3] << 24)) >>>
+        0;
     }
 
-    let a = h0, b = h1, c = h2, d = h3;
+    let a = h0,
+      b = h1,
+      c = h2,
+      d = h3;
 
     // Round 1
     a = FF(a, b, c, d, M[0], 7, T[0]);

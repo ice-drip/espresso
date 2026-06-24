@@ -1,13 +1,16 @@
-import { rotateRight } from '../core/utils';
+import { rotateRight } from "../core/utils";
 
-const H0 = [
-  0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0,
-];
+const H0 = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
 
 function sha1Block(h: number[], block: Uint8Array): void {
   const w = new Array(80);
   for (let i = 0; i < 16; i++) {
-    w[i] = ((block[i * 4] << 24) | (block[i * 4 + 1] << 16) | (block[i * 4 + 2] << 8) | block[i * 4 + 3]) >>> 0;
+    w[i] =
+      ((block[i * 4] << 24) |
+        (block[i * 4 + 1] << 16) |
+        (block[i * 4 + 2] << 8) |
+        block[i * 4 + 3]) >>>
+      0;
   }
   for (let i = 16; i < 80; i++) {
     const n = w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16];

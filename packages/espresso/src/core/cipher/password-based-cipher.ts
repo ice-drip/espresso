@@ -16,13 +16,13 @@ export class PasswordBasedCipher {
     // blockSize: 4,
     iv: new WordArray([]),
     format: OpenSSL,
-    kdf: OpenSSLKdf
+    kdf: OpenSSLKdf,
   } as BufferedBlockAlgorithmConfig;
   public static encrypt(
     cipher: typeof Cipher,
     message: WordArray | string,
     password: string,
-    cfg?: BufferedBlockAlgorithmConfig
+    cfg?: BufferedBlockAlgorithmConfig,
   ): CipherParams {
     // Apply config defaults
     const config = Object.assign({}, this.cfg, cfg);
@@ -32,11 +32,7 @@ export class PasswordBasedCipher {
     }
 
     // Derive key and other params
-    const derivedParams: CipherParams = config.kdf.execute(
-      password,
-      cipher.keySize,
-      cipher.ivSize
-    );
+    const derivedParams: CipherParams = config.kdf.execute(password, cipher.keySize, cipher.ivSize);
 
     // Check if we have an IV
     if (derivedParams.iv !== undefined) {
@@ -50,7 +46,7 @@ export class PasswordBasedCipher {
       cipher,
       message,
       derivedParams.key as WordArray,
-      config
+      config,
     );
 
     // Mix in derived params
@@ -61,7 +57,7 @@ export class PasswordBasedCipher {
     cipher: typeof Cipher,
     ciphertext: CipherParams | string,
     password: string,
-    cfg?: BufferedBlockAlgorithmConfig
+    cfg?: BufferedBlockAlgorithmConfig,
   ): WordArray {
     // Apply config defaults
     const config = Object.assign({}, this.cfg, cfg);
@@ -84,7 +80,7 @@ export class PasswordBasedCipher {
       password,
       cipher.keySize,
       cipher.ivSize,
-      ciphertext.salt
+      ciphertext.salt,
     );
 
     // Check if we have an IV
@@ -99,18 +95,13 @@ export class PasswordBasedCipher {
       cipher,
       ciphertext,
       derivedParams.key as WordArray,
-      config
+      config,
     );
 
     return plaintext;
   }
 
-  public static _parse(
-    ciphertext: CipherParams | string,
-    format: Formatter
-  ): CipherParams {
-    return typeof ciphertext === "string"
-      ? format.parse(ciphertext)
-      : ciphertext;
+  public static _parse(ciphertext: CipherParams | string, format: Formatter): CipherParams {
+    return typeof ciphertext === "string" ? format.parse(ciphertext) : ciphertext;
   }
 }

@@ -1,4 +1,4 @@
-import { BlockMode, BlockEncryptFn, BlockDecryptFn } from './types';
+import { BlockMode, BlockEncryptFn, BlockDecryptFn } from "./types";
 
 function xorBlocks(a: Uint8Array, b: Uint8Array): Uint8Array {
   const result = new Uint8Array(a.length);
@@ -25,10 +25,7 @@ export const CFB: BlockMode = {
       const block = data.slice(i, i + remaining);
       const encrypted = xorBlocks(keystream.slice(0, remaining), block);
       result.set(encrypted, i);
-      shiftReg = new Uint8Array([
-        ...encrypted,
-        ...shiftReg.slice(remaining),
-      ]);
+      shiftReg = new Uint8Array([...encrypted, ...shiftReg.slice(remaining)]);
     }
 
     return result;

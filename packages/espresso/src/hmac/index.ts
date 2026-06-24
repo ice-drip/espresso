@@ -1,17 +1,17 @@
-import { HashAlgorithm, HashOptions } from '../core/types';
-import { hash } from '../hash';
-import { hexDecode } from '../enc/hex';
+import { HashAlgorithm, HashOptions } from "../core/types";
+import { hash } from "../hash";
+import { hexDecode } from "../enc/hex";
 
 export function hmac(
   algorithm: HashAlgorithm,
   data: string | Uint8Array,
   key: string | Uint8Array,
-  options?: HashOptions
+  options?: HashOptions,
 ): string | Uint8Array {
-  const keyBytes = typeof key === 'string' ? new TextEncoder().encode(key) : key;
-  const dataBytes = typeof data === 'string' ? new TextEncoder().encode(data) : data;
+  const keyBytes = typeof key === "string" ? new TextEncoder().encode(key) : key;
+  const dataBytes = typeof data === "string" ? new TextEncoder().encode(data) : data;
 
-  const blockSize = ['sha384', 'sha512'].includes(algorithm) ? 128 : 64;
+  const blockSize = ["sha384", "sha512"].includes(algorithm) ? 128 : 64;
 
   let k = keyBytes;
   if (k.length > blockSize) {

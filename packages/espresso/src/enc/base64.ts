@@ -5,7 +5,7 @@ import { Encoding } from "../typings/core/encoding.typing";
 function parseLoop(
   base64Str: string,
   base64StrLength: number,
-  reverseMap: Array<number>
+  reverseMap: Array<number>,
 ): WordArray {
   const words: number[] = [];
   let nBytes = 0;
@@ -55,10 +55,8 @@ export const Base64: Encoding & { _reverseMap?: number[]; _map: string } = {
     const base64Chars = [];
     for (let i = 0; i < wordArray.sigBytes; i += 3) {
       const byte1 = (wordArray.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
-      const byte2 =
-        (wordArray.words[(i + 1) >>> 2] >>> (24 - ((i + 1) % 4) * 8)) & 0xff;
-      const byte3 =
-        (wordArray.words[(i + 2) >>> 2] >>> (24 - ((i + 2) % 4) * 8)) & 0xff;
+      const byte2 = (wordArray.words[(i + 1) >>> 2] >>> (24 - ((i + 1) % 4) * 8)) & 0xff;
+      const byte3 = (wordArray.words[(i + 2) >>> 2] >>> (24 - ((i + 2) % 4) * 8)) & 0xff;
       const triplet = (byte1 << 16) | (byte2 << 8) | byte3;
 
       for (let j = 0; j < 4 && i + j * 0.75 < wordArray.sigBytes; j++) {
@@ -73,7 +71,7 @@ export const Base64: Encoding & { _reverseMap?: number[]; _map: string } = {
     }
 
     return base64Chars.join("");
-  }
+  },
 };
 
 export function base64Encode(data: Uint8Array): string {

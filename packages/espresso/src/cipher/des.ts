@@ -1,16 +1,15 @@
-import { CipherOptions } from '../core/types';
-import { pkcs7Pad, pkcs7Unpad } from './padding/pkcs7';
+import { CipherOptions } from "../core/types";
+import { pkcs7Pad, pkcs7Unpad } from "./padding/pkcs7";
 
 const PC1 = [
-  57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35,
-  27, 19, 11, 3, 60, 52, 44, 36, 63, 55, 47, 39, 31, 23, 15, 7, 62, 54, 46, 38,
-  30, 22, 14, 6, 61, 53, 45, 37, 29, 21, 13, 5, 28, 20, 12, 4
+  57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35, 27, 19, 11, 3, 60,
+  52, 44, 36, 63, 55, 47, 39, 31, 23, 15, 7, 62, 54, 46, 38, 30, 22, 14, 6, 61, 53, 45, 37, 29, 21,
+  13, 5, 28, 20, 12, 4,
 ];
 
 const PC2 = [
-  14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4, 26, 8, 16, 7, 27,
-  20, 13, 2, 41, 52, 31, 37, 47, 55, 30, 40, 51, 45, 33, 48, 44, 49, 39, 56, 34,
-  53, 46, 42, 50, 36, 29, 32
+  14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2, 41, 52,
+  31, 37, 47, 55, 30, 40, 51, 45, 33, 48, 44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32,
 ];
 
 const BIT_SHIFTS = [1, 2, 4, 6, 8, 10, 12, 14, 15, 17, 19, 21, 23, 25, 27, 28];
@@ -80,7 +79,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0xc8_00_00_01: 0x80_02_00,
     0xd8_00_00_01: 0x0,
     0xe8_00_00_01: 0x82_00,
-    0xf8_00_00_01: 0x80_80_02
+    0xf8_00_00_01: 0x80_80_02,
   },
   {
     0x0: 0x40_08_40_10,
@@ -146,7 +145,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1c_80_00_00: 0x0,
     0x1d_80_00_00: 0x40_10,
     0x1e_80_00_00: 0x40_08_00_10,
-    0x1f_80_00_00: 0x8_40_00
+    0x1f_80_00_00: 0x8_40_00,
   },
   {
     0x0: 0x1_04,
@@ -212,7 +211,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1_c8_00_00: 0x4_00_01_04,
     0x1_d8_00_00: 0x4_01_00_00,
     0x1_e8_00_00: 0x4,
-    0x1_f8_00_00: 0x1_01_00
+    0x1_f8_00_00: 0x1_01_00,
   },
   {
     0x0: 0x80_40_10_00,
@@ -278,7 +277,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1c_80_00: 0x10_40,
     0x1d_80_00: 0x80_40_10_00,
     0x1e_80_00: 0x40_00_00,
-    0x1f_80_00: 0x40_10_40
+    0x1f_80_00: 0x40_10_40,
   },
   {
     0x0: 0x80,
@@ -344,7 +343,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1_c8_00: 0x1_00_00_80,
     0x1_d8_00: 0x4_00_00,
     0x1_e8_00: 0x20_04_00_00,
-    0x1_f8_00: 0x20_00_00_80
+    0x1_f8_00: 0x20_00_00_80,
   },
   {
     0x0: 0x10_00_00_08,
@@ -410,7 +409,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1c_80: 0x20_00_08,
     0x1d_80: 0x0,
     0x1e_80: 0x10_00_00_00,
-    0x1f_80: 0x10_00_20_08
+    0x1f_80: 0x10_00_20_08,
   },
   {
     0x0: 0x10_00_00,
@@ -476,7 +475,7 @@ const SBOX_P: { [key: number]: number }[] = [
     0x1_c8: 0x10_04_01,
     0x1_d8: 0x4_00,
     0x1_e8: 0x2_00_04_00,
-    0x1_f8: 0x10_00_01
+    0x1_f8: 0x10_00_01,
   },
   {
     0x0: 0x8_00_08_20,
@@ -542,19 +541,20 @@ const SBOX_P: { [key: number]: number }[] = [
     0x80_00_00_1c: 0x2_08_00,
     0x80_00_00_1d: 0x8_20,
     0x80_00_00_1e: 0x2_00_20,
-    0x80_00_00_1f: 0x8_02_08_00
-  }
+    0x80_00_00_1f: 0x8_02_08_00,
+  },
 ];
 
 const SBOX_MASK = [
-  0xf8_00_00_01, 0x1f_80_00_00, 0x01_f8_00_00, 0x00_1f_80_00, 0x00_01_f8_00,
-  0x00_00_1f_80, 0x00_00_01_f8, 0x80_00_00_1f
+  0xf8_00_00_01, 0x1f_80_00_00, 0x01_f8_00_00, 0x00_1f_80_00, 0x00_01_f8_00, 0x00_00_1f_80,
+  0x00_00_01_f8, 0x80_00_00_1f,
 ];
 
 function desExpandKey(key: Uint8Array): { subKeys: number[][]; invSubKeys: number[][] } {
   const keyWords: number[] = [];
   for (let i = 0; i < 8; i++) {
-    keyWords[i] = (key[i * 4] << 24) | (key[i * 4 + 1] << 16) | (key[i * 4 + 2] << 8) | key[i * 4 + 3];
+    keyWords[i] =
+      (key[i * 4] << 24) | (key[i * 4 + 1] << 16) | (key[i * 4 + 2] << 8) | key[i * 4 + 3];
   }
 
   const keyBits: number[] = [];
@@ -569,8 +569,7 @@ function desExpandKey(key: Uint8Array): { subKeys: number[][]; invSubKeys: numbe
     const bitShift = BIT_SHIFTS[nSubKey];
 
     for (let i = 0; i < 24; i++) {
-      subKey[(i / 6) | 0] |=
-        keyBits[(PC2[i] - 1 + bitShift) % 28] << (31 - (i % 6));
+      subKey[(i / 6) | 0] |= keyBits[(PC2[i] - 1 + bitShift) % 28] << (31 - (i % 6));
       subKey[4 + ((i / 6) | 0)] |=
         keyBits[28 + ((PC2[i + 24] - 1 + bitShift) % 28)] << (31 - (i % 6));
     }
@@ -591,35 +590,48 @@ function desExpandKey(key: Uint8Array): { subKeys: number[][]; invSubKeys: numbe
 }
 
 function exchangeLR(
-  lBlock: number, rBlock: number, offset: number, mask: number
+  lBlock: number,
+  rBlock: number,
+  offset: number,
+  mask: number,
 ): { lBlock: number; rBlock: number } {
   const t = ((lBlock >>> offset) ^ rBlock) & mask;
   return { lBlock: lBlock ^ (t << offset), rBlock: rBlock ^ t };
 }
 
 function exchangeRL(
-  lBlock: number, rBlock: number, offset: number, mask: number
+  lBlock: number,
+  rBlock: number,
+  offset: number,
+  mask: number,
 ): { lBlock: number; rBlock: number } {
   const t = ((rBlock >>> offset) ^ lBlock) & mask;
   return { lBlock: lBlock ^ t, rBlock: rBlock ^ (t << offset) };
 }
 
 function desDoCryptBlock(
-  lBlock: number, rBlock: number, subKeys: number[][]
+  lBlock: number,
+  rBlock: number,
+  subKeys: number[][],
 ): { lBlock: number; rBlock: number } {
   let l = lBlock;
   let r = rBlock;
 
   let tmp = exchangeLR(l, r, 4, 0x0f_0f_0f_0f);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
   tmp = exchangeLR(l, r, 16, 0x00_00_ff_ff);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
   tmp = exchangeRL(l, r, 2, 0x33_33_33_33);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
   tmp = exchangeRL(l, r, 8, 0x00_ff_00_ff);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
   tmp = exchangeLR(l, r, 1, 0x55_55_55_55);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
 
   for (let round = 0; round < 16; round++) {
     const subKey = subKeys[round];
@@ -638,15 +650,20 @@ function desDoCryptBlock(
   r = t;
 
   tmp = exchangeLR(l, r, 1, 0x55_55_55_55);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
   tmp = exchangeRL(l, r, 8, 0x00_ff_00_ff);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
   tmp = exchangeRL(l, r, 2, 0x33_33_33_33);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
   tmp = exchangeLR(l, r, 16, 0x00_00_ff_ff);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
   tmp = exchangeLR(l, r, 4, 0x0f_0f_0f_0f);
-  l = tmp.lBlock; r = tmp.rBlock;
+  l = tmp.lBlock;
+  r = tmp.rBlock;
 
   return { lBlock: l, rBlock: r };
 }
@@ -680,7 +697,7 @@ function xorBlocks(a: Uint8Array, b: Uint8Array, len: number): Uint8Array {
 }
 
 function hexToBytes(hex: string): Uint8Array {
-  if (hex.length % 2 !== 0) throw new Error('Invalid hex string');
+  if (hex.length % 2 !== 0) throw new Error("Invalid hex string");
   const bytes = new Uint8Array(hex.length / 2);
   for (let i = 0; i < hex.length; i += 2) {
     bytes[i / 2] = Number.parseInt(hex.substring(i, i + 2), 16);
@@ -700,22 +717,22 @@ function applyPadding(data: Uint8Array, blockSize: number): Uint8Array {
 
 function removePadding(data: Uint8Array): Uint8Array {
   const padLen = data[data.length - 1];
-  if (padLen < 1 || padLen > 8) throw new Error('Invalid PKCS7 padding');
+  if (padLen < 1 || padLen > 8) throw new Error("Invalid PKCS7 padding");
   for (let i = data.length - padLen; i < data.length; i++) {
-    if (data[i] !== padLen) throw new Error('Invalid PKCS7 padding');
+    if (data[i] !== padLen) throw new Error("Invalid PKCS7 padding");
   }
   return data.slice(0, data.length - padLen);
 }
 
 export function desEncrypt(data: Uint8Array, key: Uint8Array, opts: CipherOptions): Uint8Array {
   const { subKeys } = desExpandKey(key);
-  const mode = opts.mode ?? 'cbc';
-  const iv = typeof opts.iv === 'string' ? hexToBytes(opts.iv) : opts.iv;
-  const padding = opts.padding ?? 'pkcs7';
+  const mode = opts.mode ?? "cbc";
+  const iv = typeof opts.iv === "string" ? hexToBytes(opts.iv) : opts.iv;
+  const padding = opts.padding ?? "pkcs7";
   const blockSize = 8;
 
   let padded = data;
-  if (padding === 'pkcs7') {
+  if (padding === "pkcs7") {
     padded = applyPadding(data, blockSize);
   }
 
@@ -726,14 +743,14 @@ export function desEncrypt(data: Uint8Array, key: Uint8Array, opts: CipherOption
   for (let i = 0; i < padded.length; i += blockSize) {
     const currentBlock = padded.slice(i, i + blockSize);
 
-    if (mode === 'cbc') {
+    if (mode === "cbc") {
       for (let j = 0; j < blockSize; j++) {
         block[j] = currentBlock[j] ^ prevBlock[j];
       }
       desEncryptBlock(block, subKeys);
       result.set(block, i);
       prevBlock = block.slice();
-    } else if (mode === 'ecb') {
+    } else if (mode === "ecb") {
       block.set(currentBlock);
       desEncryptBlock(block, subKeys);
       result.set(block, i);
@@ -745,9 +762,9 @@ export function desEncrypt(data: Uint8Array, key: Uint8Array, opts: CipherOption
 
 export function desDecrypt(data: Uint8Array, key: Uint8Array, opts: CipherOptions): Uint8Array {
   const { invSubKeys } = desExpandKey(key);
-  const mode = opts.mode ?? 'cbc';
-  const iv = typeof opts.iv === 'string' ? hexToBytes(opts.iv) : opts.iv;
-  const padding = opts.padding ?? 'pkcs7';
+  const mode = opts.mode ?? "cbc";
+  const iv = typeof opts.iv === "string" ? hexToBytes(opts.iv) : opts.iv;
+  const padding = opts.padding ?? "pkcs7";
   const blockSize = 8;
 
   const result = new Uint8Array(data.length);
@@ -757,21 +774,21 @@ export function desDecrypt(data: Uint8Array, key: Uint8Array, opts: CipherOption
   for (let i = 0; i < data.length; i += blockSize) {
     const currentBlock = data.slice(i, i + blockSize);
 
-    if (mode === 'cbc') {
+    if (mode === "cbc") {
       block.set(currentBlock);
       desDecryptBlock(block, invSubKeys);
       for (let j = 0; j < blockSize; j++) {
         result[i + j] = block[j] ^ prevBlock[j];
       }
       prevBlock = currentBlock.slice();
-    } else if (mode === 'ecb') {
+    } else if (mode === "ecb") {
       block.set(currentBlock);
       desDecryptBlock(block, invSubKeys);
       result.set(block, i);
     }
   }
 
-  if (padding === 'pkcs7') {
+  if (padding === "pkcs7") {
     return removePadding(result);
   }
   return result;

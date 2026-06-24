@@ -7,12 +7,7 @@ export function xorBytes(a: Uint8Array, b: Uint8Array): Uint8Array {
 }
 
 export function int32ToBytes(n: number): Uint8Array {
-  return new Uint8Array([
-    (n >>> 24) & 0xff,
-    (n >>> 16) & 0xff,
-    (n >>> 8) & 0xff,
-    n & 0xff,
-  ]);
+  return new Uint8Array([(n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff]);
 }
 
 export function bytesToInt32(bytes: Uint8Array, offset = 0): number {

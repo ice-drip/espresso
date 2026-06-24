@@ -1,23 +1,23 @@
-import { pkcs7Pad, pkcs7Unpad } from '@kaffee/espresso';
-import { zeroPad } from '@kaffee/espresso';
-import { noPad } from '@kaffee/espresso';
+import { pkcs7Pad, pkcs7Unpad } from "@kaffee/espresso";
+import { zeroPad } from "@kaffee/espresso";
+import { noPad } from "@kaffee/espresso";
 
-describe('Padding', () => {
-  describe('PKCS7', () => {
-    it('pads to block size', () => {
+describe("Padding", () => {
+  describe("PKCS7", () => {
+    it("pads to block size", () => {
       const data = new Uint8Array([1, 2, 3]);
       const padded = pkcs7Pad(data, 16);
       expect(padded.length).toBe(16);
       expect(padded[15]).toBe(13);
     });
 
-    it('adds full block when already aligned', () => {
+    it("adds full block when already aligned", () => {
       const data = new Uint8Array(16);
       const padded = pkcs7Pad(data, 16);
       expect(padded.length).toBe(32);
     });
 
-    it('unpads correctly', () => {
+    it("unpads correctly", () => {
       const data = new Uint8Array([1, 2, 3]);
       const padded = pkcs7Pad(data, 16);
       const unpadded = pkcs7Unpad(padded);
@@ -25,8 +25,8 @@ describe('Padding', () => {
     });
   });
 
-  describe('Zero', () => {
-    it('pads with zeros', () => {
+  describe("Zero", () => {
+    it("pads with zeros", () => {
       const data = new Uint8Array([1, 2, 3]);
       const padded = zeroPad(data, 16);
       expect(padded.length).toBe(16);
@@ -34,13 +34,13 @@ describe('Padding', () => {
     });
   });
 
-  describe('No Padding', () => {
-    it('throws if not aligned', () => {
+  describe("No Padding", () => {
+    it("throws if not aligned", () => {
       const data = new Uint8Array([1, 2, 3]);
       expect(() => noPad(data, 16)).toThrow();
     });
 
-    it('passes through if aligned', () => {
+    it("passes through if aligned", () => {
       const data = new Uint8Array(16);
       const result = noPad(data, 16);
       expect(result.length).toBe(16);

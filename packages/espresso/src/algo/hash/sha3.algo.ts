@@ -90,9 +90,7 @@ export class SHA3Algo extends Hasher {
     const blockSizeBits = (this.blockSize as number) * 32;
 
     dataWords[nBitsLeft >>> 5] |= 0x1 << (24 - (nBitsLeft % 32));
-    dataWords[
-      ((Math.ceil((nBitsLeft + 1) / blockSizeBits) * blockSizeBits) >>> 5) - 1
-    ] |= 0x80;
+    dataWords[((Math.ceil((nBitsLeft + 1) / blockSizeBits) * blockSizeBits) >>> 5) - 1] |= 0x80;
     data.sigBytes = dataWords.length * 4;
 
     this._process();

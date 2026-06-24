@@ -11,10 +11,7 @@ export const PKCS7: Padding = {
 
     // Create padding word
     const paddingWord =
-      (nPaddingBytes << 24) |
-      (nPaddingBytes << 16) |
-      (nPaddingBytes << 8) |
-      nPaddingBytes;
+      (nPaddingBytes << 24) | (nPaddingBytes << 16) | (nPaddingBytes << 8) | nPaddingBytes;
 
     // Create padding
     const paddingWords = [];
@@ -30,5 +27,5 @@ export const PKCS7: Padding = {
   unpad(data: WordArray): void {
     const nPaddingBytes = data.words[(data.sigBytes - 1) >>> 2] & 0xff;
     data.sigBytes -= nPaddingBytes;
-  }
+  },
 };

@@ -4,11 +4,7 @@ import { WordArray } from "../word-array";
 import { Cipher } from "./cipher";
 
 export abstract class StreamCipher extends Cipher {
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
+  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(xformMode, key, cfg);
   }
   blockSize = 1;

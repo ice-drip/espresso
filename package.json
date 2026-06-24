@@ -2,6 +2,7 @@
   "name": "@kaffee/espresso-monorepo",
   "private": true,
   "description": "TypeScript crypto library with Web Crypto + pure JS dual runtime",
+  "license": "GPL-3.0",
   "scripts": {
     "build": "cd packages/espresso && pnpm build",
     "test": "cd packages/test && pnpm test",
@@ -17,6 +18,5 @@
     "oxfmt": "^0.56.0",
     "oxlint": "^1.71.0",
     "typescript": "^5.5"
-  },
-  "license": "GPL-3.0"
+  }
 }

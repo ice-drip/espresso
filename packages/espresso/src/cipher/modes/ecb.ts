@@ -1,4 +1,4 @@
-import { BlockMode, BlockEncryptFn, BlockDecryptFn } from './types';
+import { BlockMode, BlockEncryptFn, BlockDecryptFn } from "./types";
 
 export const ECB: BlockMode = {
   encrypt(

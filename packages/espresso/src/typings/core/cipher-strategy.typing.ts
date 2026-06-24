@@ -12,14 +12,14 @@ export interface CipherStrategy {
     _cipher: typeof Cipher,
     _message: WordArray | string,
     _key: WordArray | string,
-    _cfg?: BufferedBlockAlgorithmConfig
+    _cfg?: BufferedBlockAlgorithmConfig,
   ): CipherParams;
 
   decrypt(
     _cipher: typeof Cipher,
     _ciphertext: CipherParams | string,
     _password: string | WordArray,
-    _optionalCfg?: BufferedBlockAlgorithmConfig
+    _optionalCfg?: BufferedBlockAlgorithmConfig,
   ): WordArray;
 
   _parse(_ciphertext: CipherParams | string, _format: Formatter): CipherParams;

@@ -1,4 +1,4 @@
-import { BlockMode, BlockEncryptFn, BlockDecryptFn } from './types';
+import { BlockMode, BlockEncryptFn, BlockDecryptFn } from "./types";
 
 function incrementCounter(counter: Uint8Array): void {
   for (let i = counter.length - 1; i >= 0; i--) {

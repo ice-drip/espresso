@@ -1,32 +1,32 @@
-import { defineConfig } from '@rslib/core';
+import { defineConfig } from "@rslib/core";
 
 export default defineConfig({
   lib: [
     {
-      id: 'esm',
+      id: "esm",
       source: {
-        entry: { index: './src/index.ts' },
+        entry: { index: "./src/index.ts" },
       },
       output: {
-        target: 'node',
-        format: 'esm',
-        distPath: 'dist/esm',
+        target: "node",
+        format: "esm",
+        distPath: "dist/esm",
       },
     },
     {
-      id: 'cjs',
+      id: "cjs",
       source: {
-        entry: { index: './src/index.ts' },
+        entry: { index: "./src/index.ts" },
       },
       output: {
-        target: 'node',
-        format: 'cjs',
-        distPath: 'dist/cjs',
+        target: "node",
+        format: "cjs",
+        distPath: "dist/cjs",
         autoExtension: true,
       },
     },
   ],
   dts: {
-    distPath: 'dist/typings',
+    distPath: "dist/typings",
   },
 });

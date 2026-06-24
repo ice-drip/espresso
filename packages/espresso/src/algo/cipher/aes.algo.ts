@@ -49,8 +49,7 @@ for (let i = 0; i < 256; i++) {
   _SUB_MIX_3[x] = t;
 
   // Compute inv sub bytes, inv mix columns tables
-  t =
-    (x8 * 0x1_01_01_01) ^ (x4 * 0x1_00_01) ^ (x2 * 0x1_01) ^ (x * 0x1_01_01_00);
+  t = (x8 * 0x1_01_01_01) ^ (x4 * 0x1_00_01) ^ (x2 * 0x1_01) ^ (x * 0x1_01_01_00);
   INV_SUB_MIX_0[sx] = (t << 24) | (t >>> 8);
   INV_SUB_MIX_1[sx] = (t << 16) | (t >>> 16);
   INV_SUB_MIX_2[sx] = (t << 8) | (t >>> 24);
@@ -79,11 +78,7 @@ export class AESAlgo extends BlockCipher {
 
   _invKeySchedule!: Array<number>;
 
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
+  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(xformMode, key, cfg);
   }
 
@@ -96,7 +91,7 @@ export class AESAlgo extends BlockCipher {
       _SUB_MIX_1,
       _SUB_MIX_2,
       _SUB_MIX_3,
-      _SBOX
+      _SBOX,
     );
   }
   public decryptBlock(M: number[], offset: number): void {
@@ -112,7 +107,7 @@ export class AESAlgo extends BlockCipher {
       INV_SUB_MIX_1,
       INV_SUB_MIX_2,
       INV_SUB_MIX_3,
-      INV_SBOX
+      INV_SBOX,
     );
     t = _M[offset + 1];
     _M[offset + 1] = _M[offset + 3];
@@ -194,7 +189,7 @@ export class AESAlgo extends BlockCipher {
     SUB_MIX_1: number[],
     SUB_MIX_2: number[],
     SUB_MIX_3: number[],
-    SBOX: number[]
+    SBOX: number[],
   ): void {
     const _M = M;
 

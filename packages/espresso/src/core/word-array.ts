@@ -59,10 +59,8 @@ export class WordArray {
     if (this.sigBytes % 4) {
       // Copy one byte at a time
       for (let i = 0; i < wordArray.sigBytes; i++) {
-        const thatByte =
-          (wordArray.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
-        this.words[(this.sigBytes + i) >>> 2] |=
-          thatByte << (24 - ((this.sigBytes + i) % 4) * 8);
+        const thatByte = (wordArray.words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+        this.words[(this.sigBytes + i) >>> 2] |= thatByte << (24 - ((this.sigBytes + i) % 4) * 8);
       }
     } else {
       // Copy one word at a time
@@ -78,8 +76,7 @@ export class WordArray {
 
   clamp(): void {
     // Clamp
-    this.words[this.sigBytes >>> 2] &=
-      0xff_ff_ff_ff << (32 - (this.sigBytes % 4) * 8);
+    this.words[this.sigBytes >>> 2] &= 0xff_ff_ff_ff << (32 - (this.sigBytes % 4) * 8);
     this.words.length = Math.ceil(this.sigBytes / 4);
   }
 

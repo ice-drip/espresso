@@ -12,5 +12,5 @@ export const pad = {
   ISO97971,
   NoPadding,
   PKCS7,
-  ZeroPadding
+  ZeroPadding,
 };

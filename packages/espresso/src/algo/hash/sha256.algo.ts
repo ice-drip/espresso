@@ -61,9 +61,7 @@ export class SHA256Algo extends Hasher {
     const nBitsLeft = data.sigBytes * 8;
 
     dataWords[nBitsLeft >>> 5] |= 0x80 << (24 - (nBitsLeft % 32));
-    dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = Math.floor(
-      nBitsTotal / 0x1_00_00_00_00
-    );
+    dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = Math.floor(nBitsTotal / 0x1_00_00_00_00);
     dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 15] = nBitsTotal;
     data.sigBytes = dataWords.length * 4;
     this._process();
@@ -103,14 +101,8 @@ export class SHA256Algo extends Hasher {
       const ch = (e & f) ^ (~e & g);
       const maj = (a & b) ^ (a & c) ^ (b & c);
 
-      const sigma0 =
-        ((a << 30) | (a >>> 2)) ^
-        ((a << 19) | (a >>> 13)) ^
-        ((a << 10) | (a >>> 22));
-      const sigma1 =
-        ((e << 26) | (e >>> 6)) ^
-        ((e << 21) | (e >>> 11)) ^
-        ((e << 7) | (e >>> 25));
+      const sigma0 = ((a << 30) | (a >>> 2)) ^ ((a << 19) | (a >>> 13)) ^ ((a << 10) | (a >>> 22));
+      const sigma1 = ((e << 26) | (e >>> 6)) ^ ((e << 21) | (e >>> 11)) ^ ((e << 7) | (e >>> 25));
 
       const t1 = h + sigma1 + ch + K[i] + W[i];
       const t2 = sigma0 + maj;

@@ -1,4 +1,4 @@
-import { BlockMode, BlockEncryptFn, BlockDecryptFn } from './types';
+import { BlockMode, BlockEncryptFn, BlockDecryptFn } from "./types";
 
 function xorBlocks(a: Uint8Array, b: Uint8Array): Uint8Array {
   const result = new Uint8Array(a.length);

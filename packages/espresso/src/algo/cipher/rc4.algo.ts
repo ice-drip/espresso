@@ -9,11 +9,7 @@ export class RC4Algo extends StreamCipher {
   private _S: number[] = [];
   private _i!: number;
   private _j!: number;
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
+  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(xformMode, key, cfg);
   }
   reset(): void {
@@ -32,8 +28,7 @@ export class RC4Algo extends StreamCipher {
     // Key setup
     for (let i = 0, j = 0; i < 256; i++) {
       const keyByteIndex = i % keySigBytes;
-      const keyByte =
-        (keyWords[keyByteIndex >>> 2] >>> (24 - (keyByteIndex % 4) * 8)) & 0xff;
+      const keyByte = (keyWords[keyByteIndex >>> 2] >>> (24 - (keyByteIndex % 4) * 8)) & 0xff;
 
       j = (j + S[i] + keyByte) % 256;
 
@@ -81,11 +76,7 @@ export class RC4Algo extends StreamCipher {
 }
 
 export class RC4DropAlgo extends RC4Algo {
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
+  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(xformMode, key, Object.assign({ drop: 192 }, cfg));
   }
 

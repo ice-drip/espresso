@@ -11,9 +11,9 @@ export class PBKDF2Algo {
       {
         keySize: 128 / 32,
         hasher: SHA1Algo,
-        iterations: 1
+        iterations: 1,
       },
-      cfg
+      cfg,
     );
   }
 
@@ -72,9 +72,9 @@ export class PBKDF2Algo {
 export const PBKDF2: (
   _password: string | WordArray,
   _salt: string | WordArray,
-  _cfg?: BufferedBlockAlgorithmConfig
+  _cfg?: BufferedBlockAlgorithmConfig,
 ) => WordArray = (
   password: string | WordArray,
   salt: string | WordArray,
-  cfg?: BufferedBlockAlgorithmConfig
+  cfg?: BufferedBlockAlgorithmConfig,
 ) => new PBKDF2Algo(cfg).compute(password, salt);

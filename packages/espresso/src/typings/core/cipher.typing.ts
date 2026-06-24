@@ -7,11 +7,11 @@ export interface CipherHelper {
   encrypt(
     _message: string | WordArray,
     _key: string | WordArray,
-    _cfg?: BufferedBlockAlgorithmConfig | undefined
+    _cfg?: BufferedBlockAlgorithmConfig | undefined,
   ): CipherParams;
   decrypt(
     _ciphertext: string | CipherParams,
     _key: string | WordArray,
-    _cfg?: BufferedBlockAlgorithmConfig | undefined
+    _cfg?: BufferedBlockAlgorithmConfig | undefined,
   ): WordArray;
 }

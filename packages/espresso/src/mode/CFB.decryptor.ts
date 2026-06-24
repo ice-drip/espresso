@@ -15,13 +15,7 @@ export class CFBDecryptor extends BlockCipherModeAlgorithm {
     // Remember this block to use with next block
     const thisBlock = words.slice(offset, offset + blockSize);
 
-    this.generateKeystreamAndEncrypt.call(
-      this,
-      words,
-      offset,
-      blockSize,
-      cipher
-    );
+    this.generateKeystreamAndEncrypt.call(this, words, offset, blockSize, cipher);
 
     // This block becomes the previous block
     this._prevBlock = thisBlock;
@@ -31,7 +25,7 @@ export class CFBDecryptor extends BlockCipherModeAlgorithm {
     words: number[],
     offset: number,
     blockSize: number,
-    cipher: BlockCipher
+    cipher: BlockCipher,
   ): void {
     let keystream: number[];
 

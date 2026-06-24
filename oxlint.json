@@ -18,13 +18,8 @@
     "typescript/no-unused-vars": "error",
     "typescript/no-explicit-any": "warn"
   },
-  "extends": [
-    "typescript",
-    "recommended"
-  ],
-  "plugins": [
-    "typescript"
-  ],
+  "extends": ["typescript", "recommended"],
+  "plugins": ["typescript"],
   "parser": "typescript",
   "parserOptions": {
     "ecmaVersion": 2022,

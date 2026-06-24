@@ -20,7 +20,7 @@ export class SHA1Algo extends Hasher {
   reset(): void {
     super.reset();
     this._hash = new WordArray([
-      0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76, 0xc3_d2_e1_f0
+      0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76, 0xc3_d2_e1_f0,
     ]);
   }
   public _doFinalize(): WordArray {
@@ -31,9 +31,7 @@ export class SHA1Algo extends Hasher {
     const nBitsLeft = data.sigBytes * 8;
 
     dataWords[nBitsLeft >>> 5] |= 0x80 << (24 - (nBitsLeft % 32));
-    dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = Math.floor(
-      nBitsTotal / 0x1_00_00_00_00
-    );
+    dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = Math.floor(nBitsTotal / 0x1_00_00_00_00);
     dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 15] = nBitsTotal;
     data.sigBytes = dataWords.length * 4;
     this._process();

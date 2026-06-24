@@ -19,19 +19,13 @@ import { SerializableCipher } from "./serializable-cipher";
 export abstract class Cipher extends BufferedBlockAlgorithm {
   public static keySize = 128 / 32;
   public static ivSize = 128 / 32;
-  public static createEncryptor(
-    key: WordArray,
-    cfg: BufferedBlockAlgorithmConfig
-  ): Cipher {
+  public static createEncryptor(key: WordArray, cfg: BufferedBlockAlgorithmConfig): Cipher {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any,unicorn/no-this-assignment,@typescript-eslint/no-this-alias
     const thisClass: any = this;
     return new thisClass(this._ENC_XFORM_MODE, key, cfg);
   }
 
-  public static createDecryptor(
-    key: WordArray,
-    cfg: BufferedBlockAlgorithmConfig
-  ): Cipher {
+  public static createDecryptor(key: WordArray, cfg: BufferedBlockAlgorithmConfig): Cipher {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any,unicorn/no-this-assignment,@typescript-eslint/no-this-alias
     const thisClass: any = this;
     return new thisClass(this._DEC_XFORM_MODE, key, cfg);
@@ -41,11 +35,7 @@ export abstract class Cipher extends BufferedBlockAlgorithm {
   public _key: WordArray;
   public static _ENC_XFORM_MODE = 1;
   public static _DEC_XFORM_MODE = 2;
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
+  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(cfg);
 
     this._xformMode = xformMode;
@@ -79,7 +69,7 @@ export abstract class Cipher extends BufferedBlockAlgorithm {
     function encrypt(
       message: WordArray | string,
       key: WordArray | string,
-      cfg?: BufferedBlockAlgorithmConfig
+      cfg?: BufferedBlockAlgorithmConfig,
     ): CipherParams {
       return typeof key === "string"
         ? PasswordBasedCipher.encrypt(cipher, message, key, cfg)
@@ -98,7 +88,7 @@ export abstract class Cipher extends BufferedBlockAlgorithm {
     function decrypt(
       ciphertext: CipherParams | string,
       key: WordArray | string,
-      cfg?: BufferedBlockAlgorithmConfig
+      cfg?: BufferedBlockAlgorithmConfig,
     ): WordArray {
       return typeof key === "string"
         ? PasswordBasedCipher.decrypt(cipher, ciphertext, key, cfg)
@@ -107,7 +97,7 @@ export abstract class Cipher extends BufferedBlockAlgorithm {
 
     return {
       encrypt: encrypt,
-      decrypt: decrypt
+      decrypt: decrypt,
     };
   }
 

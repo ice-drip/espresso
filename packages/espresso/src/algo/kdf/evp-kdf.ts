@@ -19,9 +19,9 @@ export class EvpKDF {
       {
         keySize: 128 / 32,
         hasher: MD5Algo,
-        iterations: 1
+        iterations: 1,
       },
-      cfg
+      cfg,
     );
   }
 

@@ -16,7 +16,7 @@ export const Utf8: Encoding = {
   },
   parse(utf8Str: string) {
     return Latin1.parse(unescape(encodeURIComponent(utf8Str)));
-  }
+  },
 };
 
 const encoder = new TextEncoder();

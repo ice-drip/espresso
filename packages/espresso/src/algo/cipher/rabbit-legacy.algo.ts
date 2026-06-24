@@ -13,11 +13,7 @@ export class RabbitLegacyAlgo extends StreamCipher {
   private _X!: number[];
   private _C!: number[];
   private _b!: number;
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
+  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(xformMode, key, cfg);
     this.reset();
   }
@@ -35,7 +31,7 @@ export class RabbitLegacyAlgo extends StreamCipher {
       K[2],
       (K[1] << 16) | (K[0] >>> 16),
       K[3],
-      (K[2] << 16) | (K[1] >>> 16)
+      (K[2] << 16) | (K[1] >>> 16),
     ]);
     const C = (this._C = [
       (K[2] << 16) | (K[2] >>> 16),
@@ -45,7 +41,7 @@ export class RabbitLegacyAlgo extends StreamCipher {
       (K[0] << 16) | (K[0] >>> 16),
       (K[2] & 0xff_ff_00_00) | (K[3] & 0x00_00_ff_ff),
       (K[1] << 16) | (K[1] >>> 16),
-      (K[3] & 0xff_ff_00_00) | (K[0] & 0x00_00_ff_ff)
+      (K[3] & 0xff_ff_00_00) | (K[0] & 0x00_00_ff_ff),
     ]);
 
     this._b = 0;
@@ -124,29 +120,20 @@ export class RabbitLegacyAlgo extends StreamCipher {
 
       // Calculate high and low result of squaring
       const gh = ((((ga * ga) >>> 17) + ga * gb) >>> 15) + gb * gb;
-      const gl =
-        (((gx & 0xff_ff_00_00) * gx) | 0) + (((gx & 0x00_00_ff_ff) * gx) | 0);
+      const gl = (((gx & 0xff_ff_00_00) * gx) | 0) + (((gx & 0x00_00_ff_ff) * gx) | 0);
 
       // High XOR low
       G[i] = gh ^ gl;
     }
 
     // Calculate new state values
-    X[0] =
-      (G[0] + ((G[7] << 16) | (G[7] >>> 16)) + ((G[6] << 16) | (G[6] >>> 16))) |
-      0;
+    X[0] = (G[0] + ((G[7] << 16) | (G[7] >>> 16)) + ((G[6] << 16) | (G[6] >>> 16))) | 0;
     X[1] = (G[1] + ((G[0] << 8) | (G[0] >>> 24)) + G[7]) | 0;
-    X[2] =
-      (G[2] + ((G[1] << 16) | (G[1] >>> 16)) + ((G[0] << 16) | (G[0] >>> 16))) |
-      0;
+    X[2] = (G[2] + ((G[1] << 16) | (G[1] >>> 16)) + ((G[0] << 16) | (G[0] >>> 16))) | 0;
     X[3] = (G[3] + ((G[2] << 8) | (G[2] >>> 24)) + G[1]) | 0;
-    X[4] =
-      (G[4] + ((G[3] << 16) | (G[3] >>> 16)) + ((G[2] << 16) | (G[2] >>> 16))) |
-      0;
+    X[4] = (G[4] + ((G[3] << 16) | (G[3] >>> 16)) + ((G[2] << 16) | (G[2] >>> 16))) | 0;
     X[5] = (G[5] + ((G[4] << 8) | (G[4] >>> 24)) + G[3]) | 0;
-    X[6] =
-      (G[6] + ((G[5] << 16) | (G[5] >>> 16)) + ((G[4] << 16) | (G[4] >>> 16))) |
-      0;
+    X[6] = (G[6] + ((G[5] << 16) | (G[5] >>> 16)) + ((G[4] << 16) | (G[4] >>> 16))) | 0;
     X[7] = (G[7] + ((G[6] << 8) | (G[6] >>> 24)) + G[5]) | 0;
   }
   _doProcessBlock(M: number[], offset: number): void {

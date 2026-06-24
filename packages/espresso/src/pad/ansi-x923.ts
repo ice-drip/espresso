@@ -15,8 +15,7 @@ export const AnsiX923: Padding = {
 
     // Pad
     data.clamp();
-    data.words[lastBytePos >>> 2] |=
-      nPaddingBytes << (24 - (lastBytePos % 4) * 8);
+    data.words[lastBytePos >>> 2] |= nPaddingBytes << (24 - (lastBytePos % 4) * 8);
     data.sigBytes += nPaddingBytes;
   },
 
@@ -26,5 +25,5 @@ export const AnsiX923: Padding = {
 
     // Remove padding
     data.sigBytes -= nPaddingBytes;
-  }
+  },
 };

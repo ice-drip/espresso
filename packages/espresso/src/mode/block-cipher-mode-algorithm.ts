@@ -7,9 +7,7 @@ export abstract class BlockCipherModeAlgorithm {
 
   public _iv: number[] | undefined;
 
-  public __creator:
-    | ((_cipher: BlockCipher, _iv: number[]) => BlockCipherMode)
-    | undefined;
+  public __creator: ((_cipher: BlockCipher, _iv: number[]) => BlockCipherMode) | undefined;
 
   constructor(cipher: BlockCipher, iv: number[]) {
     this.init(cipher, iv);

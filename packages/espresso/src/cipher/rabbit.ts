@@ -19,42 +19,66 @@ function gFunction(x: number): number {
 }
 
 function nextCounter(c: Uint32Array): void {
-  const J = [0x4D34D34D, 0xD34D34D3, 0x34D34D34, 0x4D34D34D, 0xD34D34D3, 0x34D34D34, 0x4D34D34D, 0xD34D34D3];
+  const J = [
+    0x4d34d34d, 0xd34d34d3, 0x34d34d34, 0x4d34d34d, 0xd34d34d3, 0x34d34d34, 0x4d34d34d, 0xd34d34d3,
+  ];
   for (let i = 0; i < BOX_SIZE; i++) {
     c[i] = add32(c[i], J[i]);
     if (i === 0) {
-      if (c[0] < J[0] || (c[0] === J[0] && c[7] < 0xD34D34D3)) {
+      if (c[0] < J[0] || (c[0] === J[0] && c[7] < 0xd34d34d3)) {
         // overflow handled by modular arithmetic
       }
     }
   }
 }
 
-function keySetup(key: Uint8Array, iv?: Uint8Array, legacy = false): { x: Uint32Array; c: Uint32Array } {
+function keySetup(
+  key: Uint8Array,
+  iv?: Uint8Array,
+  legacy = false,
+): { x: Uint32Array; c: Uint32Array } {
   const s = new Uint32Array(BOX_SIZE);
   const k = new Uint32Array(BOX_SIZE);
 
   for (let i = 0; i < BOX_SIZE; i++) {
     const offset = i * 4;
     if (legacy) {
-      k[i] = ((key[offset + 3] << 24) | (key[offset + 2] << 16) | (key[offset + 1] << 8) | key[offset]) >>> 0;
+      k[i] =
+        ((key[offset + 3] << 24) |
+          (key[offset + 2] << 16) |
+          (key[offset + 1] << 8) |
+          key[offset]) >>>
+        0;
     } else {
-      k[i] = ((key[offset] << 24) | (key[offset + 1] << 16) | (key[offset + 2] << 8) | key[offset + 3]) >>> 0;
+      k[i] =
+        ((key[offset] << 24) |
+          (key[offset + 1] << 16) |
+          (key[offset + 2] << 8) |
+          key[offset + 3]) >>>
+        0;
     }
   }
 
   const x = new Uint32Array(BOX_SIZE);
   const c = new Uint32Array(BOX_SIZE);
 
-  x[0] = k[0]; x[1] = (k[3] << 16) | (k[2] >>> 16);
-  x[2] = k[1]; x[3] = (k[0] << 16) | (k[3] >>> 16);
-  x[4] = k[2]; x[5] = (k[1] << 16) | (k[0] >>> 16);
-  x[6] = k[3]; x[7] = (k[2] << 16) | (k[1] >>> 16);
+  x[0] = k[0];
+  x[1] = (k[3] << 16) | (k[2] >>> 16);
+  x[2] = k[1];
+  x[3] = (k[0] << 16) | (k[3] >>> 16);
+  x[4] = k[2];
+  x[5] = (k[1] << 16) | (k[0] >>> 16);
+  x[6] = k[3];
+  x[7] = (k[2] << 16) | (k[1] >>> 16);
 
   if (iv) {
     c[0] = (iv[0] | (iv[1] << 8) | (iv[2] << 16) | (iv[3] << 24)) >>> 0;
-    c[1] = ((iv[4] | (iv[5] << 8) | (iv[6] << 16) | (iv[7] << 24)) << 16) | ((iv[4] | (iv[5] << 8) | (iv[6] << 16) | (iv[7] << 24)) >>> 16);
-    c[2] = ((iv[8] | (iv[9] << 8) | (iv[10] << 16) | (iv[11] << 24)) << 16) | ((iv[8] | (iv[9] << 8) | (iv[10] << 16) | (iv[11] << 24)) >>> 16);
+    c[1] =
+      ((iv[4] | (iv[5] << 8) | (iv[6] << 16) | (iv[7] << 24)) << 16) |
+      ((iv[4] | (iv[5] << 8) | (iv[6] << 16) | (iv[7] << 24)) >>> 16);
+    c[2] =
+      ((iv[8] | (iv[9] << 8) | (iv[10] << 16) | (iv[11] << 24)) << 16) |
+      ((iv[8] | (iv[9] << 8) | (iv[10] << 16) | (iv[11] << 24)) >>> 16);
     c[3] = (iv[12] | (iv[13] << 8) | (iv[14] << 16) | (iv[15] << 24)) >>> 0;
     c[4] = (c[0] << 16) | (c[2] >>> 16);
     c[5] = (c[3] << 16) | (c[1] >>> 16);
@@ -71,9 +95,14 @@ function keySetup(key: Uint8Array, iv?: Uint8Array, legacy = false): { x: Uint32
     for (let j = 0; j < BOX_SIZE; j++) {
       x[j] = add32(x[j], gFunction(add32(s[j], c[j])));
     }
-    s[0] = x[0]; s[1] = x[6]; s[2] = x[4];
-    s[3] = x[2]; s[4] = x[7]; s[5] = x[3];
-    s[6] = x[5]; s[7] = x[1];
+    s[0] = x[0];
+    s[1] = x[6];
+    s[2] = x[4];
+    s[3] = x[2];
+    s[4] = x[7];
+    s[5] = x[3];
+    s[6] = x[5];
+    s[7] = x[1];
   }
 
   return { x: s, c };
@@ -91,10 +120,14 @@ function process(x: Uint32Array, c: Uint32Array, data: Uint8Array): Uint8Array {
       x[i] = add32(x[i], gFunction(add32(b[i], c[i])));
     }
     const s = new Uint32Array(BOX_SIZE);
-    s[0] = x[0] ^ c[5]; s[1] = x[1] ^ c[4];
-    s[2] = x[2] ^ c[7]; s[3] = x[3] ^ c[6];
-    s[4] = x[4] ^ c[1]; s[5] = x[5] ^ c[0];
-    s[6] = x[6] ^ c[3]; s[7] = x[7] ^ c[2];
+    s[0] = x[0] ^ c[5];
+    s[1] = x[1] ^ c[4];
+    s[2] = x[2] ^ c[7];
+    s[3] = x[3] ^ c[6];
+    s[4] = x[4] ^ c[1];
+    s[5] = x[5] ^ c[0];
+    s[6] = x[6] ^ c[3];
+    s[7] = x[7] ^ c[2];
     for (let i = 0; i < 8; i++) {
       keystream[i * 2] = s[i] & 0xff;
       keystream[i * 2 + 1] = (s[i] >>> 8) & 0xff;
@@ -107,7 +140,12 @@ function process(x: Uint32Array, c: Uint32Array, data: Uint8Array): Uint8Array {
   return result;
 }
 
-function rabbitProcess(key: Uint8Array, data: Uint8Array, iv?: Uint8Array, legacy = false): Uint8Array {
+function rabbitProcess(
+  key: Uint8Array,
+  data: Uint8Array,
+  iv?: Uint8Array,
+  legacy = false,
+): Uint8Array {
   if (data.length === 0) return new Uint8Array(0);
   const { x, c } = keySetup(key, iv, legacy);
   return process(x, c, data);
@@ -121,10 +159,18 @@ export function rabbitDecrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array
   return rabbitProcess(key, data, iv);
 }
 
-export function rabbitLegacyEncrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
+export function rabbitLegacyEncrypt(
+  data: Uint8Array,
+  key: Uint8Array,
+  iv?: Uint8Array,
+): Uint8Array {
   return rabbitProcess(key, data, iv, true);
 }
 
-export function rabbitLegacyDecrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
+export function rabbitLegacyDecrypt(
+  data: Uint8Array,
+  key: Uint8Array,
+  iv?: Uint8Array,
+): Uint8Array {
   return rabbitProcess(key, data, iv, true);
 }

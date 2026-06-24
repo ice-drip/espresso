@@ -15,7 +15,7 @@ export class SerializableCipher {
     cipher: typeof Cipher,
     message: WordArray | string,
     key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
+    cfg?: BufferedBlockAlgorithmConfig,
   ): CipherParams {
     // Apply config defaults
     const config = Object.assign({}, this.cfg, cfg);
@@ -32,7 +32,7 @@ export class SerializableCipher {
       mode: encryptor.cfg.mode,
       padding: encryptor.cfg.padding,
       blockSize: encryptor.blockSize,
-      formatter: config.format
+      formatter: config.format,
     });
   }
 
@@ -40,7 +40,7 @@ export class SerializableCipher {
     cipher: typeof Cipher,
     ciphertext: CipherParams | string,
     key: WordArray,
-    optionalCfg?: BufferedBlockAlgorithmConfig
+    optionalCfg?: BufferedBlockAlgorithmConfig,
   ): WordArray {
     // Apply config defaults
     const cfg = Object.assign({}, this.cfg, optionalCfg);
@@ -56,23 +56,16 @@ export class SerializableCipher {
     }
 
     // Decrypt
-    const plaintext = cipher
-      .createDecryptor(key, cfg)
-      .finalize(ciphertext.ciphertext);
+    const plaintext = cipher.createDecryptor(key, cfg).finalize(ciphertext.ciphertext);
 
     return plaintext;
   }
 
-  static _parse(
-    ciphertext: CipherParams | string,
-    format: Formatter
-  ): CipherParams {
-    return typeof ciphertext === "string"
-      ? format.parse(ciphertext)
-      : ciphertext;
+  static _parse(ciphertext: CipherParams | string, format: Formatter): CipherParams {
+    return typeof ciphertext === "string" ? format.parse(ciphertext) : ciphertext;
   }
 }
 
 SerializableCipher.cfg = {
-  format: OpenSSL
+  format: OpenSSL,
 };

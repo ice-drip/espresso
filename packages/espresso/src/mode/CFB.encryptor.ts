@@ -13,13 +13,7 @@ export class CFBEncryptor extends BlockCipherModeAlgorithm {
       throw new Error("block size is undefined");
     }
 
-    this.generateKeystreamAndEncrypt.call(
-      this,
-      words,
-      offset,
-      blockSize,
-      cipher
-    );
+    this.generateKeystreamAndEncrypt.call(this, words, offset, blockSize, cipher);
 
     // Remember this block to use with next block
     this._prevBlock = words.slice(offset, offset + blockSize);
@@ -29,7 +23,7 @@ export class CFBEncryptor extends BlockCipherModeAlgorithm {
     words: number[],
     offset: number,
     blockSize: number,
-    cipher: BlockCipher
+    cipher: BlockCipher,
   ): void {
     let keystream: number[];
 

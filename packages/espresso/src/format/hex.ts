@@ -12,7 +12,7 @@ export const Hex: Formatter = {
   parse(input: string): CipherParams {
     const ciphertext = EncHex.parse(input);
     return new CipherParams({ ciphertext });
-  }
+  },
 };
 
 export function hexFormat(ciphertext: Uint8Array): string {

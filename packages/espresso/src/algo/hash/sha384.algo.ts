@@ -22,7 +22,7 @@ export class SHA384Algo extends SHA512Algo {
       new X64Word(0x67_33_26_67, 0xff_c0_0b_31),
       new X64Word(0x8e_b4_4a_87, 0x68_58_15_11),
       new X64Word(0xdb_0c_2e_0d, 0x64_f9_8f_a7),
-      new X64Word(0x47_b5_48_1d, 0xbe_fa_4f_a4)
+      new X64Word(0x47_b5_48_1d, 0xbe_fa_4f_a4),
     ]);
   }
 

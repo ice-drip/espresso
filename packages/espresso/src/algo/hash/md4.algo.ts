@@ -6,7 +6,7 @@ import { WordArray } from "../../core/word-array";
 const S = [
   [3, 7, 11, 19],
   [3, 5, 9, 13],
-  [3, 9, 11, 15]
+  [3, 9, 11, 15],
 ];
 const FF = 0x00_00_00_00;
 const GG = 0x5a_82_79_99;
@@ -25,7 +25,7 @@ function CC(
   c: number,
   d: number,
   x: number,
-  s: number
+  s: number,
 ) {
   return ROTL(a + f(b, c, d) + x + k, s);
 }
@@ -46,9 +46,7 @@ export class MD4Algo extends Hasher {
   declare private _hash: WordArray;
   reset(): void {
     super.reset();
-    this._hash = new WordArray([
-      0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76
-    ]);
+    this._hash = new WordArray([0x67_45_23_01, 0xef_cd_ab_89, 0x98_ba_dc_fe, 0x10_32_54_76]);
   }
   public _doFinalize(): WordArray {
     // Shortcuts

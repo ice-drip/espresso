@@ -2,7 +2,9 @@ import { MD4Algo } from "../algo/hash/md4.algo";
 
 export function md4(data: Uint8Array): Uint8Array {
   const hasher = new MD4Algo();
-  const latin1 = Array.from(data).map(b => String.fromCharCode(b)).join('');
+  const latin1 = Array.from(data)
+    .map((b) => String.fromCharCode(b))
+    .join("");
   const result = hasher.finalize(latin1);
   const bytes = new Uint8Array(result.sigBytes);
   for (let i = 0; i < result.sigBytes; i++) {

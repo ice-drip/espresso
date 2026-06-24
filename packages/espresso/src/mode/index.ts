@@ -9,5 +9,5 @@ export const mode = {
   CFB,
   CTR,
   ECB,
-  OFB
+  OFB,
 };

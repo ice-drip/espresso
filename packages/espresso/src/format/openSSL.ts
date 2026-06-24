@@ -20,9 +20,7 @@ export const OpenSSL = {
         throw new TypeError("salt is expected to be a WordArray");
       }
 
-      wordArray = new WordArray([0x53_61_6c_74, 0x65_64_5f_5f])
-        .concat(salt)
-        .concat(ciphertext);
+      wordArray = new WordArray([0x53_61_6c_74, 0x65_64_5f_5f]).concat(salt).concat(ciphertext);
     } else {
       wordArray = ciphertext;
     }
@@ -33,16 +31,13 @@ export const OpenSSL = {
     const ciphertext = Base64.parse(openSSlStr);
 
     let salt: WordArray | undefined;
-    if (
-      ciphertext.words[0] === 0x53_61_6c_74 &&
-      ciphertext.words[1] === 0x65_64_5f_5f
-    ) {
+    if (ciphertext.words[0] === 0x53_61_6c_74 && ciphertext.words[1] === 0x65_64_5f_5f) {
       salt = new WordArray(ciphertext.words.slice(2, 4));
       ciphertext.words.splice(0, 4);
       ciphertext.sigBytes -= 16;
     }
     return new CipherParams({ ciphertext, salt });
-  }
+  },
 };
 
 export interface OpenSSLParams {

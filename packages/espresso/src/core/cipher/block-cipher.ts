@@ -19,21 +19,17 @@ export abstract class BlockCipher extends Cipher {
   public _mode!: BlockCipherModeAlgorithm;
   blockSize = 128 / 32;
 
-  constructor(
-    xformMode: number,
-    key: WordArray,
-    cfg?: BufferedBlockAlgorithmConfig
-  ) {
+  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
     super(
       xformMode,
       key,
       Object.assign(
         {
           mode: CBC,
-          padding: PKCS7
+          padding: PKCS7,
         },
-        cfg
-      )
+        cfg,
+      ),
     );
   }
 
@@ -42,13 +38,8 @@ export abstract class BlockCipher extends Cipher {
     if (this.cfg.mode === undefined) {
       throw new Error("missing mode in config");
     }
-    let modeCreator: (
-      _cipher: BlockCipher,
-      _iv: number[]
-    ) => BlockCipherModeAlgorithm;
-    if (
-      this._xformMode === (<typeof BlockCipher>this.constructor)._ENC_XFORM_MODE
-    ) {
+    let modeCreator: (_cipher: BlockCipher, _iv: number[]) => BlockCipherModeAlgorithm;
+    if (this._xformMode === (<typeof BlockCipher>this.constructor)._ENC_XFORM_MODE) {
       modeCreator = this.cfg.mode.createEncryptor;
     } else {
       modeCreator = this.cfg.mode.createDecryptor;
@@ -75,9 +66,7 @@ export abstract class BlockCipher extends Cipher {
     }
 
     let finalProcessedBlocks: WordArray;
-    if (
-      this._xformMode === (<typeof BlockCipher>this.constructor)._ENC_XFORM_MODE
-    ) {
+    if (this._xformMode === (<typeof BlockCipher>this.constructor)._ENC_XFORM_MODE) {
       if (this.blockSize === undefined) {
         throw new Error("missing blockSize in config");
       }

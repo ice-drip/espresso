@@ -7,8 +7,7 @@ export const ZeroPadding: Padding = {
 
     // Pad
     data.clamp();
-    data.sigBytes +=
-      blockSizeBytes - (data.sigBytes % blockSizeBytes || blockSizeBytes);
+    data.sigBytes += blockSizeBytes - (data.sigBytes % blockSizeBytes || blockSizeBytes);
   },
   unpad(data: WordArray): void {
     const dataWords = data.words;
@@ -20,5 +19,5 @@ export const ZeroPadding: Padding = {
         break;
       }
     }
-  }
+  },
 };

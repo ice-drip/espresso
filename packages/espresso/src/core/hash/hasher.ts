@@ -39,10 +39,7 @@ export abstract class Hasher extends BufferedBlockAlgorithm {
     return hash;
   }
   public static _createHelper(hasher: Type<Hasher>): CreateHelperType {
-    return function (
-      message: WordArray | string,
-      cfg?: BufferedBlockAlgorithmConfig
-    ): WordArray {
+    return function (message: WordArray | string, cfg?: BufferedBlockAlgorithmConfig): WordArray {
       const hasherClass: Type<Hasher> = hasher;
       const hasherInstance: Hasher = new hasherClass(cfg);
       return hasherInstance.finalize(message);
@@ -61,5 +58,5 @@ export abstract class Hasher extends BufferedBlockAlgorithm {
 
 export type CreateHelperType = (
   _message: WordArray | string,
-  _cfg?: BufferedBlockAlgorithmConfig
+  _cfg?: BufferedBlockAlgorithmConfig,
 ) => WordArray;

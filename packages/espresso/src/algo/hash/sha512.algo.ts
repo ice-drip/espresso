@@ -84,7 +84,7 @@ const K = [
   new X64Word(0x4c_c5_d4_be, 0xcb_3e_42_b6),
   new X64Word(0x59_7f_29_9c, 0xfc_65_7e_2a),
   new X64Word(0x5f_cb_6f_ab, 0x3a_d6_fa_ec),
-  new X64Word(0x6c_44_19_8c, 0x4a_47_58_17)
+  new X64Word(0x6c_44_19_8c, 0x4a_47_58_17),
 ];
 const W: X64Word[] = [];
 for (let i = 0; i < 80; i += 1) {
@@ -116,7 +116,7 @@ export class SHA512Algo extends Hasher {
       new X64Word(0x51_0e_52_7f, 0xad_e6_82_d1),
       new X64Word(0x9b_05_68_8c, 0x2b_3e_6c_1f),
       new X64Word(0x1f_83_d9_ab, 0xfb_41_bd_6b),
-      new X64Word(0x5b_e0_cd_19, 0x13_7e_21_79)
+      new X64Word(0x5b_e0_cd_19, 0x13_7e_21_79),
     ]);
   }
 
@@ -130,9 +130,7 @@ export class SHA512Algo extends Hasher {
 
     // Add padding
     dataWords[nBitsLeft >>> 5] |= 0x80 << (24 - (nBitsLeft % 32));
-    dataWords[(((nBitsLeft + 128) >>> 10) << 5) + 30] = Math.floor(
-      nBitsTotal / 0x1_00_00_00_00
-    );
+    dataWords[(((nBitsLeft + 128) >>> 10) << 5) + 30] = Math.floor(nBitsTotal / 0x1_00_00_00_00);
     dataWords[(((nBitsLeft + 128) >>> 10) << 5) + 31] = nBitsTotal;
     data.sigBytes = dataWords.length * 4;
 
@@ -256,21 +254,13 @@ export class SHA512Algo extends Hasher {
       const majl = (al & bl) ^ (al & cl) ^ (bl & cl);
 
       const sigma0h =
-        ((ah >>> 28) | (al << 4)) ^
-        ((ah << 30) | (al >>> 2)) ^
-        ((ah << 25) | (al >>> 7));
+        ((ah >>> 28) | (al << 4)) ^ ((ah << 30) | (al >>> 2)) ^ ((ah << 25) | (al >>> 7));
       const sigma0l =
-        ((al >>> 28) | (ah << 4)) ^
-        ((al << 30) | (ah >>> 2)) ^
-        ((al << 25) | (ah >>> 7));
+        ((al >>> 28) | (ah << 4)) ^ ((al << 30) | (ah >>> 2)) ^ ((al << 25) | (ah >>> 7));
       const sigma1h =
-        ((eh >>> 14) | (el << 18)) ^
-        ((eh >>> 18) | (el << 14)) ^
-        ((eh << 23) | (el >>> 9));
+        ((eh >>> 14) | (el << 18)) ^ ((eh >>> 18) | (el << 14)) ^ ((eh << 23) | (el >>> 9));
       const sigma1l =
-        ((el >>> 14) | (eh << 18)) ^
-        ((el >>> 18) | (eh << 14)) ^
-        ((el << 23) | (eh >>> 9));
+        ((el >>> 14) | (eh << 18)) ^ ((el >>> 18) | (eh << 14)) ^ ((el << 23) | (eh >>> 9));
 
       // t1 = h + sigma1 + ch + K[i] + W[i]
       const Ki = K[i];

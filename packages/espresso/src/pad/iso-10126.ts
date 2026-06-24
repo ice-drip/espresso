@@ -21,5 +21,5 @@ export const ISO10126: Padding = {
 
     // Remove padding
     data.sigBytes -= nPaddingBytes;
-  }
+  },
 };

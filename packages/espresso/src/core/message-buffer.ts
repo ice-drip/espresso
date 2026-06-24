@@ -40,12 +40,12 @@ export class MessageBuffer {
 
   toHexString(): string {
     return Array.from(this._bytes)
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
   }
 
   toBase64(): string {
-    let binary = '';
+    let binary = "";
     for (let i = 0; i < this._bytes.length; i++) {
       binary += String.fromCharCode(this._bytes[i]);
     }

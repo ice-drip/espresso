@@ -2,7 +2,20 @@
   "name": "@kaffee/espresso",
   "version": "2.0.0",
   "description": "TypeScript crypto library with Web Crypto + pure JS dual runtime",
+  "keywords": [
+    "aes",
+    "crypto",
+    "des",
+    "hmac",
+    "sha",
+    "web-crypto"
+  ],
+  "license": "GPL-3.0",
+  "files": [
+    "dist"
+  ],
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/typings/index.d.ts",
@@ -13,7 +26,6 @@
       "types": "./dist/typings/index.d.ts"
     }
   },
-  "files": ["dist"],
   "scripts": {
     "build": "rslib build",
     "lint": "tsc --noEmit",
@@ -24,11 +36,8 @@
   },
   "devDependencies": {
     "@rslib/core": "^0.23.0",
-    "typescript": "^5.5",
+    "@types/crypto-js": "^4.2.0",
     "crypto-js": "^4.2.0",
-    "@types/crypto-js": "^4.2.0"
-  },
-  "keywords": ["crypto", "aes", "des", "sha", "hmac", "web-crypto"],
-  "sideEffects": false,
-  "license": "GPL-3.0"
+    "typescript": "^5.5"
+  }
 }

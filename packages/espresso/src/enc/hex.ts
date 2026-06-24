@@ -26,12 +26,12 @@ export const Hex: Encoding = {
         Number.parseInt(hexStr.substr(i, 2), 16) << (24 - (i % 8) * 4);
     }
     return new WordArray(words, hexStrLength / 2);
-  }
+  },
 };
 
 export function hexEncode(data: Uint8Array): string {
   return Array.from(data)
-    .map(b => b.toString(16).padStart(2, "0"))
+    .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 }
 
