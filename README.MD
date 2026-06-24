@@ -1,6 +1,6 @@
 # @kaffee/espresso
 
-A TypeScript crypto library with Web Crypto + pure JS dual runtime support.
+A TypeScript cryptography library with Web Crypto + pure JS dual runtime support. Tree-shakeable, zero-dependency, compatible with [crypto-js](https://github.com/brix/crypto-js) output.
 
 ## Installation
 
@@ -8,24 +8,28 @@ A TypeScript crypto library with Web Crypto + pure JS dual runtime support.
 npm install @kaffee/espresso
 # or
 pnpm add @kaffee/espresso
+# or
+yarn add @kaffee/espresso
 ```
 
 ## Quick Start
 
 ```typescript
-import { encrypt, decrypt, hash, hmac } from '@kaffee/espresso';
+import { AES, enc, mode, pad, hash, hmac } from '@kaffee/espresso';
 
 // Encrypt with AES-CBC
-const ciphertext = encrypt('aes', 'Hello, World!', 'secret-key', {
-  mode: 'cbc',
-  iv: crypto.getRandomValues(new Uint8Array(16)),
+const encrypted = AES.encrypt('Hello, World!', enc.Utf8.parse('secret-key'), {
+  iv: enc.Utf8.parse('0123456789abcdef'),
+  mode: mode.CBC,
+  padding: pad.PKCS7,
 });
 
 // Decrypt
-const plaintext = decrypt('aes', ciphertext, 'secret-key', {
-  mode: 'cbc',
-  iv: /* same iv */,
-});
+const decrypted = AES.decrypt(encrypted, enc.Utf8.parse('secret-key'), {
+  iv: enc.Utf8.parse('0123456789abcdef'),
+  mode: mode.CBC,
+  padding: pad.PKCS7,
+}).toString(enc.Utf8);
 
 // Hash
 const digest = hash('sha256', 'Hello, World!');
@@ -67,34 +71,52 @@ const mac = hmac('sha256', 'Hello, World!', 'secret-key');
 
 ## API Reference
 
-### `encrypt(algorithm, message, key, options?)`
+### `AES.encrypt(data, key, options?)`
 
-Encrypts a message using the specified algorithm.
+Encrypts data using AES. Returns a `CipherResult` object.
 
-### `decrypt(algorithm, ciphertext, key, options?)`
+### `AES.decrypt(data, key, options?)`
 
-Decrypts ciphertext using the specified algorithm.
+Decrypts ciphertext using AES. Returns a `CipherResult` object.
 
 ### `hash(algorithm, data, options?)`
 
-Computes a hash of the data.
+Computes a hash of the data. Returns a `HashResult` with `.toString()` and `.toHex()` methods.
 
 ### `hmac(algorithm, data, key, options?)`
 
-Computes HMAC of the data.
+Computes HMAC of the data. Returns a `HashResult`.
 
-## Code Quality Tools
+### `pbkdf2(password, salt, options?)`
 
-### Formatting
-- Run `pnpm format` to format code
-- Run `pnpm format:check` to check formatting
+Derives a key using PBKDF2. Returns a `HashResult`.
 
-### Lint
-- Run `pnpm run lint:oxlint` to check code quality
-- Run `pnpm run lint:fix` to auto-fix lint issues
+### `encrypt(algorithm, data, key, options?)`
 
-### Type Checking
-- Run `pnpm run typecheck` to check TypeScript types
+Generic encryption dispatcher. Use class methods directly for tree-shaking.
+
+### `decrypt(algorithm, data, key, options?)`
+
+Generic decryption dispatcher. Use class methods directly for tree-shaking.
+
+## Tree Shaking
+
+The library is fully tree-shakeable. Import only what you need:
+
+```typescript
+// Only imports AES — other algorithms are excluded from bundle
+import { AES } from '@kaffee/espresso';
+```
+
+## Code Quality
+
+```bash
+pnpm format        # Format code
+pnpm format:check  # Check formatting
+pnpm lint:oxlint   # Lint code
+pnpm lint:fix      # Auto-fix lint issues
+pnpm typecheck     # Check TypeScript types
+```
 
 ## License
 
