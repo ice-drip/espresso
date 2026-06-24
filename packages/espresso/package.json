@@ -1,6 +1,6 @@
 {
   "name": "@kaffee/espresso",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "TypeScript crypto library — AES, DES, TripleDES, BlowFish, SHA*, MD5, HMAC, PBKDF2, and stream ciphers",
   "keywords": [
     "aes",
