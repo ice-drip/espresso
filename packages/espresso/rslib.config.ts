@@ -4,29 +4,34 @@ export default defineConfig({
   lib: [
     {
       id: "esm",
+      format: "esm",
+      syntax: "es2022",
       source: {
         entry: { index: "./src/index.ts" },
       },
       output: {
         target: "node",
-        format: "esm",
         distPath: "dist/esm",
+      },
+      dts: {
+        tsgo: true,
+        distPath: "dist/typings",
       },
     },
     {
       id: "cjs",
+      format: "cjs",
+      syntax: "es2022",
       source: {
         entry: { index: "./src/index.ts" },
       },
       output: {
         target: "node",
-        format: "cjs",
         distPath: "dist/cjs",
-        autoExtension: true,
+        filename: {
+          js: "[name].cjs",
+        },
       },
     },
   ],
-  dts: {
-    distPath: "dist/typings",
-  },
 });
