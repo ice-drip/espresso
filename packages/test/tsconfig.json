@@ -3,6 +3,6 @@
   "compilerOptions": {
     "types": ["@types/node", "@rstest/core/globals"]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts","tests/**/*.ts"],
   "exclude": ["node_modules"]
 }
