@@ -5,7 +5,12 @@
   "scripts": {
     "build": "cd packages/espresso && pnpm build",
     "test": "cd packages/test && pnpm test",
-    "lint": "cd packages/espresso && pnpm lint"
+    "lint": "cd packages/espresso && pnpm lint",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "lint:oxlint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^26.0.0",
