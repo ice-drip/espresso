@@ -9,9 +9,6 @@ export class RC4Algo extends StreamCipher {
   private S: number[] = [];
   private i!: number;
   private j!: number;
-  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
-    super(xformMode, key, cfg);
-  }
   reset(): void {
     super.reset();
     const key = this.key;

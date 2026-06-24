@@ -102,9 +102,6 @@ for (let i = 0; i < 80; i += 1) {
 export class SHA512Algo extends Hasher {
   declare protected hash: X64WordArray;
   blockSize = 1024 / 32;
-  constructor() {
-    super();
-  }
 
   reset(): void {
     super.reset();

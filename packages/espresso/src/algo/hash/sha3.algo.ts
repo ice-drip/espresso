@@ -18,9 +18,9 @@ for (let t = 0; t < 24; t++) {
 }
 
 // Compute pi index constants
-for (let x = 0; x < 5; x++) {
-  for (let y = 0; y < 5; y++) {
-    PI_INDEXES[x + 5 * y] = y + ((2 * x + 3 * y) % 5) * 5;
+for (let ix = 0; ix < 5; ix++) {
+  for (let iy = 0; iy < 5; iy++) {
+    PI_INDEXES[ix + 5 * iy] = iy + ((2 * ix + 3 * iy) % 5) * 5;
   }
 }
 
@@ -145,33 +145,33 @@ export class SHA3Algo extends Hasher {
     // Rounds
     for (let round = 0; round < 24; round++) {
       // Theta
-      for (let x = 0; x < 5; x++) {
+      for (let xi = 0; xi < 5; xi++) {
         // Mix column lanes
         let tMsw = 0,
           tLsw = 0;
-        for (let y = 0; y < 5; y++) {
-          const lane = state[x + 5 * y];
+        for (let yi = 0; yi < 5; yi++) {
+          const lane = state[xi + 5 * yi];
           tMsw ^= lane.high;
           tLsw ^= lane.low;
         }
 
         // Temporary values
-        const Tx = T[x];
+        const Tx = T[xi];
         Tx.high = tMsw;
         Tx.low = tLsw;
       }
-      for (let x = 0; x < 5; x++) {
+      for (let xi = 0; xi < 5; xi++) {
         // Shortcuts
-        const Tx4 = T[(x + 4) % 5];
-        const Tx1 = T[(x + 1) % 5];
+        const Tx4 = T[(xi + 4) % 5];
+        const Tx1 = T[(xi + 1) % 5];
         const Tx1Msw = Tx1.high;
         const Tx1Lsw = Tx1.low;
 
         // Mix surrounding columns
         const tMsw = Tx4.high ^ ((Tx1Msw << 1) | (Tx1Lsw >>> 31));
         const tLsw = Tx4.low ^ ((Tx1Lsw << 1) | (Tx1Msw >>> 31));
-        for (let y = 0; y < 5; y++) {
-          const lane = state[x + 5 * y];
+        for (let yi = 0; yi < 5; yi++) {
+          const lane = state[xi + 5 * yi];
           lane.high ^= tMsw;
           lane.low ^= tLsw;
         }
@@ -210,14 +210,14 @@ export class SHA3Algo extends Hasher {
       T0.low = state0.low;
 
       // Chi
-      for (let x = 0; x < 5; x++) {
-        for (let y = 0; y < 5; y++) {
+      for (let xi = 0; xi < 5; xi++) {
+        for (let yi = 0; yi < 5; yi++) {
           // Shortcuts
-          const laneIndex = x + 5 * y;
+          const laneIndex = xi + 5 * yi;
           const lane = state[laneIndex];
           const TLane = T[laneIndex];
-          const Tx1Lane = T[((x + 1) % 5) + 5 * y];
-          const Tx2Lane = T[((x + 2) % 5) + 5 * y];
+          const Tx1Lane = T[((xi + 1) % 5) + 5 * yi];
+          const Tx2Lane = T[((xi + 2) % 5) + 5 * yi];
 
           // Mix rows
           lane.high = TLane.high ^ (~Tx1Lane.high & Tx2Lane.high);

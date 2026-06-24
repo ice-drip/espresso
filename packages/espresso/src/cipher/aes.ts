@@ -119,11 +119,11 @@ function expandKey(key: Uint8Array): {
 function doCryptBlock(
   state: number[],
   keySchedule: number[],
-  SUB_MIX_0: number[],
-  SUB_MIX_1: number[],
-  SUB_MIX_2: number[],
-  SUB_MIX_3: number[],
-  SBOX: number[],
+  subMix0: number[],
+  subMix1: number[],
+  subMix2: number[],
+  subMix3: number[],
+  sbox: number[],
   nRounds: number,
 ): void {
   let s0 = state[0] ^ keySchedule[0];
@@ -134,28 +134,28 @@ function doCryptBlock(
 
   for (let round = 1; round < nRounds; round++) {
     const t0 =
-      SUB_MIX_0[s0 >>> 24] ^
-      SUB_MIX_1[(s1 >>> 16) & 0xff] ^
-      SUB_MIX_2[(s2 >>> 8) & 0xff] ^
-      SUB_MIX_3[s3 & 0xff] ^
+      subMix0[s0 >>> 24] ^
+      subMix1[(s1 >>> 16) & 0xff] ^
+      subMix2[(s2 >>> 8) & 0xff] ^
+      subMix3[s3 & 0xff] ^
       keySchedule[ksRow++];
     const t1 =
-      SUB_MIX_0[s1 >>> 24] ^
-      SUB_MIX_1[(s2 >>> 16) & 0xff] ^
-      SUB_MIX_2[(s3 >>> 8) & 0xff] ^
-      SUB_MIX_3[s0 & 0xff] ^
+      subMix0[s1 >>> 24] ^
+      subMix1[(s2 >>> 16) & 0xff] ^
+      subMix2[(s3 >>> 8) & 0xff] ^
+      subMix3[s0 & 0xff] ^
       keySchedule[ksRow++];
     const t2 =
-      SUB_MIX_0[s2 >>> 24] ^
-      SUB_MIX_1[(s3 >>> 16) & 0xff] ^
-      SUB_MIX_2[(s0 >>> 8) & 0xff] ^
-      SUB_MIX_3[s1 & 0xff] ^
+      subMix0[s2 >>> 24] ^
+      subMix1[(s3 >>> 16) & 0xff] ^
+      subMix2[(s0 >>> 8) & 0xff] ^
+      subMix3[s1 & 0xff] ^
       keySchedule[ksRow++];
     const t3 =
-      SUB_MIX_0[s3 >>> 24] ^
-      SUB_MIX_1[(s0 >>> 16) & 0xff] ^
-      SUB_MIX_2[(s1 >>> 8) & 0xff] ^
-      SUB_MIX_3[s2 & 0xff] ^
+      subMix0[s3 >>> 24] ^
+      subMix1[(s0 >>> 16) & 0xff] ^
+      subMix2[(s1 >>> 8) & 0xff] ^
+      subMix3[s2 & 0xff] ^
       keySchedule[ksRow++];
     s0 = t0;
     s1 = t1;
@@ -164,28 +164,28 @@ function doCryptBlock(
   }
 
   const u0 =
-    ((SBOX[s0 >>> 24] << 24) |
-      (SBOX[(s1 >>> 16) & 0xff] << 16) |
-      (SBOX[(s2 >>> 8) & 0xff] << 8) |
-      SBOX[s3 & 0xff]) ^
+    ((sbox[s0 >>> 24] << 24) |
+      (sbox[(s1 >>> 16) & 0xff] << 16) |
+      (sbox[(s2 >>> 8) & 0xff] << 8) |
+      sbox[s3 & 0xff]) ^
     keySchedule[ksRow++];
   const u1 =
-    ((SBOX[s1 >>> 24] << 24) |
-      (SBOX[(s2 >>> 16) & 0xff] << 16) |
-      (SBOX[(s3 >>> 8) & 0xff] << 8) |
-      SBOX[s0 & 0xff]) ^
+    ((sbox[s1 >>> 24] << 24) |
+      (sbox[(s2 >>> 16) & 0xff] << 16) |
+      (sbox[(s3 >>> 8) & 0xff] << 8) |
+      sbox[s0 & 0xff]) ^
     keySchedule[ksRow++];
   const u2 =
-    ((SBOX[s2 >>> 24] << 24) |
-      (SBOX[(s3 >>> 16) & 0xff] << 16) |
-      (SBOX[(s0 >>> 8) & 0xff] << 8) |
-      SBOX[s1 & 0xff]) ^
+    ((sbox[s2 >>> 24] << 24) |
+      (sbox[(s3 >>> 16) & 0xff] << 16) |
+      (sbox[(s0 >>> 8) & 0xff] << 8) |
+      sbox[s1 & 0xff]) ^
     keySchedule[ksRow++];
   const u3 =
-    ((SBOX[s3 >>> 24] << 24) |
-      (SBOX[(s0 >>> 16) & 0xff] << 16) |
-      (SBOX[(s1 >>> 8) & 0xff] << 8) |
-      SBOX[s2 & 0xff]) ^
+    ((sbox[s3 >>> 24] << 24) |
+      (sbox[(s0 >>> 16) & 0xff] << 16) |
+      (sbox[(s1 >>> 8) & 0xff] << 8) |
+      sbox[s2 & 0xff]) ^
     keySchedule[ksRow];
 
   state[0] = u0;

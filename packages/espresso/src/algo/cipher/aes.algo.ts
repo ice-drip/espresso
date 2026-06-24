@@ -1,6 +1,5 @@
 import { BlockCipher } from "../../core/cipher/block-cipher";
 import { WordArray } from "../../core/word-array";
-import { BufferedBlockAlgorithmConfig } from "../../typings/core/buffered-block-algorithm.typing";
 
 // Lookup tables
 const SBOX: number[] = [];
@@ -77,10 +76,6 @@ export class AESAlgo extends BlockCipher {
   private keySchedule!: Array<number>;
 
   private invKeySchedule!: Array<number>;
-
-  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
-    super(xformMode, key, cfg);
-  }
 
   public encryptBlock(M: number[], offset: number): void {
     this.doCryptBlock(
@@ -184,11 +179,11 @@ export class AESAlgo extends BlockCipher {
     M: number[],
     offset: number,
     keySchedule: number[],
-    SUB_MIX_0: number[],
-    SUB_MIX_1: number[],
-    SUB_MIX_2: number[],
-    SUB_MIX_3: number[],
-    SBOX: number[],
+    subMix0: number[],
+    subMix1: number[],
+    subMix2: number[],
+    subMix3: number[],
+    sbox: number[],
   ): void {
     // Shortcut
     const nRounds = this.nRounds;
@@ -207,28 +202,28 @@ export class AESAlgo extends BlockCipher {
       // Shift rows, sub bytes, mix columns, add round key
 
       const t0 =
-        SUB_MIX_0[s0 >>> 24] ^
-        SUB_MIX_1[(s1 >>> 16) & 0xff] ^
-        SUB_MIX_2[(s2 >>> 8) & 0xff] ^
-        SUB_MIX_3[s3 & 0xff] ^
+        subMix0[s0 >>> 24] ^
+        subMix1[(s1 >>> 16) & 0xff] ^
+        subMix2[(s2 >>> 8) & 0xff] ^
+        subMix3[s3 & 0xff] ^
         keySchedule[ksRow++];
       const t1 =
-        SUB_MIX_0[s1 >>> 24] ^
-        SUB_MIX_1[(s2 >>> 16) & 0xff] ^
-        SUB_MIX_2[(s3 >>> 8) & 0xff] ^
-        SUB_MIX_3[s0 & 0xff] ^
+        subMix0[s1 >>> 24] ^
+        subMix1[(s2 >>> 16) & 0xff] ^
+        subMix2[(s3 >>> 8) & 0xff] ^
+        subMix3[s0 & 0xff] ^
         keySchedule[ksRow++];
       const t2 =
-        SUB_MIX_0[s2 >>> 24] ^
-        SUB_MIX_1[(s3 >>> 16) & 0xff] ^
-        SUB_MIX_2[(s0 >>> 8) & 0xff] ^
-        SUB_MIX_3[s1 & 0xff] ^
+        subMix0[s2 >>> 24] ^
+        subMix1[(s3 >>> 16) & 0xff] ^
+        subMix2[(s0 >>> 8) & 0xff] ^
+        subMix3[s1 & 0xff] ^
         keySchedule[ksRow++];
       const t3 =
-        SUB_MIX_0[s3 >>> 24] ^
-        SUB_MIX_1[(s0 >>> 16) & 0xff] ^
-        SUB_MIX_2[(s1 >>> 8) & 0xff] ^
-        SUB_MIX_3[s2 & 0xff] ^
+        subMix0[s3 >>> 24] ^
+        subMix1[(s0 >>> 16) & 0xff] ^
+        subMix2[(s1 >>> 8) & 0xff] ^
+        subMix3[s2 & 0xff] ^
         keySchedule[ksRow++];
 
       // Update state
@@ -240,28 +235,28 @@ export class AESAlgo extends BlockCipher {
 
     // Shift rows, sub bytes, add round key
     const t0 =
-      ((SBOX[s0 >>> 24] << 24) |
-        (SBOX[(s1 >>> 16) & 0xff] << 16) |
-        (SBOX[(s2 >>> 8) & 0xff] << 8) |
-        SBOX[s3 & 0xff]) ^
+      ((sbox[s0 >>> 24] << 24) |
+        (sbox[(s1 >>> 16) & 0xff] << 16) |
+        (sbox[(s2 >>> 8) & 0xff] << 8) |
+        sbox[s3 & 0xff]) ^
       keySchedule[ksRow++];
     const t1 =
-      ((SBOX[s1 >>> 24] << 24) |
-        (SBOX[(s2 >>> 16) & 0xff] << 16) |
-        (SBOX[(s3 >>> 8) & 0xff] << 8) |
-        SBOX[s0 & 0xff]) ^
+      ((sbox[s1 >>> 24] << 24) |
+        (sbox[(s2 >>> 16) & 0xff] << 16) |
+        (sbox[(s3 >>> 8) & 0xff] << 8) |
+        sbox[s0 & 0xff]) ^
       keySchedule[ksRow++];
     const t2 =
-      ((SBOX[s2 >>> 24] << 24) |
-        (SBOX[(s3 >>> 16) & 0xff] << 16) |
-        (SBOX[(s0 >>> 8) & 0xff] << 8) |
-        SBOX[s1 & 0xff]) ^
+      ((sbox[s2 >>> 24] << 24) |
+        (sbox[(s3 >>> 16) & 0xff] << 16) |
+        (sbox[(s0 >>> 8) & 0xff] << 8) |
+        sbox[s1 & 0xff]) ^
       keySchedule[ksRow++];
     const t3 =
-      ((SBOX[s3 >>> 24] << 24) |
-        (SBOX[(s0 >>> 16) & 0xff] << 16) |
-        (SBOX[(s1 >>> 8) & 0xff] << 8) |
-        SBOX[s2 & 0xff]) ^
+      ((sbox[s3 >>> 24] << 24) |
+        (sbox[(s0 >>> 16) & 0xff] << 16) |
+        (sbox[(s1 >>> 8) & 0xff] << 8) |
+        sbox[s2 & 0xff]) ^
       keySchedule[ksRow++];
 
     // Set output

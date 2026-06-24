@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { BlockCipher } from "../../core/cipher/block-cipher";
 import { WordArray } from "../../core/word-array";
-import { BufferedBlockAlgorithmConfig } from "../../typings/core/buffered-block-algorithm.typing";
 
 // Permuted Choice 1 constants
 const PC1 = [
@@ -566,9 +565,6 @@ export class DESAlgo extends BlockCipher {
   private invSubKeys!: number[][];
   private lBlock!: number;
   private rBlock!: number;
-  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
-    super(xformMode, key, cfg);
-  }
   private exchangeRL(offset: number, mask: number): void {
     const t = ((this.rBlock >>> offset) ^ this.lBlock) & mask;
     this.lBlock ^= t;
@@ -692,9 +688,6 @@ export class TripleDESAlgo extends BlockCipher {
   private des2!: BlockCipher;
   private des3!: BlockCipher;
 
-  constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
-    super(xformMode, key, cfg);
-  }
   public encryptBlock(M: number[], offset: number): void {
     this.des1.encryptBlock(M, offset);
     this.des2.decryptBlock(M, offset);
