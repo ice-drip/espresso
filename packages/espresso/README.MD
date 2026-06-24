@@ -1,123 +1,112 @@
 # @kaffee/espresso
 
-A based TypeScript crypto library, tree shaking support
+A TypeScript cryptography library with Web Crypto + pure JS dual runtime support. Tree-shakeable, zero-dependency, compatible with crypto-js output.
 
 ## Installation
 
-Install with npm
-
 ```bash
-  npm install --dev @kaffee/espresso
+npm install @kaffee/espresso
+# or
+pnpm add @kaffee/espresso
+# or
+yarn add @kaffee/espresso
 ```
 
-Install with yarn
-
-```bash
-  yarn add --dev @kaffee/espresso
-```
-
-Install with pnpm
-
-```bash
-  pnpm add -D @kaffee/espresso
-```
-
-## Support List
+## Supported Algorithms
 
 ### Hash
 
-- md4
-- md5
-- pbkdf2
-- ripemd128
-- ripemd160
-- ripemd256
-- ripemd320
-- sha1
-- sha3
-- sha224
-- sha256
-- sha384
-- sha512
+- MD4, MD5
+- SHA-1, SHA-224, SHA-256, SHA-384, SHA-512
+- SHA3
+- RIPEMD-128, RIPEMD-160, RIPEMD-256, RIPEMD-320
+- PBKDF2
 
-### Hmac Hash
+### HMAC
 
-- md4
-- md5
-- pbkdf2
-- ripemd128
-- ripemd160
-- ripemd256
-- ripemd320
-- sha1
-- sha3
-- sha224
-- sha256
-- sha384
-- sha512
+- HMAC with any supported hash algorithm
 
 ### Block Cipher
 
-- AES
+- AES (128, 192, 256-bit)
 - DES
-- Triple DES
+- Triple DES (3-key EDE)
+- BlowFish
+- SEED
 
 ### Stream Cipher
 
-`but is not support`
+- RC4 / RC4Drop
+- Rabbit / RabbitLegacy
 
-- SEED
-- Rabbit
-- Rabbit Legacy
-- RC4
+### Block Modes
 
-## Example
+- CBC, ECB, CTR, CFB, OFB
 
-### Hash Example
+### Padding
 
-```javascript
-import { MD5 } from "@kaffee/espresso";
+- PKCS7, Zero, ANSI X.923, ISO 9797-1, ISO 10126, No Padding
 
-const hash = MD5("LIBAOBAO").toString();
-```
+## Examples
 
-### Block Cipher Example
+### Hash
 
 ```typescript
+import { MD5, SHA256 } from '@kaffee/espresso';
 
-import { AES, enc, RIPEMD160, mode, pad } from "@kaffee/espresso";
-
-function AESEncrypt(text: string, keyStr: string, ivStr: string): string {
-  const key = RIPEMD160(keyStr).toString().slice(0, 16);
-  const iv = enc.Utf8.parse(ivStr);
-  return AES.encrypt(text, Utf8.parse(key), {
-    iv,
-    mode: mode.CBC,
-    padding: pad.PKCS7
-  }).toString();
-}
-
-function AESDecrypt(text: string, key: string, ivStr: string): string {
-  const iv = enc.Utf8.parse(ivStr);
-  return AES.decrypt(text, key, {
-    iv,
-    mode: mode.CBC,
-    padding: pad.PKCS7
-  }).toString(enc.Utf8);
-}
-
+const md5Hash = MD5('LIBAOBAO').toString();
+const sha256Hash = SHA256('Hello, World!').toString();
 ```
 
-## Other
+### Block Cipher
 
-![tree shaking](https://i.imgur.com/vqZrctP.png)
+```typescript
+import { AES, enc, mode, pad } from '@kaffee/espresso';
+
+const key = enc.Utf8.parse('my-secret-key');
+const iv = enc.Utf8.parse('0123456789abcdef');
+
+const encrypted = AES.encrypt('Hello, World!', key, {
+  iv,
+  mode: mode.CBC,
+  padding: pad.PKCS7,
+});
+
+const decrypted = AES.decrypt(encrypted, key, {
+  iv,
+  mode: mode.CBC,
+  padding: pad.PKCS7,
+}).toString(enc.Utf8);
+```
+
+### HMAC
+
+```typescript
+import { hmac } from '@kaffee/espresso';
+
+const mac = hmac('sha256', 'Hello, World!', 'secret-key').toString();
+```
+
+### PBKDF2
+
+```typescript
+import { pbkdf2 } from '@kaffee/espresso';
+
+const key = pbkdf2('password', 'salt', {
+  keySize: 256 / 32,
+  iterations: 1000,
+}).toString();
+```
+
+## Tree Shaking
+
+The library supports tree shaking. Import only what you need:
+
+```typescript
+// Only AES is included in the bundle
+import { AES } from '@kaffee/espresso';
+```
 
 ## License
 
-[GPL](https://choosealicense.com/licenses/gpl-3.0/)
-
-## Contributors
-
-<a href="https://github.com/Muromi-Rikka" >
-  <img style="border-radius:200px;" src="https://github.com/Muromi-Rikka.png?size=50">
-</a>
+[GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
