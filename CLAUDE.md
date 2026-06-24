@@ -1,12 +1,11 @@
 # @ice-drip/espresso
 
-TypeScript cryptography library implementing AES, DES, TripleDES, BlowFish, SHA\*, MD5, HMAC, and stream ciphers.
+TypeScript cryptography library implementing AES, DES, TripleDES, BlowFish, SHA*, MD5, HMAC, stream ciphers, and PBKDF2.
 
 ## Structure
 
-- `packages/espresso/` — Core library (Rollup → CJS/ESM/UMD)
-- `packages/test/` — Jest compatibility tests vs crypto-js
-- `website/caesar/` — Angular 16 demo site
+- `packages/espresso/` — Core library (rslib → CJS/ESM)
+- `packages/test/` — rstest compatibility tests vs crypto-js
 
 ## Build
 
