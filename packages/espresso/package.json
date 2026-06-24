@@ -54,9 +54,7 @@
   },
   "devDependencies": {
     "@rslib/core": "^0.23.0",
-    "@types/crypto-js": "^4.2.2",
     "@typescript/native-preview": "7.0.0-dev.20260623.1",
-    "crypto-js": "^4.2.0",
     "typescript": "^6.0.3"
   }
 }
