@@ -304,4 +304,4 @@ pnpm format          # Format with oxfmt
 
 ## License
 
-[GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
+[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
