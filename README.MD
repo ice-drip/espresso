@@ -83,6 +83,19 @@ Computes a hash of the data.
 
 Computes HMAC of the data.
 
+## Code Quality Tools
+
+### Formatting
+- Run `pnpm format` to format code
+- Run `pnpm format:check` to check formatting
+
+### Lint
+- Run `pnpm run lint:oxlint` to check code quality
+- Run `pnpm run lint:fix` to auto-fix lint issues
+
+### Type Checking
+- Run `pnpm run typecheck` to check TypeScript types
+
 ## License
 
 GPL-3.0
