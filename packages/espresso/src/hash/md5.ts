@@ -1,5 +1,3 @@
-
-
 const T: number[] = [];
 for (let i = 0; i < 64; i++) {
   T[i] = (Math.abs(Math.sin(i + 1)) * 0x1_00_00_00_00) | 0;

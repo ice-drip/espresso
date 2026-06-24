@@ -1,5 +1,3 @@
-
-
 const MASK64 = 0xffffffffffffffffn;
 
 const K: bigint[] = [

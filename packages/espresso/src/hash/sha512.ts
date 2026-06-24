@@ -1,5 +1,3 @@
-
-
 const K: bigint[] = [
   0x428a2f98d728ae22n,
   0x7137449123ef65cdn,
