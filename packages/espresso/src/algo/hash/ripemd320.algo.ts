@@ -185,23 +185,23 @@ export class RIPEMD320Algo extends Hasher {
       cr = br;
       br = t;
 
-      if (i == 15) {
+      if (i === 15) {
         t = bl;
         bl = br;
         br = t;
-      } else if (i == 31) {
+      } else if (i === 31) {
         t = dl;
         dl = dr;
         dr = t;
-      } else if (i == 47) {
+      } else if (i === 47) {
         t = al;
         al = ar;
         ar = t;
-      } else if (i == 63) {
+      } else if (i === 63) {
         t = cl;
         cl = cr;
         cr = t;
-      } else if (i == 79) {
+      } else if (i === 79) {
         t = el;
         el = er;
         er = t;

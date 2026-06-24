@@ -151,7 +151,7 @@ export class AESAlgo extends BlockCipher {
           // Mix Rcon
           // eslint-disable-next-line unicorn/prefer-math-trunc
           t ^= RCON[(ksRow / keySize) | 0] << 24;
-        } else if (keySize > 6 && ksRow % keySize == 4) {
+        } else if (keySize > 6 && ksRow % keySize === 4) {
           // Sub word
           t =
             (_SBOX[t >>> 24] << 24) |

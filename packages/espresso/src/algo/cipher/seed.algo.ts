@@ -246,7 +246,7 @@ export class SEEDAlgo extends BlockCipher {
       K[i][0] = SEED_G(A + C - SEED_KC[i]);
       K[i][1] = SEED_G(B - D + SEED_KC[i]);
 
-      if (i % 2 == 0) {
+      if (i % 2 === 0) {
         const A0 = A;
         A = (A >>> 8) | (B << 24);
         B = (B >>> 8) | (A0 << 24);
