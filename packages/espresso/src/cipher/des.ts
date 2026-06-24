@@ -686,8 +686,6 @@ function desEncryptBlock(block: Uint8Array, subKeys: number[][]): void {
 function desDecryptBlock(block: Uint8Array, invSubKeys: number[][]): void {
   desEncryptBlock(block, invSubKeys);
 }
-  return result;
-}
 
 function hexToBytes(hex: string): Uint8Array {
   if (hex.length % 2 !== 0) throw new Error("Invalid hex string");

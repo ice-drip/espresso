@@ -1,0 +1,869 @@
+$ oxlint .
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`C_`'.
+   ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:7:7]
+ 6 | const S: number[] = [];
+ 7 | const C_: number[] = [];
+   :       ^^
+ 8 | const G: number[] = [];
+   `----
+  help: Remove the dangling '_' or add `C_` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_X`'.
+    ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:26:21]
+ 25 | 
+ 26 |     const X = (this._X = [
+    :                     ^^
+ 27 |       K[0],
+    `----
+  help: Remove the dangling '_' or add `_X` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_C`'.
+    ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:36:21]
+ 35 |     ]);
+ 36 |     const C = (this._C = [
+    :                     ^^
+ 37 |       (K[2] << 16) | (K[2] >>> 16),
+    `----
+  help: Remove the dangling '_' or add `_C` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_b`'.
+    ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:47:10]
+ 46 | 
+ 47 |     this._b = 0;
+    :          ^^
+ 48 | 
+    `----
+  help: Remove the dangling '_' or add `_b` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_X`'.
+    ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:94:20]
+ 93 |     // Shortcuts
+ 94 |     const X = this._X;
+    :                    ^^
+ 95 |     const C = this._C;
+    `----
+  help: Remove the dangling '_' or add `_X` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_C`'.
+    ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:95:20]
+ 94 |     const X = this._X;
+ 95 |     const C = this._C;
+    :                    ^^
+ 96 | 
+    `----
+  help: Remove the dangling '_' or add `_C` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_b`'.
+     ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:103:41]
+ 102 |     // Calculate new counter values
+ 103 |     C[0] = (C[0] + 0x4d_34_d3_4d + this._b) | 0;
+     :                                         ^^
+ 104 |     C[1] = (C[1] + 0xd3_4d_34_d3 + (C[0] >>> 0 < C_[0] >>> 0 ? 1 : 0)) | 0;
+     `----
+  help: Remove the dangling '_' or add `_b` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_b`'.
+     ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:111:10]
+ 110 |     C[7] = (C[7] + 0xd3_4d_34_d3 + (C[6] >>> 0 < C_[6] >>> 0 ? 1 : 0)) | 0;
+ 111 |     this._b = C[7] >>> 0 < C_[7] >>> 0 ? 1 : 0;
+     :          ^^
+ 112 | 
+     `----
+  help: Remove the dangling '_' or add `_b` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_X`'.
+     ,-[packages/espresso/src/algo/cipher/rabbit-legacy.algo.ts:140:20]
+ 139 |   _doProcessBlock(M: number[], offset: number): void {
+ 140 |     const X = this._X;
+     :                    ^^
+ 141 |     this.nextState();
+     `----
+  help: Remove the dangling '_' or add `_X` to the 'allow' configuration.
+
+  ! eslint(no-useless-constructor): Redundant super call in constructor
+   ,-[packages/espresso/src/core/cipher/stream-cipher.ts:7:3]
+ 6 | export abstract class StreamCipher extends Cipher {
+ 7 |   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
+   :   ^^^^^|^^^^^
+   :        `-- This constructor is unnecessary,
+ 8 |     super(xformMode, key, cfg);
+   :     ^^^^^^^^^^^^^|^^^^^^^^^^^^
+   :                  `-- because it only passes arguments through to the superclass
+ 9 |   }
+   `----
+  help: Remove this constructor or add code to it.
+  note: Subclasses automatically use the constructor of their superclass, making this redundant.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_map`'.
+    ,-[packages/espresso/src/enc/base64.ts:32:22]
+ 31 |     let base64StrLength = base64Str.length;
+ 32 |     const map = this._map;
+    :                      ^^^^
+ 33 |     let reverseMap = this._reverseMap;
+    `----
+  help: Remove the dangling '_' or add `_map` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_reverseMap`'.
+    ,-[packages/espresso/src/enc/base64.ts:33:27]
+ 32 |     const map = this._map;
+ 33 |     let reverseMap = this._reverseMap;
+    :                           ^^^^^^^^^^^
+ 34 |     if (reverseMap === undefined) {
+    `----
+  help: Remove the dangling '_' or add `_reverseMap` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_map`'.
+    ,-[packages/espresso/src/enc/base64.ts:63:31]
+ 62 |       for (let j = 0; j < 4 && i + j * 0.75 < wordArray.sigBytes; j++) {
+ 63 |         base64Chars.push(this._map.charAt((triplet >>> (6 * (3 - j))) & 0x3f));
+    :                               ^^^^
+ 64 |       }
+    `----
+  help: Remove the dangling '_' or add `_map` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_map`'.
+    ,-[packages/espresso/src/enc/base64.ts:66:30]
+ 65 |     }
+ 66 |     const paddingChar = this._map.charAt(64);
+    :                              ^^^^
+ 67 |     if (paddingChar) {
+    `----
+  help: Remove the dangling '_' or add `_map` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_keystream`'.
+    ,-[packages/espresso/src/mode/OFB.encryptor.ts:12:26]
+ 11 |     const iv = this._iv;
+ 12 |     let keystream = this._keystream;
+    :                          ^^^^^^^^^^
+ 13 | 
+    `----
+  help: Remove the dangling '_' or add `_keystream` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_keystream`'.
+    ,-[packages/espresso/src/mode/OFB.encryptor.ts:16:24]
+ 15 |     if (iv) {
+ 16 |       keystream = this._keystream = [...iv];
+    :                        ^^^^^^^^^^
+ 17 | 
+    `----
+  help: Remove the dangling '_' or add `_keystream` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_prevBlock`'.
+    ,-[packages/espresso/src/mode/CBC.encryptor.ts:12:10]
+ 11 | 
+ 12 |     this._prevBlock = _words.slice(_offset, _offset + this._cipher.blockSize);
+    :          ^^^^^^^^^^
+ 13 |   }
+    `----
+  help: Remove the dangling '_' or add `_prevBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_prevBlock`'.
+    ,-[packages/espresso/src/mode/CBC.encryptor.ts:21:20]
+ 20 |     } else {
+ 21 |       block = this._prevBlock;
+    :                    ^^^^^^^^^^
+ 22 |     }
+    `----
+  help: Remove the dangling '_' or add `_prevBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_prevBlock`'.
+    ,-[packages/espresso/src/mode/CBC.decryptor.ts:16:10]
+ 15 | 
+ 16 |     this._prevBlock = thisBlock;
+    :          ^^^^^^^^^^
+ 17 |   }
+    `----
+  help: Remove the dangling '_' or add `_prevBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_prevBlock`'.
+    ,-[packages/espresso/src/mode/CBC.decryptor.ts:26:20]
+ 25 |     } else {
+ 26 |       block = this._prevBlock;
+    :                    ^^^^^^^^^^
+ 27 |     }
+    `----
+  help: Remove the dangling '_' or add `_prevBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_prevBlock`'.
+    ,-[packages/espresso/src/mode/CFB.decryptor.ts:21:10]
+ 20 |     // This block becomes the previous block
+ 21 |     this._prevBlock = thisBlock;
+    :          ^^^^^^^^^^
+ 22 |   }
+    `----
+  help: Remove the dangling '_' or add `_prevBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_prevBlock`'.
+    ,-[packages/espresso/src/mode/CFB.decryptor.ts:42:24]
+ 41 |     } else {
+ 42 |       keystream = this._prevBlock;
+    :                        ^^^^^^^^^^
+ 43 |     }
+    `----
+  help: Remove the dangling '_' or add `_prevBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_prevBlock`'.
+    ,-[packages/espresso/src/mode/CFB.encryptor.ts:19:10]
+ 18 |     // Remember this block to use with next block
+ 19 |     this._prevBlock = words.slice(offset, offset + blockSize);
+    :          ^^^^^^^^^^
+ 20 |   }
+    `----
+  help: Remove the dangling '_' or add `_prevBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_prevBlock`'.
+    ,-[packages/espresso/src/mode/CFB.encryptor.ts:40:24]
+ 39 |     } else {
+ 40 |       keystream = this._prevBlock;
+    :                        ^^^^^^^^^^
+ 41 |     }
+    `----
+  help: Remove the dangling '_' or add `_prevBlock` to the 'allow' configuration.
+
+  ! eslint(no-useless-constructor): Redundant super call in constructor
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:569:3]
+ 568 |   public _rBlock!: number;
+ 569 |   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
+     :   ^^^^^|^^^^^
+     :        `-- This constructor is unnecessary,
+ 570 |     super(xformMode, key, cfg);
+     :     ^^^^^^^^^^^^^|^^^^^^^^^^^^
+     :                  `-- because it only passes arguments through to the superclass
+ 571 |   }
+     `----
+  help: Remove this constructor or add code to it.
+  note: Subclasses automatically use the constructor of their superclass, making this redundant.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:573:22]
+ 572 |   private exchangeRL(offset: number, mask: number): void {
+ 573 |     const t = ((this._rBlock >>> offset) ^ this._lBlock) & mask;
+     :                      ^^^^^^^
+ 574 |     this._lBlock ^= t;
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:573:49]
+ 572 |   private exchangeRL(offset: number, mask: number): void {
+ 573 |     const t = ((this._rBlock >>> offset) ^ this._lBlock) & mask;
+     :                                                 ^^^^^^^
+ 574 |     this._lBlock ^= t;
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:574:10]
+ 573 |     const t = ((this._rBlock >>> offset) ^ this._lBlock) & mask;
+ 574 |     this._lBlock ^= t;
+     :          ^^^^^^^
+ 575 |     this._rBlock ^= t << offset;
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:575:10]
+ 574 |     this._lBlock ^= t;
+ 575 |     this._rBlock ^= t << offset;
+     :          ^^^^^^^
+ 576 |   }
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_subKeys`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:579:40]
+ 578 |   public encryptBlock(M: number[], offset: number): void {
+ 579 |     this._doCryptBlock(M, offset, this._subKeys);
+     :                                        ^^^^^^^^
+ 580 |   }
+     `----
+  help: Remove the dangling '_' or add `_subKeys` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_invSubKeys`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:583:40]
+ 582 |   public decryptBlock(M: number[], offset: number): void {
+ 583 |     this._doCryptBlock(M, offset, this._invSubKeys);
+     :                                        ^^^^^^^^^^^
+ 584 |   }
+     `----
+  help: Remove the dangling '_' or add `_invSubKeys` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_subKeys`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:599:39]
+ 598 |     // Assemble 16 subkeys
+ 599 |     const subKeys: number[][] = (this._subKeys = []);
+     :                                       ^^^^^^^^
+ 600 |     for (let nSubKey = 0; nSubKey < 16; nSubKey++) {
+     `----
+  help: Remove the dangling '_' or add `_subKeys` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_invSubKeys`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:630:42]
+ 629 |     // Compute inverse subkeys
+ 630 |     const invSubKeys: number[][] = (this._invSubKeys = []);
+     :                                          ^^^^^^^^^^^
+ 631 |     for (let i = 0; i < 16; i++) {
+     `----
+  help: Remove the dangling '_' or add `_invSubKeys` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:636:22]
+ 635 |   private exchangeLR(offset: number, mask: number): void {
+ 636 |     const t = ((this._lBlock >>> offset) ^ this._rBlock) & mask;
+     :                      ^^^^^^^
+ 637 |     this._rBlock ^= t;
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:636:49]
+ 635 |   private exchangeLR(offset: number, mask: number): void {
+ 636 |     const t = ((this._lBlock >>> offset) ^ this._rBlock) & mask;
+     :                                                 ^^^^^^^
+ 637 |     this._rBlock ^= t;
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:637:10]
+ 636 |     const t = ((this._lBlock >>> offset) ^ this._rBlock) & mask;
+ 637 |     this._rBlock ^= t;
+     :          ^^^^^^^
+ 638 |     this._lBlock ^= t << offset;
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:638:10]
+ 637 |     this._rBlock ^= t;
+ 638 |     this._lBlock ^= t << offset;
+     :          ^^^^^^^
+ 639 |   }
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:643:10]
+ 642 |     // Get input
+ 643 |     this._lBlock = M[offset];
+     :          ^^^^^^^
+ 644 |     this._rBlock = M[offset + 1];
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:644:10]
+ 643 |     this._lBlock = M[offset];
+ 644 |     this._rBlock = M[offset + 1];
+     :          ^^^^^^^
+ 645 | 
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:657:27]
+ 656 |       const subKey = subKeys[round];
+ 657 |       const lBlock = this._lBlock;
+     :                           ^^^^^^^
+ 658 |       const rBlock = this._rBlock;
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:658:27]
+ 657 |       const lBlock = this._lBlock;
+ 658 |       const rBlock = this._rBlock;
+     :                           ^^^^^^^
+ 659 | 
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:665:12]
+ 664 |       }
+ 665 |       this._lBlock = rBlock;
+     :            ^^^^^^^
+ 666 |       this._rBlock = lBlock ^ f;
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:666:12]
+ 665 |       this._lBlock = rBlock;
+ 666 |       this._rBlock = lBlock ^ f;
+     :            ^^^^^^^
+ 667 |     }
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:670:20]
+ 669 |     // Undo swap from last round
+ 670 |     const t = this._lBlock;
+     :                    ^^^^^^^
+ 671 |     this._lBlock = this._rBlock;
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:671:10]
+ 670 |     const t = this._lBlock;
+ 671 |     this._lBlock = this._rBlock;
+     :          ^^^^^^^
+ 672 |     this._rBlock = t;
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:671:25]
+ 670 |     const t = this._lBlock;
+ 671 |     this._lBlock = this._rBlock;
+     :                         ^^^^^^^
+ 672 |     this._rBlock = t;
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:672:10]
+ 671 |     this._lBlock = this._rBlock;
+ 672 |     this._rBlock = t;
+     :          ^^^^^^^
+ 673 | 
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_lBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:682:22]
+ 681 |     // Set output
+ 682 |     M[offset] = this._lBlock;
+     :                      ^^^^^^^
+ 683 |     M[offset + 1] = this._rBlock;
+     `----
+  help: Remove the dangling '_' or add `_lBlock` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_rBlock`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:683:26]
+ 682 |     M[offset] = this._lBlock;
+ 683 |     M[offset + 1] = this._rBlock;
+     :                          ^^^^^^^
+ 684 |   }
+     `----
+  help: Remove the dangling '_' or add `_rBlock` to the 'allow' configuration.
+
+  ! eslint(no-useless-constructor): Redundant super call in constructor
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:695:3]
+ 694 | 
+ 695 |   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
+     :   ^^^^^|^^^^^
+     :        `-- This constructor is unnecessary,
+ 696 |     super(xformMode, key, cfg);
+     :     ^^^^^^^^^^^^^|^^^^^^^^^^^^
+     :                  `-- because it only passes arguments through to the superclass
+ 697 |   }
+     `----
+  help: Remove this constructor or add code to it.
+  note: Subclasses automatically use the constructor of their superclass, making this redundant.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des1`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:699:10]
+ 698 |   public encryptBlock(M: number[], offset: number): void {
+ 699 |     this._des1.encryptBlock(M, offset);
+     :          ^^^^^
+ 700 |     this._des2.decryptBlock(M, offset);
+     `----
+  help: Remove the dangling '_' or add `_des1` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des2`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:700:10]
+ 699 |     this._des1.encryptBlock(M, offset);
+ 700 |     this._des2.decryptBlock(M, offset);
+     :          ^^^^^
+ 701 |     this._des3.encryptBlock(M, offset);
+     `----
+  help: Remove the dangling '_' or add `_des2` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des3`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:701:10]
+ 700 |     this._des2.decryptBlock(M, offset);
+ 701 |     this._des3.encryptBlock(M, offset);
+     :          ^^^^^
+ 702 |   }
+     `----
+  help: Remove the dangling '_' or add `_des3` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des3`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:704:10]
+ 703 |   public decryptBlock(M: number[], offset: number): void {
+ 704 |     this._des3.decryptBlock(M, offset);
+     :          ^^^^^
+ 705 |     this._des2.encryptBlock(M, offset);
+     `----
+  help: Remove the dangling '_' or add `_des3` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des2`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:705:10]
+ 704 |     this._des3.decryptBlock(M, offset);
+ 705 |     this._des2.encryptBlock(M, offset);
+     :          ^^^^^
+ 706 |     this._des1.decryptBlock(M, offset);
+     `----
+  help: Remove the dangling '_' or add `_des2` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des1`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:706:10]
+ 705 |     this._des2.encryptBlock(M, offset);
+ 706 |     this._des1.decryptBlock(M, offset);
+     :          ^^^^^
+ 707 |   }
+     `----
+  help: Remove the dangling '_' or add `_des1` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des1`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:727:10]
+ 726 |     // Create DES instances
+ 727 |     this._des1 = DESAlgo.createEncryptor(new WordArray(key1), {}) as BlockCipher;
+     :          ^^^^^
+ 728 |     this._des2 = DESAlgo.createEncryptor(new WordArray(key2), {}) as BlockCipher;
+     `----
+  help: Remove the dangling '_' or add `_des1` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des2`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:728:10]
+ 727 |     this._des1 = DESAlgo.createEncryptor(new WordArray(key1), {}) as BlockCipher;
+ 728 |     this._des2 = DESAlgo.createEncryptor(new WordArray(key2), {}) as BlockCipher;
+     :          ^^^^^
+ 729 |     this._des3 = DESAlgo.createEncryptor(new WordArray(key3), {}) as BlockCipher;
+     `----
+  help: Remove the dangling '_' or add `_des2` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_des3`'.
+     ,-[packages/espresso/src/algo/cipher/tripledes.algo.ts:729:10]
+ 728 |     this._des2 = DESAlgo.createEncryptor(new WordArray(key2), {}) as BlockCipher;
+ 729 |     this._des3 = DESAlgo.createEncryptor(new WordArray(key3), {}) as BlockCipher;
+     :          ^^^^^
+ 730 |   }
+     `----
+  help: Remove the dangling '_' or add `_des3` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`C_`'.
+   ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:7:7]
+ 6 | const S: number[] = [];
+ 7 | const C_: number[] = [];
+   :       ^^
+ 8 | const G: number[] = [];
+   `----
+  help: Remove the dangling '_' or add `C_` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_X`'.
+    ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:33:21]
+ 32 | 
+ 33 |     const X = (this._X = [
+    :                     ^^
+ 34 |       K[0],
+    `----
+  help: Remove the dangling '_' or add `_X` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_C`'.
+    ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:44:21]
+ 43 | 
+ 44 |     const C = (this._C = [
+    :                     ^^
+ 45 |       (K[2] << 16) | (K[2] >>> 16),
+    `----
+  help: Remove the dangling '_' or add `_C` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_b`'.
+    ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:55:10]
+ 54 | 
+ 55 |     this._b = 0;
+    :          ^^
+ 56 | 
+    `----
+  help: Remove the dangling '_' or add `_b` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_X`'.
+     ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:101:20]
+ 100 |     // Shortcuts
+ 101 |     const X = this._X;
+     :                    ^^
+ 102 |     const C = this._C;
+     `----
+  help: Remove the dangling '_' or add `_X` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_C`'.
+     ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:102:20]
+ 101 |     const X = this._X;
+ 102 |     const C = this._C;
+     :                    ^^
+ 103 | 
+     `----
+  help: Remove the dangling '_' or add `_C` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_b`'.
+     ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:110:41]
+ 109 |     // Calculate new counter values
+ 110 |     C[0] = (C[0] + 0x4d_34_d3_4d + this._b) | 0;
+     :                                         ^^
+ 111 |     C[1] = (C[1] + 0xd3_4d_34_d3 + (C[0] >>> 0 < C_[0] >>> 0 ? 1 : 0)) | 0;
+     `----
+  help: Remove the dangling '_' or add `_b` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_b`'.
+     ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:118:10]
+ 117 |     C[7] = (C[7] + 0xd3_4d_34_d3 + (C[6] >>> 0 < C_[6] >>> 0 ? 1 : 0)) | 0;
+ 118 |     this._b = C[7] >>> 0 < C_[7] >>> 0 ? 1 : 0;
+     :          ^^
+ 119 | 
+     `----
+  help: Remove the dangling '_' or add `_b` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_X`'.
+     ,-[packages/espresso/src/algo/cipher/rabbit.algo.ts:147:20]
+ 146 |   _doProcessBlock(M: number[], offset: number): void {
+ 147 |     const X = this._X;
+     :                    ^^
+ 148 |     this.nextState();
+     `----
+  help: Remove the dangling '_' or add `_X` to the 'allow' configuration.
+
+  ! eslint(no-useless-constructor): Redundant super call in constructor
+     ,-[packages/espresso/src/algo/hash/sha512.algo.ts:105:3]
+ 104 |   blockSize = 1024 / 32;
+ 105 |   constructor() {
+     :   ^^^^^|^^^^^
+     :        `-- This constructor is unnecessary,
+ 106 |     super();
+     :     ^^^|^^^
+     :        `-- because it only passes arguments through to the superclass
+ 107 |   }
+     `----
+  help: Remove this constructor or add code to it.
+  note: Subclasses automatically use the constructor of their superclass, making this redundant.
+
+  ! eslint(no-useless-constructor): Redundant super call in constructor
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:12:3]
+ 11 |   private _j!: number;
+ 12 |   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
+    :   ^^^^^|^^^^^
+    :        `-- This constructor is unnecessary,
+ 13 |     super(xformMode, key, cfg);
+    :     ^^^^^^^^^^^^^|^^^^^^^^^^^^
+    :                  `-- because it only passes arguments through to the superclass
+ 14 |   }
+    `----
+  help: Remove this constructor or add code to it.
+  note: Subclasses automatically use the constructor of their superclass, making this redundant.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_S`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:22:10]
+ 21 |     // Init sbox
+ 22 |     this._S = [];
+    :          ^^
+ 23 |     const S: number[] = this._S;
+    `----
+  help: Remove the dangling '_' or add `_S` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_S`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:23:30]
+ 22 |     this._S = [];
+ 23 |     const S: number[] = this._S;
+    :                              ^^
+ 24 |     for (let i = 0; i < 256; i++) {
+    `----
+  help: Remove the dangling '_' or add `_S` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_j`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:42:10]
+ 41 |     // Counters
+ 42 |     this._j = 0;
+    :          ^^
+ 43 |     this._i = this._j;
+    `----
+  help: Remove the dangling '_' or add `_j` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_i`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:43:10]
+ 42 |     this._j = 0;
+ 43 |     this._i = this._j;
+    :          ^^
+ 44 |   }
+    `----
+  help: Remove the dangling '_' or add `_i` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_j`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:43:20]
+ 42 |     this._j = 0;
+ 43 |     this._i = this._j;
+    :                    ^^
+ 44 |   }
+    `----
+  help: Remove the dangling '_' or add `_j` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_S`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:48:20]
+ 47 |     // Shortcuts
+ 48 |     const S = this._S;
+    :                    ^^
+ 49 |     const i = this._i;
+    `----
+  help: Remove the dangling '_' or add `_S` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_i`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:49:20]
+ 48 |     const S = this._S;
+ 49 |     const i = this._i;
+    :                    ^^
+ 50 |     let j = this._j;
+    `----
+  help: Remove the dangling '_' or add `_i` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_j`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:50:18]
+ 49 |     const i = this._i;
+ 50 |     let j = this._j;
+    :                  ^^
+ 51 | 
+    `----
+  help: Remove the dangling '_' or add `_j` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_i`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:55:12]
+ 54 |     for (let n = 0; n < 4; n++) {
+ 55 |       this._i = (i + 1) % 256;
+    :            ^^
+ 56 |       j = (j + S[i]) % 256;
+    `----
+  help: Remove the dangling '_' or add `_i` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_i`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:67:10]
+ 66 |     // Update counters
+ 67 |     this._i = i;
+    :          ^^
+ 68 |     this._j = j;
+    `----
+  help: Remove the dangling '_' or add `_i` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_j`'.
+    ,-[packages/espresso/src/algo/cipher/rc4.algo.ts:68:10]
+ 67 |     this._i = i;
+ 68 |     this._j = j;
+    :          ^^
+ 69 | 
+    `----
+  help: Remove the dangling '_' or add `_j` to the 'allow' configuration.
+
+  ! eslint(no-useless-constructor): Redundant super call in constructor
+    ,-[packages/espresso/src/algo/cipher/aes.algo.ts:81:3]
+ 80 | 
+ 81 |   constructor(xformMode: number, key: WordArray, cfg?: BufferedBlockAlgorithmConfig) {
+    :   ^^^^^|^^^^^
+    :        `-- This constructor is unnecessary,
+ 82 |     super(xformMode, key, cfg);
+    :     ^^^^^^^^^^^^^|^^^^^^^^^^^^
+    :                  `-- because it only passes arguments through to the superclass
+ 83 |   }
+    `----
+  help: Remove this constructor or add code to it.
+  note: Subclasses automatically use the constructor of their superclass, making this redundant.
+
+  ! eslint(no-shadow): 'x' is already declared in the upper scope.
+    ,-[packages/espresso/src/algo/hash/sha3.algo.ts:9:5]
+  8 | const ROUND_CONSTANT: X64Word[] = [];
+  9 | let x = 1,
+    :     |
+    :     `-- shadowed declaration is here
+ 10 |   y = 0;
+    `----
+    ,-[packages/espresso/src/algo/hash/sha3.algo.ts:21:10]
+ 20 | // Compute pi index constants
+ 21 | for (let x = 0; x < 5; x++) {
+    :          |
+    :          `-- 'x' is declared here
+ 22 |   for (let y = 0; y < 5; y++) {
+    `----
+  help: Consider renaming 'x' to avoid shadowing the variable from the outer scope.
+
+  ! eslint(no-shadow): 'y' is already declared in the upper scope.
+    ,-[packages/espresso/src/algo/hash/sha3.algo.ts:10:3]
+  9 | let x = 1,
+ 10 |   y = 0;
+    :   |
+    :   `-- shadowed declaration is here
+ 11 | for (let t = 0; t < 24; t++) {
+    `----
+    ,-[packages/espresso/src/algo/hash/sha3.algo.ts:22:12]
+ 21 | for (let x = 0; x < 5; x++) {
+ 22 |   for (let y = 0; y < 5; y++) {
+    :            |
+    :            `-- 'y' is declared here
+ 23 |     PI_INDEXES[x + 5 * y] = y + ((2 * x + 3 * y) % 5) * 5;
+    `----
+  help: Consider renaming 'y' to avoid shadowing the variable from the outer scope.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_x`'.
+     ,-[packages/espresso/src/algo/hash/sha3.algo.ts:148:16]
+ 147 |       // Theta
+ 148 |       for (let _x = 0; _x < 5; _x++) {
+     :                ^^
+ 149 |         // Mix column lanes
+     `----
+  help: Remove the dangling '_' or add `_x` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_y`'.
+     ,-[packages/espresso/src/algo/hash/sha3.algo.ts:152:18]
+ 151 |           tLsw = 0;
+ 152 |         for (let _y = 0; _y < 5; _y++) {
+     :                  ^^
+ 153 |           const lane = state[_x + 5 * _y];
+     `----
+  help: Remove the dangling '_' or add `_y` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_x`'.
+     ,-[packages/espresso/src/algo/hash/sha3.algo.ts:163:16]
+ 162 |       }
+ 163 |       for (let _x = 0; _x < 5; _x++) {
+     :                ^^
+ 164 |         // Shortcuts
+     `----
+  help: Remove the dangling '_' or add `_x` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_y`'.
+     ,-[packages/espresso/src/algo/hash/sha3.algo.ts:173:18]
+ 172 |         const tLsw = Tx4.low ^ ((Tx1Lsw << 1) | (Tx1Msw >>> 31));
+ 173 |         for (let _y = 0; _y < 5; _y++) {
+     :                  ^^
+ 174 |           const lane = state[_x + 5 * _y];
+     `----
+  help: Remove the dangling '_' or add `_y` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_x`'.
+     ,-[packages/espresso/src/algo/hash/sha3.algo.ts:213:16]
+ 212 |       // Chi
+ 213 |       for (let _x = 0; _x < 5; _x++) {
+     :                ^^
+ 214 |         for (let _y = 0; _y < 5; _y++) {
+     `----
+  help: Remove the dangling '_' or add `_x` to the 'allow' configuration.
+
+  ! eslint(no-underscore-dangle): Unexpected dangling '_' in '`_y`'.
+     ,-[packages/espresso/src/algo/hash/sha3.algo.ts:214:18]
+ 213 |       for (let _x = 0; _x < 5; _x++) {
+ 214 |         for (let _y = 0; _y < 5; _y++) {
+     :                  ^^
+ 215 |           // Shortcuts
+     `----
+  help: Remove the dangling '_' or add `_y` to the 'allow' configuration.
+
+  x Unexpected token
+     ,-[packages/espresso/src/cipher/des.ts:690:1]
+ 689 |   return result;
+ 690 | }
+     : ^
+ 691 | 
+     `----
+
+Found 90 warnings and 1 error.
+Finished in 52ms on 218 files with 111 rules using 10 threads.
+[ELIFECYCLE] Command failed with exit code 1.
