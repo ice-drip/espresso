@@ -668,8 +668,8 @@ function desDoCryptBlock(
 }
 
 function desEncryptBlock(block: Uint8Array, subKeys: number[][]): void {
-  let lBlock = (block[0] << 24) | (block[1] << 16) | (block[2] << 8) | block[3];
-  let rBlock = (block[4] << 24) | (block[5] << 16) | (block[6] << 8) | block[7];
+  const lBlock = (block[0] << 24) | (block[1] << 16) | (block[2] << 8) | block[3];
+  const rBlock = (block[4] << 24) | (block[5] << 16) | (block[6] << 8) | block[7];
 
   const result = desDoCryptBlock(lBlock, rBlock, subKeys);
 
@@ -686,12 +686,6 @@ function desEncryptBlock(block: Uint8Array, subKeys: number[][]): void {
 function desDecryptBlock(block: Uint8Array, invSubKeys: number[][]): void {
   desEncryptBlock(block, invSubKeys);
 }
-
-function xorBlocks(a: Uint8Array, b: Uint8Array, len: number): Uint8Array {
-  const result = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    result[i] = a[i] ^ b[i];
-  }
   return result;
 }
 

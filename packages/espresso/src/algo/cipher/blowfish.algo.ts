@@ -149,16 +149,16 @@ const ORIG_S = [
   ],
 ];
 
-var BLOWFISH_CTX = {
+const BLOWFISH_CTX = {
   pbox: [],
   sbox: [],
 };
 
 function F(ctx: Context, x: number) {
-  let a = (x >> 24) & 0xff;
-  let b = (x >> 16) & 0xff;
-  let c = (x >> 8) & 0xff;
-  let d = x & 0xff;
+  const a = (x >> 24) & 0xff;
+  const b = (x >> 16) & 0xff;
+  const c = (x >> 8) & 0xff;
+  const d = x & 0xff;
 
   let y = ctx.sbox[0][a] + ctx.sbox[1][b];
   y = y ^ ctx.sbox[2][c];
@@ -282,12 +282,12 @@ export class BlowfishAlgo extends BlockCipher {
   }
 
   public encryptBlock(_M: number[], _offset: number): void {
-    var res = BlowFish_Encrypt(BLOWFISH_CTX, _M[_offset], _M[_offset + 1]);
+    const res = BlowFish_Encrypt(BLOWFISH_CTX, _M[_offset], _M[_offset + 1]);
     _M[_offset] = res.left;
     _M[_offset + 1] = res.right;
   }
   public decryptBlock(_M: number[], _offset: number): void {
-    var res = BlowFish_Decrypt(BLOWFISH_CTX, _M[_offset], _M[_offset + 1]);
+    const res = BlowFish_Decrypt(BLOWFISH_CTX, _M[_offset], _M[_offset + 1]);
     _M[_offset] = res.left;
     _M[_offset + 1] = res.right;
   }
@@ -298,9 +298,9 @@ export class BlowfishAlgo extends BlockCipher {
     }
 
     // Shortcuts
-    var key = (this._keyPriorReset = this._key);
-    var keyWords = key.words;
-    var keySize = key.sigBytes / 4;
+    const key = (this._keyPriorReset = this._key);
+    const keyWords = key.words;
+    const keySize = key.sigBytes / 4;
 
     //Initialization pbox and sbox
     BlowFishInit(BLOWFISH_CTX, keyWords, keySize);
