@@ -26,3 +26,5 @@ jobs:
         working-directory: packages/espresso
       - run: npm publish --provenance --access public
         working-directory: packages/espresso
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
