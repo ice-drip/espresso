@@ -9,8 +9,8 @@ const G: number[] = [];
 export class RabbitAlgo extends StreamCipher {
   public static ivSize = 64 / 32;
   blockSize = 128 / 32;
-  private _X: number[] = [];
-  private _C: number[] = [];
+  private _X!: number[];
+  private _C!: number[];
   private _b!: number;
   constructor(
     xformMode: number,
@@ -18,12 +18,13 @@ export class RabbitAlgo extends StreamCipher {
     cfg?: BufferedBlockAlgorithmConfig
   ) {
     super(xformMode, key, cfg);
+    this.reset();
   }
 
   reset(): void {
     super.reset();
     // Shortcuts
-    const K = this._key.words;
+    const K = this._key.words.slice();
     const iv = this.cfg.iv;
 
     // Swap endian

@@ -6,8 +6,12 @@ import { desEncrypt, desDecrypt } from './des';
 import { tripleDesEncrypt, tripleDesDecrypt } from './triple-des';
 import { blowfishEncrypt, blowfishDecrypt } from './blowfish';
 import { rc4Encrypt, rc4Decrypt, rc4DropEncrypt, rc4DropDecrypt } from './rc4';
-import { rabbitEncrypt, rabbitDecrypt, rabbitLegacyEncrypt, rabbitLegacyDecrypt } from './rabbit';
 import { seedEncrypt, seedDecrypt } from './seed';
+import { RabbitAlgo } from '../algo/cipher/rabbit.algo';
+import { RabbitLegacyAlgo } from '../algo/cipher/rabbit-legacy.algo';
+import { WordArray } from '../core/word-array';
+import { SerializableCipher } from '../core/cipher/serializable-cipher';
+import { Hex as HexFormat } from '../format/hex';
 
 export function encrypt(
   algorithm: Algorithm,
@@ -41,16 +45,16 @@ export function encrypt(
       break;
     case 'rabbit': {
       const rabbitIv = opts.iv
-        ? (typeof opts.iv === 'string' ? utf8Encode(opts.iv) : opts.iv)
+        ? (typeof opts.iv === 'string' ? hexDecode(opts.iv) : opts.iv)
         : undefined;
-      result = rabbitEncrypt(msgBytes, keyBytes, rabbitIv);
+      result = rabbitAlgoEncrypt(msgBytes, keyBytes, rabbitIv);
       break;
     }
     case 'rabbit-legacy': {
       const rabbitLegacyIv = opts.iv
-        ? (typeof opts.iv === 'string' ? utf8Encode(opts.iv) : opts.iv)
+        ? (typeof opts.iv === 'string' ? hexDecode(opts.iv) : opts.iv)
         : undefined;
-      result = rabbitLegacyEncrypt(msgBytes, keyBytes, rabbitLegacyIv);
+      result = rabbitLegacyAlgoEncrypt(msgBytes, keyBytes, rabbitLegacyIv);
       break;
     }
     case 'seed':
@@ -98,16 +102,16 @@ export function decrypt(
       break;
     case 'rabbit': {
       const rabbitIv = opts.iv
-        ? (typeof opts.iv === 'string' ? utf8Encode(opts.iv) : opts.iv)
+        ? (typeof opts.iv === 'string' ? hexDecode(opts.iv) : opts.iv)
         : undefined;
-      result = rabbitDecrypt(ctBytes, keyBytes, rabbitIv);
+      result = rabbitAlgoDecrypt(ctBytes, keyBytes, rabbitIv);
       break;
     }
     case 'rabbit-legacy': {
       const rabbitLegacyIv = opts.iv
-        ? (typeof opts.iv === 'string' ? utf8Encode(opts.iv) : opts.iv)
+        ? (typeof opts.iv === 'string' ? hexDecode(opts.iv) : opts.iv)
         : undefined;
-      result = rabbitLegacyDecrypt(ctBytes, keyBytes, rabbitLegacyIv);
+      result = rabbitLegacyAlgoDecrypt(ctBytes, keyBytes, rabbitLegacyIv);
       break;
     }
     case 'seed':
@@ -121,6 +125,69 @@ export function decrypt(
     return utf8Decode(result);
   }
   return encodeOutput(result, opts.outputEncoding ?? 'hex');
+}
+
+function uint8ArrayToWordArray(u8arr: Uint8Array): WordArray {
+  const words: number[] = [];
+  for (let i = 0; i < u8arr.length; i += 4) {
+    words.push(
+      ((u8arr[i] << 24) | (u8arr[i + 1] << 16) | (u8arr[i + 2] << 8) | u8arr[i + 3]) >>> 0
+    );
+  }
+  return new WordArray(words, u8arr.length);
+}
+
+function wordArrayToUint8Array(wordArray: WordArray): Uint8Array {
+  const { words, sigBytes } = wordArray;
+  const result = new Uint8Array(sigBytes);
+  for (let i = 0; i < sigBytes; i++) {
+    result[i] = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+  }
+  return result;
+}
+
+function rabbitAlgoEncrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
+  const keyWordArray = uint8ArrayToWordArray(key);
+  const dataWordArray = uint8ArrayToWordArray(data);
+  const cfg: any = { format: HexFormat };
+  if (iv) {
+    cfg.iv = uint8ArrayToWordArray(iv);
+  }
+  const encrypted = SerializableCipher.encrypt(RabbitAlgo, dataWordArray, keyWordArray, cfg);
+  return wordArrayToUint8Array(encrypted.ciphertext!);
+}
+
+function rabbitAlgoDecrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
+  const keyWordArray = uint8ArrayToWordArray(key);
+  const dataWordArray = uint8ArrayToWordArray(data);
+  const cfg: any = { format: HexFormat };
+  if (iv) {
+    cfg.iv = uint8ArrayToWordArray(iv);
+  }
+  const decrypted = SerializableCipher.decrypt(RabbitAlgo, { ciphertext: dataWordArray } as any, keyWordArray, cfg);
+  return wordArrayToUint8Array(decrypted);
+}
+
+function rabbitLegacyAlgoEncrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
+  const keyWordArray = uint8ArrayToWordArray(key);
+  const dataWordArray = uint8ArrayToWordArray(data);
+  const cfg: any = { format: HexFormat };
+  if (iv) {
+    cfg.iv = uint8ArrayToWordArray(iv);
+  }
+  const encrypted = SerializableCipher.encrypt(RabbitLegacyAlgo, dataWordArray, keyWordArray, cfg);
+  return wordArrayToUint8Array(encrypted.ciphertext!);
+}
+
+function rabbitLegacyAlgoDecrypt(data: Uint8Array, key: Uint8Array, iv?: Uint8Array): Uint8Array {
+  const keyWordArray = uint8ArrayToWordArray(key);
+  const dataWordArray = uint8ArrayToWordArray(data);
+  const cfg: any = { format: HexFormat };
+  if (iv) {
+    cfg.iv = uint8ArrayToWordArray(iv);
+  }
+  const decrypted = SerializableCipher.decrypt(RabbitLegacyAlgo, { ciphertext: dataWordArray } as any, keyWordArray, cfg);
+  return wordArrayToUint8Array(decrypted);
 }
 
 function encodeOutput(bytes: Uint8Array, encoding: string): string {

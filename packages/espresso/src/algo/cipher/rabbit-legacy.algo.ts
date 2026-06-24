@@ -10,20 +10,21 @@ const G: number[] = [];
 export class RabbitLegacyAlgo extends StreamCipher {
   public static ivSize = 64 / 32;
   blockSize = 128 / 32;
-  private _X: number[] = [];
-  private _C: number[] = [];
-  private _b = 0;
+  private _X!: number[];
+  private _C!: number[];
+  private _b!: number;
   constructor(
     xformMode: number,
     key: WordArray,
     cfg?: BufferedBlockAlgorithmConfig
   ) {
     super(xformMode, key, cfg);
+    this.reset();
   }
 
   reset(): void {
     super.reset();
-    const K = this._key.words;
+    const K = this._key.words.slice();
     const iv = this.cfg.iv;
 
     const X = (this._X = [
